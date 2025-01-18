@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2023 the original author or authors.
+ * Copyright 2002-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
@@ -35,7 +36,6 @@ import org.springframework.context.SmartLifecycle;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.format.support.DefaultFormattingConversionService;
-import org.springframework.lang.Nullable;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.SubscribableChannel;
@@ -111,14 +111,13 @@ public class SimpAnnotationMethodMessageHandler extends AbstractMethodMessageHan
 
 	private boolean slashPathSeparator = true;
 
-	@Nullable
-	private Validator validator;
+	private @Nullable Validator validator;
 
-	@Nullable
-	private StringValueResolver valueResolver;
+	private @Nullable StringValueResolver valueResolver;
 
-	@Nullable
-	private MessageHeaderInitializer headerInitializer;
+	private @Nullable MessageHeaderInitializer headerInitializer;
+
+	private @Nullable Integer phase;
 
 	private volatile boolean running;
 
@@ -128,8 +127,8 @@ public class SimpAnnotationMethodMessageHandler extends AbstractMethodMessageHan
 	/**
 	 * Create an instance of SimpAnnotationMethodMessageHandler with the given
 	 * message channels and broker messaging template.
-	 * @param clientInboundChannel the channel for receiving messages from clients (e.g. WebSocket clients)
-	 * @param clientOutboundChannel the channel for messages to clients (e.g. WebSocket clients)
+	 * @param clientInboundChannel the channel for receiving messages from clients (for example, WebSocket clients)
+	 * @param clientOutboundChannel the channel for messages to clients (for example, WebSocket clients)
 	 * @param brokerTemplate a messaging template to send application messages to the broker
 	 */
 	public SimpAnnotationMethodMessageHandler(SubscribableChannel clientInboundChannel,
@@ -156,7 +155,7 @@ public class SimpAnnotationMethodMessageHandler extends AbstractMethodMessageHan
 	 * therefore a slash is automatically appended where missing to ensure a
 	 * proper prefix-based match (i.e. matching complete segments).
 	 * <p>Note however that the remaining portion of a destination after the
-	 * prefix may use a different separator (e.g. commonly "." in messaging)
+	 * prefix may use a different separator (for example, commonly "." in messaging)
 	 * depending on the configured {@code PathMatcher}.
 	 */
 	@Override
@@ -164,8 +163,7 @@ public class SimpAnnotationMethodMessageHandler extends AbstractMethodMessageHan
 		super.setDestinationPrefixes(appendSlashes(prefixes));
 	}
 
-	@Nullable
-	private static Collection<String> appendSlashes(@Nullable Collection<String> prefixes) {
+	private static @Nullable Collection<String> appendSlashes(@Nullable Collection<String> prefixes) {
 		if (CollectionUtils.isEmpty(prefixes)) {
 			return prefixes;
 		}
@@ -234,8 +232,7 @@ public class SimpAnnotationMethodMessageHandler extends AbstractMethodMessageHan
 	/**
 	 * Return the configured Validator instance.
 	 */
-	@Nullable
-	public Validator getValidator() {
+	public @Nullable Validator getValidator() {
 		return this.validator;
 	}
 
@@ -266,9 +263,23 @@ public class SimpAnnotationMethodMessageHandler extends AbstractMethodMessageHan
 	/**
 	 * Return the configured header initializer.
 	 */
-	@Nullable
-	public MessageHeaderInitializer getHeaderInitializer() {
+	public @Nullable MessageHeaderInitializer getHeaderInitializer() {
 		return this.headerInitializer;
+	}
+
+	/**
+	 * Set the phase that this handler should run in.
+	 * <p>By default, this is {@link SmartLifecycle#DEFAULT_PHASE}, but with
+	 * {@code @EnableWebSocketMessageBroker} configuration it is set to 0.
+	 * @since 6.1.4
+	 */
+	public void setPhase(int phase) {
+		this.phase = phase;
+	}
+
+	@Override
+	public int getPhase() {
+		return (this.phase != null ? this.phase : SmartLifecycle.super.getPhase());
 	}
 
 
@@ -326,13 +337,11 @@ public class SimpAnnotationMethodMessageHandler extends AbstractMethodMessageHan
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	protected List<? extends HandlerMethodReturnValueHandler> initReturnValueHandlers() {
 		List<HandlerMethodReturnValueHandler> handlers = new ArrayList<>();
 
 		// Single-purpose return value types
 
-		handlers.add(new org.springframework.messaging.handler.invocation.ListenableFutureReturnValueHandler());
 		handlers.add(new CompletableFutureReturnValueHandler());
 		if (reactorPresent) {
 			handlers.add(new ReactiveReturnValueHandler());
@@ -380,8 +389,7 @@ public class SimpAnnotationMethodMessageHandler extends AbstractMethodMessageHan
 	}
 
 	@Override
-	@Nullable
-	protected SimpMessageMappingInfo getMappingForMethod(Method method, Class<?> handlerType) {
+	protected @Nullable SimpMessageMappingInfo getMappingForMethod(Method method, Class<?> handlerType) {
 		MessageMapping messageAnn = AnnotatedElementUtils.findMergedAnnotation(method, MessageMapping.class);
 		if (messageAnn != null) {
 			MessageMapping typeAnn = AnnotatedElementUtils.findMergedAnnotation(handlerType, MessageMapping.class);
@@ -414,13 +422,13 @@ public class SimpAnnotationMethodMessageHandler extends AbstractMethodMessageHan
 	}
 
 	private SimpMessageMappingInfo createMessageMappingCondition(String[] destinations) {
-		String[] resolvedDestinations = resolveEmbeddedValuesInDestinations(destinations);
+		@Nullable String[] resolvedDestinations = resolveEmbeddedValuesInDestinations(destinations);
 		return new SimpMessageMappingInfo(SimpMessageTypeMessageCondition.MESSAGE,
 				new DestinationPatternsMessageCondition(resolvedDestinations, this.pathMatcher));
 	}
 
 	private SimpMessageMappingInfo createSubscribeMappingCondition(String[] destinations) {
-		String[] resolvedDestinations = resolveEmbeddedValuesInDestinations(destinations);
+		@Nullable String[] resolvedDestinations = resolveEmbeddedValuesInDestinations(destinations);
 		return new SimpMessageMappingInfo(SimpMessageTypeMessageCondition.SUBSCRIBE,
 				new DestinationPatternsMessageCondition(resolvedDestinations, this.pathMatcher));
 	}
@@ -430,11 +438,11 @@ public class SimpAnnotationMethodMessageHandler extends AbstractMethodMessageHan
 	 * @return a new array with updated destinations
 	 * @since 4.2
 	 */
-	protected String[] resolveEmbeddedValuesInDestinations(String[] destinations) {
+	protected @Nullable String[] resolveEmbeddedValuesInDestinations(String[] destinations) {
 		if (this.valueResolver == null) {
 			return destinations;
 		}
-		String[] result = new String[destinations.length];
+		@Nullable String[] result = new String[destinations.length];
 		for (int i = 0; i < destinations.length; i++) {
 			result[i] = this.valueResolver.resolveStringValue(destinations[i]);
 		}
@@ -453,13 +461,12 @@ public class SimpAnnotationMethodMessageHandler extends AbstractMethodMessageHan
 	}
 
 	@Override
-	@Nullable
-	protected String getDestination(Message<?> message) {
+	protected @Nullable String getDestination(Message<?> message) {
 		return SimpMessageHeaderAccessor.getDestination(message.getHeaders());
 	}
 
 	@Override
-	protected String getLookupDestination(@Nullable String destination) {
+	protected @Nullable String getLookupDestination(@Nullable String destination) {
 		if (destination == null) {
 			return null;
 		}
@@ -480,8 +487,7 @@ public class SimpAnnotationMethodMessageHandler extends AbstractMethodMessageHan
 	}
 
 	@Override
-	@Nullable
-	protected SimpMessageMappingInfo getMatchingMapping(SimpMessageMappingInfo mapping, Message<?> message) {
+	protected @Nullable SimpMessageMappingInfo getMatchingMapping(SimpMessageMappingInfo mapping, Message<?> message) {
 		return mapping.getMatchingCondition(message);
 
 	}

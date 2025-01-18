@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2022 the original author or authors.
+ * Copyright 2002-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package org.springframework.aot;
 
 import org.springframework.core.NativeDetector;
+import org.springframework.core.NativeDetector.Context;
 import org.springframework.core.SpringProperties;
 
 /**
@@ -24,6 +25,7 @@ import org.springframework.core.SpringProperties;
  * than the regular runtime. Strictly for internal use within the framework.
  *
  * @author Stephane Nicoll
+ * @author Sebastien Deleuze
  * @since 6.0
  */
 public abstract class AotDetector {
@@ -36,6 +38,9 @@ public abstract class AotDetector {
 	 */
 	public static final String AOT_ENABLED = "spring.aot.enabled";
 
+	private static final boolean inNativeImage = NativeDetector.inNativeImage(Context.RUN, Context.BUILD);
+
+
 	/**
 	 * Determine whether AOT optimizations must be considered at runtime. This
 	 * is mandatory in a native image but can be triggered on the JVM using
@@ -43,7 +48,7 @@ public abstract class AotDetector {
 	 * @return whether AOT optimizations must be considered
 	 */
 	public static boolean useGeneratedArtifacts() {
-		return (NativeDetector.inNativeImage() || SpringProperties.getFlag(AOT_ENABLED));
+		return (inNativeImage || SpringProperties.getFlag(AOT_ENABLED));
 	}
 
 }

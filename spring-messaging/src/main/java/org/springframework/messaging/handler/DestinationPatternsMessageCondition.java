@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2023 the original author or authors.
+ * Copyright 2002-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
+
 import org.springframework.messaging.Message;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.CollectionUtils;
@@ -70,7 +71,7 @@ public class DestinationPatternsMessageCondition
 	 * @param patterns the URL patterns to match to, or if 0 then always match
 	 * @param matcher the {@code PathMatcher} to use
 	 */
-	public DestinationPatternsMessageCondition(String[] patterns, @Nullable PathMatcher matcher) {
+	public DestinationPatternsMessageCondition(@Nullable String[] patterns, @Nullable PathMatcher matcher) {
 		this(patterns, new SimpleRouteMatcher(matcher != null ? matcher : new AntPathMatcher()));
 	}
 
@@ -80,13 +81,14 @@ public class DestinationPatternsMessageCondition
 	 * @param routeMatcher the {@code RouteMatcher} to use
 	 * @since 5.2
 	 */
-	public DestinationPatternsMessageCondition(String[] patterns, RouteMatcher routeMatcher) {
+	public DestinationPatternsMessageCondition(@Nullable String[] patterns, RouteMatcher routeMatcher) {
 		this(Collections.unmodifiableSet(prependLeadingSlash(patterns, routeMatcher)), routeMatcher);
 	}
 
-	private static Set<String> prependLeadingSlash(String[] patterns, RouteMatcher routeMatcher) {
+	@SuppressWarnings("NullAway") // https://github.com/uber/NullAway/issues/1125
+	private static Set<@Nullable String> prependLeadingSlash(@Nullable String[] patterns, RouteMatcher routeMatcher) {
 		boolean slashSeparator = routeMatcher.combine("a", "a").equals("a/a");
-		Set<String> result = new LinkedHashSet<>(patterns.length);
+		Set<@Nullable String> result = CollectionUtils.newLinkedHashSet(patterns.length);
 		for (String pattern : patterns) {
 			if (slashSeparator && StringUtils.hasLength(pattern) && !pattern.startsWith("/")) {
 				pattern = "/" + pattern;
@@ -160,8 +162,7 @@ public class DestinationPatternsMessageCondition
 	 * or {@code null} either if a destination can not be extracted or there is no match
 	 */
 	@Override
-	@Nullable
-	public DestinationPatternsMessageCondition getMatchingCondition(Message<?> message) {
+	public @Nullable DestinationPatternsMessageCondition getMatchingCondition(Message<?> message) {
 		Object destination = message.getHeaders().get(LOOKUP_DESTINATION_HEADER);
 		if (destination == null) {
 			return null;

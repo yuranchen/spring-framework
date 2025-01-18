@@ -48,16 +48,17 @@ import java.util.function.BiConsumer;
  *   }
  * });</pre>
  *
- * <p>See also the Spring reference manual for a fuller discussion of
- * the {@code Validator} interface and its role in an enterprise
- * application.
+ * <p>See also the Spring reference manual for a fuller discussion of the
+ * {@code Validator} interface and its role in an enterprise application.
  *
  * @author Rod Johnson
+ * @author Juergen Hoeller
  * @author Toshiaki Maki
  * @author Arjen Poutsma
  * @see SmartValidator
  * @see Errors
  * @see ValidationUtils
+ * @see DataBinder#setValidator
  */
 public interface Validator {
 
@@ -77,24 +78,49 @@ public interface Validator {
 	boolean supports(Class<?> clazz);
 
 	/**
-	 * Validate the supplied {@code target} object, which must be
-	 * of a {@link Class} for which the {@link #supports(Class)} method
-	 * typically has (or would) return {@code true}.
+	 * Validate the given {@code target} object which must be of a
+	 * {@link Class} for which the {@link #supports(Class)} method
+	 * typically has returned (or would return) {@code true}.
 	 * <p>The supplied {@link Errors errors} instance can be used to report
-	 * any resulting validation errors.
+	 * any resulting validation errors, typically as part of a larger
+	 * binding process which this validator is meant to participate in.
+	 * Binding errors have typically been pre-registered with the
+	 * {@link Errors errors} instance before this invocation already.
 	 * @param target the object that is to be validated
 	 * @param errors contextual state about the validation process
 	 * @see ValidationUtils
 	 */
 	void validate(Object target, Errors errors);
 
+	/**
+	 * Validate the given {@code target} object individually.
+	 * <p>Delegates to the common {@link #validate(Object, Errors)} method.
+	 * The returned {@link Errors errors} instance can be used to report
+	 * any resulting validation errors for the specific target object, for example,
+	 * {@code if (validator.validateObject(target).hasErrors()) ...} or
+	 * {@code validator.validateObject(target).failOnError(IllegalStateException::new));}.
+	 * <p>Note: This validation call comes with limitations in the {@link Errors}
+	 * implementation used, in particular no support for nested paths.
+	 * If this is insufficient for your purposes, call the regular
+	 * {@link #validate(Object, Errors)} method with a binding-capable
+	 * {@link Errors} implementation such as {@link BeanPropertyBindingResult}.
+	 * @param target the object that is to be validated
+	 * @return resulting errors from the validation of the given object
+	 * @since 6.1
+	 * @see SimpleErrors
+	 */
+	default Errors validateObject(Object target) {
+		Errors errors = new SimpleErrors(target);
+		validate(target, errors);
+		return errors;
+	}
+
 
 	/**
 	 * Return a {@code Validator} that checks whether the target object
 	 * {@linkplain Class#isAssignableFrom(Class) is an instance of}
-	 * {@code targetClass}, resorting to {@code delegate} to populate
+	 * {@code targetClass}, applying the given {@code delegate} to populate
 	 * {@link Errors} if it is.
-	 *
 	 * <p>For instance:
 	 * <pre class="code">Validator passwordEqualsValidator = Validator.forInstanceOf(PasswordResetForm.class, (form, errors) -> {
 	 *   if (!Objects.equals(form.getPassword(), form.getConfirmPassword())) {
@@ -116,9 +142,8 @@ public interface Validator {
 
 	/**
 	 * Return a {@code Validator} that checks whether the target object's class
-	 * is identical to {@code targetClass}, resorting to {@code delegate} to
-	 * populate {@link Errors} if it is.
-	 *
+	 * is identical to {@code targetClass}, applying the given {@code delegate}
+	 * to populate {@link Errors} if it is.
 	 * <p>For instance:
 	 * <pre class="code">Validator passwordEqualsValidator = Validator.forType(PasswordResetForm.class, (form, errors) -> {
 	 *   if (!Objects.equals(form.getPassword(), form.getConfirmPassword())) {

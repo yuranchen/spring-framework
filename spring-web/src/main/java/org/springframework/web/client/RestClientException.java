@@ -16,6 +16,8 @@
 
 package org.springframework.web.client;
 
+import org.jspecify.annotations.Nullable;
+
 import org.springframework.core.NestedRuntimeException;
 import org.springframework.http.client.ClientHttpResponse;
 
@@ -47,7 +49,7 @@ public class RestClientException extends NestedRuntimeException {
 	 * @param msg the message
 	 * @param ex the exception
 	 */
-	public RestClientException(String msg, Throwable ex) {
+	public RestClientException(String msg, @Nullable Throwable ex) {
 		super(msg, ex);
 	}
 

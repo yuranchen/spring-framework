@@ -43,8 +43,12 @@ abstract public class AbstractClassGenerator<T> implements ClassGenerator {
 	private static final boolean DEFAULT_USE_CACHE =
 			Boolean.parseBoolean(System.getProperty("cglib.useCache", "true"));
 
-	// See https://github.com/oracle/graal/blob/master/sdk/src/org.graalvm.nativeimage/src/org/graalvm/nativeimage/ImageInfo.java
-	private static final boolean imageCode = (System.getProperty("org.graalvm.nativeimage.imagecode") != null);
+	private static final boolean inNativeImage;
+
+	static {
+		String imageCode = System.getProperty("org.graalvm.nativeimage.imagecode");
+		inNativeImage = "buildtime".equals(imageCode) || "runtime".equals(imageCode);
+	}
 
 
 	private GeneratorStrategy strategy = DefaultGeneratorStrategy.INSTANCE;
@@ -73,7 +77,7 @@ abstract public class AbstractClassGenerator<T> implements ClassGenerator {
 		private final Set<String> reservedClassNames = new HashSet<>();
 
 		/**
-		 * {@link AbstractClassGenerator} here holds "cache key" (e.g. {@link org.springframework.cglib.proxy.Enhancer}
+		 * {@link AbstractClassGenerator} here holds "cache key" (for example, {@link org.springframework.cglib.proxy.Enhancer}
 		 * configuration), and the value is the generated class plus some additional values
 		 * (see {@link #unwrapCachedValue(Object)}.
 		 * <p>The generated classes can be reused as long as their classloader is reachable.</p>
@@ -354,7 +358,7 @@ abstract public class AbstractClassGenerator<T> implements ClassGenerator {
 				}
 			}
 			// SPRING PATCH BEGIN
-			if (imageCode) {
+			if (inNativeImage) {
 				throw new UnsupportedOperationException("CGLIB runtime enhancement not supported on native image. " +
 						"Make sure to include a pre-generated class on the classpath instead: " + getClassName());
 			}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2021 the original author or authors.
+ * Copyright 2002-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,10 +30,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.jspecify.annotations.Nullable;
+
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.http.client.ClientHttpResponse;
-import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
@@ -110,7 +111,7 @@ public abstract class AbstractRequestExpectationManager implements RequestExpect
 
 	/**
 	 * As of 5.0.3 subclasses should implement this method instead of
-	 * {@link #validateRequestInternal(ClientHttpRequest)} in order to match the
+	 * {@code #validateRequestInternal(ClientHttpRequest)} in order to match the
 	 * request to an expectation, leaving the call to create the response as a separate step
 	 * (to be invoked by this class).
 	 * @param request the current request
@@ -219,8 +220,7 @@ public abstract class AbstractRequestExpectationManager implements RequestExpect
 		/**
 		 * Return a matching expectation, or {@code null} if none match.
 		 */
-		@Nullable
-		public RequestExpectation findExpectation(ClientHttpRequest request) throws IOException {
+		public @Nullable RequestExpectation findExpectation(ClientHttpRequest request) throws IOException {
 			for (RequestExpectation expectation : this.expectations) {
 				try {
 					expectation.match(request);

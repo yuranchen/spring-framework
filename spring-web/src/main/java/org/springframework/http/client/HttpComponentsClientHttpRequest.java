@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2022 the original author or authors.
+ * Copyright 2002-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,21 +17,26 @@
 package org.springframework.http.client;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Set;
 
 import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.core5.function.Supplier;
 import org.apache.hc.core5.http.ClassicHttpRequest;
 import org.apache.hc.core5.http.ClassicHttpResponse;
-import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.Header;
 import org.apache.hc.core5.http.HttpEntity;
-import org.apache.hc.core5.http.HttpResponse;
-import org.apache.hc.core5.http.io.entity.ByteArrayEntity;
+import org.apache.hc.core5.http.Method;
+import org.apache.hc.core5.http.io.entity.NullEntity;
 import org.apache.hc.core5.http.protocol.HttpContext;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 /**
@@ -46,7 +51,7 @@ import org.springframework.util.StringUtils;
  * @since 3.1
  * @see HttpComponentsClientHttpRequestFactory#createRequest(URI, HttpMethod)
  */
-final class HttpComponentsClientHttpRequest extends AbstractBufferingClientHttpRequest {
+final class HttpComponentsClientHttpRequest extends AbstractStreamingClientHttpRequest {
 
 	private final HttpClient httpClient;
 
@@ -81,19 +86,18 @@ final class HttpComponentsClientHttpRequest extends AbstractBufferingClientHttpR
 		return this.httpContext;
 	}
 
-
-	@SuppressWarnings("deprecation")  // execute(ClassicHttpRequest, HttpContext)
 	@Override
-	protected ClientHttpResponse executeInternal(HttpHeaders headers, byte[] bufferedOutput) throws IOException {
+	protected ClientHttpResponse executeInternal(HttpHeaders headers, @Nullable Body body) throws IOException {
 		addHeaders(this.httpRequest, headers);
 
-		ContentType contentType = ContentType.parse(headers.getFirst(HttpHeaders.CONTENT_TYPE));
-		HttpEntity requestEntity = new ByteArrayEntity(bufferedOutput, contentType);
-		this.httpRequest.setEntity(requestEntity);
-		HttpResponse httpResponse = this.httpClient.execute(this.httpRequest, this.httpContext);
-		Assert.isInstanceOf(ClassicHttpResponse.class, httpResponse,
-				"HttpResponse not an instance of ClassicHttpResponse");
-		return new HttpComponentsClientHttpResponse((ClassicHttpResponse) httpResponse);
+		if (body != null) {
+			this.httpRequest.setEntity(new BodyEntity(headers, body));
+		}
+		else if (!Method.isSafe(this.httpRequest.getMethod())) {
+			this.httpRequest.setEntity(NullEntity.INSTANCE);
+		}
+		ClassicHttpResponse httpResponse = this.httpClient.executeOpen(null, this.httpRequest, this.httpContext);
+		return new HttpComponentsClientHttpResponse(httpResponse);
 	}
 
 	/**
@@ -114,6 +118,76 @@ final class HttpComponentsClientHttpRequest extends AbstractBufferingClientHttpR
 				}
 			}
 		});
+	}
+
+
+	private static class BodyEntity implements HttpEntity {
+
+		private final HttpHeaders headers;
+
+		private final Body body;
+
+
+		public BodyEntity(HttpHeaders headers, Body body) {
+			this.headers = headers;
+			this.body = body;
+		}
+
+
+		@Override
+		public long getContentLength() {
+			return this.headers.getContentLength();
+		}
+
+		@Override
+		public @Nullable String getContentType() {
+			return this.headers.getFirst(HttpHeaders.CONTENT_TYPE);
+		}
+
+		@Override
+		public InputStream getContent() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public void writeTo(OutputStream outStream) throws IOException {
+			this.body.writeTo(outStream);
+		}
+
+		@Override
+		public boolean isRepeatable() {
+			return this.body.repeatable();
+		}
+
+		@Override
+		public boolean isStreaming() {
+			return false;
+		}
+
+		@Override
+		public @Nullable Supplier<List<? extends Header>> getTrailers() {
+			return null;
+		}
+
+		@Override
+		public @Nullable String getContentEncoding() {
+			return this.headers.getFirst(HttpHeaders.CONTENT_ENCODING);
+		}
+
+		@Override
+		public boolean isChunked() {
+			return false;
+		}
+
+		@Override
+		public @Nullable Set<String> getTrailerNames() {
+			return null;
+		}
+
+		@Override
+		public void close() {
+		}
+
 	}
 
 }

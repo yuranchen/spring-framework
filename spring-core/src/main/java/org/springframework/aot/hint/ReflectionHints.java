@@ -26,8 +26,9 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
+import org.jspecify.annotations.Nullable;
+
 import org.springframework.aot.hint.TypeHint.Builder;
-import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 
@@ -59,8 +60,7 @@ public class ReflectionHints {
 	 * @param type the type to inspect
 	 * @return the reflection hints for this type, or {@code null}
 	 */
-	@Nullable
-	public TypeHint getTypeHint(TypeReference type) {
+	public @Nullable TypeHint getTypeHint(TypeReference type) {
 		Builder typeHintBuilder = this.types.get(type);
 		return (typeHintBuilder != null ? typeHintBuilder.build() : null);
 	}
@@ -70,8 +70,7 @@ public class ReflectionHints {
 	 * @param type the type to inspect
 	 * @return the reflection hints for this type, or {@code null}
 	 */
-	@Nullable
-	public TypeHint getTypeHint(Class<?> type) {
+	public @Nullable TypeHint getTypeHint(Class<?> type) {
 		return getTypeHint(TypeReference.of(type));
 	}
 
@@ -172,6 +171,29 @@ public class ReflectionHints {
 	 */
 	public ReflectionHints registerTypes(Iterable<TypeReference> types, Consumer<TypeHint.Builder> typeHint) {
 		types.forEach(type -> registerType(type, typeHint));
+		return this;
+	}
+
+	/**
+	 * Register or customize reflection hints for all the interfaces implemented by
+	 * the given type and its parent classes, ignoring the common Java language interfaces.
+	 * The specified {@code typeHint} consumer is invoked for each type.
+	 * @param type the type to consider
+	 * @param typeHint a builder to further customize hints for each type
+	 * @return {@code this}, to facilitate method chaining
+	 * @since 6.2
+	 */
+	public ReflectionHints registerForInterfaces(Class<?> type, Consumer<TypeHint.Builder> typeHint) {
+		Class<?> currentClass = type;
+		while (currentClass != null && currentClass != Object.class) {
+			for (Class<?> interfaceType : currentClass.getInterfaces()) {
+				if (!ClassUtils.isJavaLanguageInterface(interfaceType)) {
+					this.registerType(interfaceType, typeHint);
+					registerForInterfaces(interfaceType, typeHint);
+				}
+			}
+			currentClass = currentClass.getSuperclass();
+		}
 		return this;
 	}
 

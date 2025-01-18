@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2023 the original author or authors.
+ * Copyright 2002-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -38,7 +39,6 @@ import org.springframework.http.codec.HttpMessageWriter;
 import org.springframework.http.codec.ResourceHttpMessageWriter;
 import org.springframework.http.codec.json.Jackson2JsonEncoder;
 import org.springframework.http.codec.xml.Jaxb2XmlEncoder;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -54,7 +54,7 @@ import static org.springframework.web.testfixture.http.server.reactive.MockServe
 import static org.springframework.web.testfixture.method.ResolvableMethod.on;
 
 /**
- * Unit tests for {@link ResponseBodyResultHandler}.When adding a test also
+ * Tests for {@link ResponseBodyResultHandler}.When adding a test also
  * consider whether the logic under test is in a parent class, then see:
  * <ul>
  * <li>{@code MessageWriterResultHandlerTests},
@@ -64,13 +64,13 @@ import static org.springframework.web.testfixture.method.ResolvableMethod.on;
  * @author Sebastien Deleuze
  * @author Rossen Stoyanchev
  */
-public class ResponseBodyResultHandlerTests {
+class ResponseBodyResultHandlerTests {
 
 	private ResponseBodyResultHandler resultHandler;
 
 
 	@BeforeEach
-	public void setup() throws Exception {
+	void setup() throws Exception {
 		List<HttpMessageWriter<?>> writerList = new ArrayList<>(5);
 		writerList.add(new EncoderHttpMessageWriter<>(new ByteBufferEncoder()));
 		writerList.add(new EncoderHttpMessageWriter<>(CharSequenceEncoder.allMimeTypes()));
@@ -83,7 +83,7 @@ public class ResponseBodyResultHandlerTests {
 
 
 	@Test
-	public void supports() {
+	void supports() {
 		Object controller = new TestController();
 		Method method;
 
@@ -96,7 +96,7 @@ public class ResponseBodyResultHandlerTests {
 	}
 
 	@Test
-	public void supportsRestController() {
+	void supportsRestController() {
 		Object controller = new TestRestController();
 		Method method;
 
@@ -139,9 +139,9 @@ public class ResponseBodyResultHandlerTests {
 	}
 
 	private void testProblemDetailMediaType(MockServerWebExchange exchange, MediaType expectedMediaType) {
-		ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+		MyProblemDetail problemDetail = new MyProblemDetail(HttpStatus.BAD_REQUEST);
 
-		Method method = on(TestRestController.class).returning(ProblemDetail.class).resolveMethod();
+		Method method = on(TestRestController.class).returning(MyProblemDetail.class).resolveMethod();
 		HandlerResult result = getHandlerResult(new TestRestController(), problemDetail, method);
 
 		this.resultHandler.handleResult(exchange, result).block(Duration.ofSeconds(5));
@@ -156,7 +156,7 @@ public class ResponseBodyResultHandlerTests {
 	}
 
 	@Test
-	public void defaultOrder() {
+	void defaultOrder() {
 		assertThat(this.resultHandler.getOrder()).isEqualTo(100);
 	}
 
@@ -196,7 +196,7 @@ public class ResponseBodyResultHandlerTests {
 			return null;
 		}
 
-		public ProblemDetail handleToProblemDetail() {
+		public MyProblemDetail handleToProblemDetail() {
 			return null;
 		}
 
@@ -215,6 +215,15 @@ public class ResponseBodyResultHandlerTests {
 		public String doWork() {
 			return null;
 		}
+	}
+
+
+	private static class MyProblemDetail extends ProblemDetail {
+
+		public MyProblemDetail(HttpStatus status) {
+			super(status.value());
+		}
+
 	}
 
 }

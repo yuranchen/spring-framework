@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2021 the original author or authors.
+ * Copyright 2002-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,15 @@ package org.springframework.web.servlet.config.annotation;
 
 import java.util.List;
 
+import org.jspecify.annotations.Nullable;
+
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.format.Formatter;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.lang.Nullable;
 import org.springframework.validation.MessageCodesResolver;
 import org.springframework.validation.Validator;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
@@ -123,7 +125,7 @@ public interface WebMvcConfigurer {
 	/**
 	 * Configure simple automated controllers pre-configured with the response
 	 * status code and/or a view to render the response body. This is useful in
-	 * cases where there is no need for custom controller logic -- e.g. render a
+	 * cases where there is no need for custom controller logic -- for example, render a
 	 * home page, perform simple site URL redirects, return a 404 status with
 	 * HTML content, a 204 with no content, and more.
 	 * @see ViewControllerRegistry
@@ -166,10 +168,14 @@ public interface WebMvcConfigurer {
 	 * <p>By default, all built-in converters are configured as long as the
 	 * corresponding 3rd party libraries such Jackson JSON, JAXB2, and others
 	 * are present on the classpath.
-	 * <p><strong>Note</strong> use of this method turns off default converter
-	 * registration. Alternatively, use
-	 * {@link #extendMessageConverters(java.util.List)} to modify that default
-	 * list of converters.
+	 * <p>Note that use of this method turns off default converter
+	 * registration. However, in a Spring Boot application the
+	 * {@code WebMvcAutoConfiguration} adds any {@code HttpMessageConverter}
+	 * beans as well as default converters. Hence, in a Boot application use
+	 * <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/web.html#web.servlet.spring-mvc.message-converters">HttpMessageConverters</a>.
+	 * Alternatively, for any scenario, use
+	 * {@link #extendMessageConverters(java.util.List)} to modify the configured
+	 * list of message converters.
 	 * @param converters initially an empty list of converters
 	 */
 	default void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
@@ -218,13 +224,22 @@ public interface WebMvcConfigurer {
 	}
 
 	/**
+	 * Add to the list of {@link ErrorResponse.Interceptor}'s to apply when
+	 * rendering an RFC 9457 {@link org.springframework.http.ProblemDetail}
+	 * error response.
+	 * @param interceptors the interceptors to use
+	 * @since 6.2
+	 */
+	default void addErrorResponseInterceptors(List<ErrorResponse.Interceptor> interceptors) {
+	}
+
+	/**
 	 * Provide a custom {@link Validator} instead of the one created by default.
 	 * The default implementation, assuming JSR-303 is on the classpath, is:
 	 * {@link org.springframework.validation.beanvalidation.OptionalValidatorFactoryBean}.
 	 * Leave the return value as {@code null} to keep the default.
 	 */
-	@Nullable
-	default Validator getValidator() {
+	default @Nullable Validator getValidator() {
 		return null;
 	}
 
@@ -233,8 +248,7 @@ public interface WebMvcConfigurer {
 	 * from data binding and validation error codes. Leave the return value as
 	 * {@code null} to keep the default.
 	 */
-	@Nullable
-	default MessageCodesResolver getMessageCodesResolver() {
+	default @Nullable MessageCodesResolver getMessageCodesResolver() {
 		return null;
 	}
 

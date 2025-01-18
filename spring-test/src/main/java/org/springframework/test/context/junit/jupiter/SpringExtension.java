@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2023 the original author or authors.
+ * Copyright 2002-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,16 +20,16 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.List;
 
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
@@ -42,7 +42,6 @@ import org.junit.jupiter.api.extension.ExtensionContext.Store;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolver;
 import org.junit.jupiter.api.extension.TestInstancePostProcessor;
-import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.platform.commons.annotation.Testable;
 
@@ -52,7 +51,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.core.annotation.RepeatableContainers;
-import org.springframework.lang.Nullable;
+import org.springframework.test.context.MethodInvoker;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestContextAnnotationUtils;
 import org.springframework.test.context.TestContextManager;
@@ -98,7 +97,12 @@ public class SpringExtension implements BeforeAllCallback, AfterAllCallback, Tes
 	private static final Namespace AUTOWIRED_VALIDATION_NAMESPACE =
 			Namespace.create(SpringExtension.class.getName() + "#autowired.validation");
 
-	private static final String NO_AUTOWIRED_VIOLATIONS_DETECTED = "NO AUTOWIRED VIOLATIONS DETECTED";
+	/**
+	 * <em>Marker</em> string constant to represent that no violations were detected.
+	 * <p>The value is an empty string which allows this class to perform quick
+	 * {@code isEmpty()} checks instead of performing unnecessary string comparisons.
+	 */
+	private static final String NO_VIOLATIONS_DETECTED = "";
 
 	/**
 	 * {@link Namespace} in which {@code @RecordApplicationEvents} validation error messages
@@ -113,9 +117,7 @@ public class SpringExtension implements BeforeAllCallback, AfterAllCallback, Tes
 			List.of(BeforeAll.class, AfterAll.class, BeforeEach.class, AfterEach.class, Testable.class);
 
 	private static final MethodFilter autowiredTestOrLifecycleMethodFilter =
-			ReflectionUtils.USER_DECLARED_METHODS
-					.and(method -> !Modifier.isPrivate(method.getModifiers()))
-					.and(SpringExtension::isAutowiredTestOrLifecycleMethod);
+			ReflectionUtils.USER_DECLARED_METHODS.and(SpringExtension::isAutowiredTestOrLifecycleMethod);
 
 
 	/**
@@ -123,7 +125,9 @@ public class SpringExtension implements BeforeAllCallback, AfterAllCallback, Tes
 	 */
 	@Override
 	public void beforeAll(ExtensionContext context) throws Exception {
-		getTestContextManager(context).beforeTestClass();
+		TestContextManager testContextManager = getTestContextManager(context);
+		registerMethodInvoker(testContextManager, context);
+		testContextManager.beforeTestClass();
 	}
 
 	/**
@@ -132,7 +136,9 @@ public class SpringExtension implements BeforeAllCallback, AfterAllCallback, Tes
 	@Override
 	public void afterAll(ExtensionContext context) throws Exception {
 		try {
-			getTestContextManager(context).afterTestClass();
+			TestContextManager testContextManager = getTestContextManager(context);
+			registerMethodInvoker(testContextManager, context);
+			testContextManager.afterTestClass();
 		}
 		finally {
 			getStore(context).remove(context.getRequiredTestClass());
@@ -149,48 +155,9 @@ public class SpringExtension implements BeforeAllCallback, AfterAllCallback, Tes
 	public void postProcessTestInstance(Object testInstance, ExtensionContext context) throws Exception {
 		validateAutowiredConfig(context);
 		validateRecordApplicationEventsConfig(context);
-		getTestContextManager(context).prepareTestInstance(testInstance);
-	}
-
-	/**
-	 * Validate that test class or its enclosing class doesn't attempt to record
-	 * application events in a parallel mode that makes it un-deterministic
-	 * ({@code @TestInstance(PER_CLASS)} and {@code @Execution(CONCURRENT)}
-	 * combination).
-	 * @since 6.1.0
-	 */
-	private void validateRecordApplicationEventsConfig(ExtensionContext context) {
-		// We save the result in the ExtensionContext.Store so that we don't
-		// re-validate all methods for the same test class multiple times.
-		Store store = context.getStore(RECORD_APPLICATION_EVENTS_VALIDATION_NAMESPACE);
-
-		String errorMessage = store.getOrComputeIfAbsent(context.getRequiredTestClass(), testClass -> {
-			boolean record = TestContextAnnotationUtils.hasAnnotation(testClass, RecordApplicationEvents.class);
-			if (!record) {
-				return NO_AUTOWIRED_VIOLATIONS_DETECTED;
-			}
-			final TestInstance testInstance = TestContextAnnotationUtils.findMergedAnnotation(testClass, TestInstance.class);
-
-			if (testInstance == null || testInstance.value() != TestInstance.Lifecycle.PER_CLASS) {
-				return NO_AUTOWIRED_VIOLATIONS_DETECTED;
-			}
-
-			final Execution execution = TestContextAnnotationUtils.findMergedAnnotation(testClass, Execution.class);
-
-			if (execution == null || execution.value() != ExecutionMode.CONCURRENT) {
-				return NO_AUTOWIRED_VIOLATIONS_DETECTED;
-			}
-
-			return "Test classes or inner classes that @RecordApplicationEvents must not be run in parallel "
-					+ "with the @TestInstance(Lifecycle.PER_CLASS) configuration. Use either @Execution(SAME_THREAD), "
-					+ "@TestInstance(PER_METHOD) or disable parallel execution altogether. Note that when recording "
-					+ "events in parallel, one might see events published by other tests as the application context "
-					+ "can be common.";
-		}, String.class);
-
-		if (errorMessage != NO_AUTOWIRED_VIOLATIONS_DETECTED) {
-			throw new IllegalStateException(errorMessage);
-		}
+		TestContextManager testContextManager = getTestContextManager(context);
+		registerMethodInvoker(testContextManager, context);
+		testContextManager.prepareTestInstance(testInstance);
 	}
 
 	/**
@@ -206,7 +173,7 @@ public class SpringExtension implements BeforeAllCallback, AfterAllCallback, Tes
 		String errorMessage = store.getOrComputeIfAbsent(context.getRequiredTestClass(), testClass -> {
 				Method[] methodsWithErrors =
 						ReflectionUtils.getUniqueDeclaredMethods(testClass, autowiredTestOrLifecycleMethodFilter);
-				return (methodsWithErrors.length == 0 ? NO_AUTOWIRED_VIOLATIONS_DETECTED :
+				return (methodsWithErrors.length == 0 ? NO_VIOLATIONS_DETECTED :
 						String.format(
 								"Test methods and test lifecycle methods must not be annotated with @Autowired. " +
 								"You should instead annotate individual method parameters with @Autowired, " +
@@ -214,7 +181,46 @@ public class SpringExtension implements BeforeAllCallback, AfterAllCallback, Tes
 								testClass.getName(), Arrays.toString(methodsWithErrors)));
 			}, String.class);
 
-		if (errorMessage != NO_AUTOWIRED_VIOLATIONS_DETECTED) {
+		if (!errorMessage.isEmpty()) {
+			throw new IllegalStateException(errorMessage);
+		}
+	}
+
+	/**
+	 * Validate that the test class or its enclosing class doesn't attempt to record
+	 * application events in a parallel mode that makes it non-deterministic
+	 * ({@code @TestInstance(PER_CLASS)} and {@code @Execution(CONCURRENT)}
+	 * combination).
+	 * @since 6.1
+	 */
+	private void validateRecordApplicationEventsConfig(ExtensionContext context) {
+		// We save the result in the ExtensionContext.Store so that we don't
+		// re-validate the configuration for the same test class multiple times.
+		Store store = context.getStore(RECORD_APPLICATION_EVENTS_VALIDATION_NAMESPACE);
+
+		String errorMessage = store.getOrComputeIfAbsent(context.getRequiredTestClass(), testClass -> {
+			boolean recording = TestContextAnnotationUtils.hasAnnotation(testClass, RecordApplicationEvents.class);
+			if (!recording) {
+				return NO_VIOLATIONS_DETECTED;
+			}
+
+			if (context.getTestInstanceLifecycle().orElse(Lifecycle.PER_METHOD) == Lifecycle.PER_METHOD) {
+				return NO_VIOLATIONS_DETECTED;
+			}
+
+			if (context.getExecutionMode() == ExecutionMode.SAME_THREAD) {
+				return NO_VIOLATIONS_DETECTED;
+			}
+
+			return """
+					Test classes or @Nested test classes that @RecordApplicationEvents must not be run \
+					in parallel with the @TestInstance(PER_CLASS) lifecycle mode. Configure either \
+					@Execution(SAME_THREAD) or @TestInstance(PER_METHOD) semantics, or disable parallel \
+					execution altogether. Note that when recording events in parallel, one might see events \
+					published by other tests since the application context may be shared.""";
+		}, String.class);
+
+		if (!errorMessage.isEmpty()) {
 			throw new IllegalStateException(errorMessage);
 		}
 	}
@@ -226,7 +232,9 @@ public class SpringExtension implements BeforeAllCallback, AfterAllCallback, Tes
 	public void beforeEach(ExtensionContext context) throws Exception {
 		Object testInstance = context.getRequiredTestInstance();
 		Method testMethod = context.getRequiredTestMethod();
-		getTestContextManager(context).beforeTestMethod(testInstance, testMethod);
+		TestContextManager testContextManager = getTestContextManager(context);
+		registerMethodInvoker(testContextManager, context);
+		testContextManager.beforeTestMethod(testInstance, testMethod);
 	}
 
 	/**
@@ -236,7 +244,9 @@ public class SpringExtension implements BeforeAllCallback, AfterAllCallback, Tes
 	public void beforeTestExecution(ExtensionContext context) throws Exception {
 		Object testInstance = context.getRequiredTestInstance();
 		Method testMethod = context.getRequiredTestMethod();
-		getTestContextManager(context).beforeTestExecution(testInstance, testMethod);
+		TestContextManager testContextManager = getTestContextManager(context);
+		registerMethodInvoker(testContextManager, context);
+		testContextManager.beforeTestExecution(testInstance, testMethod);
 	}
 
 	/**
@@ -247,7 +257,9 @@ public class SpringExtension implements BeforeAllCallback, AfterAllCallback, Tes
 		Object testInstance = context.getRequiredTestInstance();
 		Method testMethod = context.getRequiredTestMethod();
 		Throwable testException = context.getExecutionException().orElse(null);
-		getTestContextManager(context).afterTestExecution(testInstance, testMethod, testException);
+		TestContextManager testContextManager = getTestContextManager(context);
+		registerMethodInvoker(testContextManager, context);
+		testContextManager.afterTestExecution(testInstance, testMethod, testException);
 	}
 
 	/**
@@ -258,7 +270,9 @@ public class SpringExtension implements BeforeAllCallback, AfterAllCallback, Tes
 		Object testInstance = context.getRequiredTestInstance();
 		Method testMethod = context.getRequiredTestMethod();
 		Throwable testException = context.getExecutionException().orElse(null);
-		getTestContextManager(context).afterTestMethod(testInstance, testMethod, testException);
+		TestContextManager testContextManager = getTestContextManager(context);
+		registerMethodInvoker(testContextManager, context);
+		testContextManager.afterTestMethod(testInstance, testMethod, testException);
 	}
 
 	/**
@@ -316,8 +330,7 @@ public class SpringExtension implements BeforeAllCallback, AfterAllCallback, Tes
 	 * @see ParameterResolutionDelegate#resolveDependency
 	 */
 	@Override
-	@Nullable
-	public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
+	public @Nullable Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
 		Parameter parameter = parameterContext.getParameter();
 		int index = parameterContext.getIndex();
 		Class<?> testClass = extensionContext.getRequiredTestClass();
@@ -351,6 +364,18 @@ public class SpringExtension implements BeforeAllCallback, AfterAllCallback, Tes
 
 	private static Store getStore(ExtensionContext context) {
 		return context.getRoot().getStore(TEST_CONTEXT_MANAGER_NAMESPACE);
+	}
+
+	/**
+	 * Register a {@link MethodInvoker} adaptor for Jupiter's
+	 * {@link org.junit.jupiter.api.extension.ExecutableInvoker ExecutableInvoker}
+	 * in the {@link org.springframework.test.context.TestContext TestContext} for
+	 * the supplied {@link TestContextManager}.
+	 * @since 6.1
+	 */
+	@SuppressWarnings("NullAway") // org.junit.jupiter.api.extension.ExecutableInvoker is not null marked
+	private static void registerMethodInvoker(TestContextManager testContextManager, ExtensionContext context) {
+		testContextManager.getTestContext().setMethodInvoker(context.getExecutableInvoker()::invoke);
 	}
 
 	private static boolean isAutowiredTestOrLifecycleMethod(Method method) {

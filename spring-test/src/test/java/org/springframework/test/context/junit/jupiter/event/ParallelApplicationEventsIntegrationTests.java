@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2023 the original author or authors.
+ * Copyright 2002-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,14 +26,11 @@ import java.util.stream.Stream;
 
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.awaitility.Awaitility;
-import org.awaitility.Durations;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.platform.engine.TestExecutionResult;
 import org.junit.platform.testkit.engine.EngineExecutionResults;
 import org.junit.platform.testkit.engine.EngineTestKit;
@@ -68,28 +65,27 @@ class ParallelApplicationEventsIntegrationTests {
 	void rejectTestsInParallelWithInstancePerClassAndRecordApplicationEvents() {
 		Class<?> testClass = TestInstancePerClassTestCase.class;
 
-		final EngineExecutionResults results = EngineTestKit.engine("junit-jupiter")//
+		EngineExecutionResults results = EngineTestKit.engine("junit-jupiter")//
 				.selectors(selectClass(testClass))//
 				.configurationParameter("junit.jupiter.execution.parallel.enabled", "true")//
+				.configurationParameter("junit.jupiter.execution.parallel.mode.default", "concurrent")//
 				.configurationParameter("junit.jupiter.execution.parallel.config.dynamic.factor", "10")//
 				.execute();
 
-		//extract the messages from failed TextExecutionResults
+		// extract the messages from failed TextExecutionResults
 		assertThat(results.containerEvents().failed()//
-				.stream().map(e -> e.getRequiredPayload(TestExecutionResult.class)//
-				.getThrowable().get().getMessage()))//
+					.map(e -> e.getRequiredPayload(TestExecutionResult.class).getThrowable().get().getMessage()))//
 				.singleElement(InstanceOfAssertFactories.STRING)
-				.isEqualToIgnoringNewLines("""
-		Test classes or inner classes that @RecordApplicationEvents\s
-		must not be run in parallel with the @TestInstance(Lifecycle.PER_CLASS) configuration.\s
-		Use either @Execution(SAME_THREAD), @TestInstance(PER_METHOD) or disable parallel\s
-		execution altogether. Note that when recording events in parallel, one might see events\s
-		published by other tests as the application context can be common.
-		""");
+				.isEqualTo("""
+					Test classes or @Nested test classes that @RecordApplicationEvents must not be run \
+					in parallel with the @TestInstance(PER_CLASS) lifecycle mode. Configure either \
+					@Execution(SAME_THREAD) or @TestInstance(PER_METHOD) semantics, or disable parallel \
+					execution altogether. Note that when recording events in parallel, one might see events \
+					published by other tests since the application context may be shared.""");
 	}
 
 	@Test
-	void executeTestsInParallelInstancePerMethod() {
+	void executeTestsInParallelWithInstancePerMethod() {
 		Class<?> testClass = TestInstancePerMethodTestCase.class;
 		Events testEvents = EngineTestKit.engine("junit-jupiter")//
 				.selectors(selectClass(testClass))//
@@ -97,7 +93,7 @@ class ParallelApplicationEventsIntegrationTests {
 				.configurationParameter("junit.jupiter.execution.parallel.config.dynamic.factor", "10")//
 				.execute()//
 				.testEvents();
-		//list failed events in case of test errors to get a sense of which tests failed
+		// list failed events in case of test errors to get a sense of which tests failed
 		Events failedTests = testEvents.failed();
 		if (failedTests.count() > 0) {
 			failedTests.debug();
@@ -141,7 +137,6 @@ class ParallelApplicationEventsIntegrationTests {
 
 	@SpringJUnitConfig
 	@RecordApplicationEvents
-	@Execution(ExecutionMode.CONCURRENT)
 	@TestInstance(Lifecycle.PER_METHOD)
 	static class TestInstancePerMethodTestCase {
 
@@ -211,7 +206,7 @@ class ParallelApplicationEventsIntegrationTests {
 
 		@Test
 		void asyncPublication(ApplicationEvents events) throws InterruptedException {
-			final ExecutorService executorService = Executors.newSingleThreadExecutor();
+			ExecutorService executorService = Executors.newSingleThreadExecutor();
 			executorService.execute(() -> this.context.publishEvent("asyncPublication"));
 			executorService.shutdown();
 			executorService.awaitTermination(10, TimeUnit.SECONDS);
@@ -225,7 +220,7 @@ class ParallelApplicationEventsIntegrationTests {
 		void asyncConsumption() {
 			this.context.publishEvent("asyncConsumption");
 
-			Awaitility.await().atMost(Durations.ONE_SECOND).untilAsserted(() ->//
+			Awaitility.await().atMost(5, TimeUnit.SECONDS).untilAsserted(() ->//
 					assertThat(ApplicationEventsHolder//
 							.getRequiredApplicationEvents()//
 							.stream()//

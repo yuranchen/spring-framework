@@ -19,9 +19,11 @@ package org.springframework.test.context.aot;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import org.jspecify.annotations.Nullable;
+
+import org.springframework.aot.AotDetector;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.lang.Nullable;
 
 /**
  * Factory for {@link AotTestContextInitializers}.
@@ -31,11 +33,9 @@ import org.springframework.lang.Nullable;
  */
 final class AotTestContextInitializersFactory {
 
-	@Nullable
-	private static volatile Map<String, Supplier<ApplicationContextInitializer<ConfigurableApplicationContext>>> contextInitializers;
+	private static volatile @Nullable Map<String, Supplier<ApplicationContextInitializer<ConfigurableApplicationContext>>> contextInitializers;
 
-	@Nullable
-	private static volatile Map<String, Class<ApplicationContextInitializer<?>>> contextInitializerClasses;
+	private static volatile @Nullable Map<String, Class<ApplicationContextInitializer<?>>> contextInitializerClasses;
 
 
 	private AotTestContextInitializersFactory() {
@@ -44,7 +44,7 @@ final class AotTestContextInitializersFactory {
 	/**
 	 * Get the underlying map.
 	 * <p>If the map is not already loaded, this method loads the map from the
-	 * generated class when running in {@linkplain TestAotDetector#useGeneratedArtifacts()
+	 * generated class when running in {@linkplain AotDetector#useGeneratedArtifacts()
 	 * AOT execution mode} and otherwise creates an immutable, empty map.
 	 */
 	static Map<String, Supplier<ApplicationContextInitializer<ConfigurableApplicationContext>>> getContextInitializers() {
@@ -53,7 +53,7 @@ final class AotTestContextInitializersFactory {
 			synchronized (AotTestContextInitializersFactory.class) {
 				initializers = contextInitializers;
 				if (initializers == null) {
-					initializers = (TestAotDetector.useGeneratedArtifacts() ? loadContextInitializersMap() : Map.of());
+					initializers = (AotDetector.useGeneratedArtifacts() ? loadContextInitializersMap() : Map.of());
 					contextInitializers = initializers;
 				}
 			}
@@ -67,7 +67,7 @@ final class AotTestContextInitializersFactory {
 			synchronized (AotTestContextInitializersFactory.class) {
 				initializerClasses = contextInitializerClasses;
 				if (initializerClasses == null) {
-					initializerClasses = (TestAotDetector.useGeneratedArtifacts() ? loadContextInitializerClassesMap() : Map.of());
+					initializerClasses = (AotDetector.useGeneratedArtifacts() ? loadContextInitializerClassesMap() : Map.of());
 					contextInitializerClasses = initializerClasses;
 				}
 			}
