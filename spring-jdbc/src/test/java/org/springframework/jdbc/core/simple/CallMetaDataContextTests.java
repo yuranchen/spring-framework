@@ -69,7 +69,7 @@ class CallMetaDataContextTests {
 
 
 	@Test
-	void testMatchParameterValuesAndSqlInOutParameters() throws Exception {
+	void matchParameterValuesAndSqlInOutParameters() throws Exception {
 		final String TABLE = "customers";
 		final String USER = "me";
 		given(databaseMetaData.getDatabaseProductName()).willReturn("MyDB");

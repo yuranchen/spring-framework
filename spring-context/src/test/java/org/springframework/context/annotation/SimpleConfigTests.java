@@ -34,7 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class SimpleConfigTests {
 
 	@Test
-	void testFooService() throws Exception {
+	void fooService() throws Exception {
 		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(getConfigLocations(), getClass());
 
 		FooService fooService = ctx.getBean("fooServiceImpl", FooService.class);

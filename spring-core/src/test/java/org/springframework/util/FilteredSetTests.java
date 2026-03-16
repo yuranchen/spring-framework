@@ -29,7 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class FilteredSetTests {
 
 	@Test
-	void testEquals() {
+	void equals() {
 		Set<String> set = Set.of("foo", "bar", "baz");
 		FilteredSet<String> filtered = new FilteredSet<>(set, s -> !s.equals("bar"));
 

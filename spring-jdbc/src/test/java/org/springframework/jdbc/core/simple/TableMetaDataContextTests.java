@@ -63,7 +63,7 @@ class TableMetaDataContextTests {
 
 
 	@Test
-	void testMatchInParametersAndSqlTypeInfoWrapping() throws Exception {
+	void matchInParametersAndSqlTypeInfoWrapping() throws Exception {
 		final String TABLE = "customers";
 		final String USER = "me";
 
@@ -119,7 +119,7 @@ class TableMetaDataContextTests {
 	}
 
 	@Test
-	void testTableWithSingleColumnGeneratedKey() throws Exception {
+	void tableWithSingleColumnGeneratedKey() throws Exception {
 		final String TABLE = "customers";
 		final String USER = "me";
 

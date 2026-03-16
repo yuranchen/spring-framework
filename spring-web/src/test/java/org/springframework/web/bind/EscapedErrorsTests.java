@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class EscapedErrorsTests {
 
 	@Test
-	void testEscapedErrors() {
+	void escapedErrors() {
 		TestBean tb = new TestBean();
 		tb.setName("empty &");
 

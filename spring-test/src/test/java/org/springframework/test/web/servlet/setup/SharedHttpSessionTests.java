@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.setup.SharedHttpSessionConfig
 public class SharedHttpSessionTests {
 
 	@Test
-	public void httpSession() throws Exception {
+	void httpSession() throws Exception {
 		MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new TestController())
 				.apply(sharedHttpSession())
 				.build();
@@ -61,7 +61,7 @@ public class SharedHttpSessionTests {
 	}
 
 	@Test
-	public void noHttpSession() throws Exception {
+	void noHttpSession() throws Exception {
 		MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new TestController())
 				.apply(sharedHttpSession())
 				.build();

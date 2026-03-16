@@ -177,7 +177,7 @@ public abstract class AbstractDataBufferAllocatingTests {
 	public @interface ParameterizedDataBufferAllocatingTest {
 	}
 
-	public static Stream<Arguments> dataBufferFactories() {
+	static Stream<Arguments> dataBufferFactories() {
 		return Stream.of(
 			// Netty 4
 			argumentSet("NettyDataBufferFactory - UnpooledByteBufAllocator - preferDirect = true",

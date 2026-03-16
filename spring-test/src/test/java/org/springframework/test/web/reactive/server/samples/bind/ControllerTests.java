@@ -41,7 +41,7 @@ public class ControllerTests {
 
 
 	@Test
-	public void test() throws Exception {
+	void test() throws Exception {
 		this.client.get().uri("/test")
 				.exchange()
 				.expectStatus().isOk()

@@ -60,7 +60,7 @@ public class MultipartRequestMatchersTests {
 
 
 	@Test
-	public void testContains() throws Exception {
+	void contains() throws Exception {
 		this.input.add("foo", "bar");
 		this.input.add("foo", "baz");
 		this.input.add("lorem", "ipsum");
@@ -71,7 +71,7 @@ public class MultipartRequestMatchersTests {
 	}
 
 	@Test
-	public void testDoesNotContain() {
+	void doesNotContain() {
 		this.input.add("foo", "bar");
 		this.input.add("foo", "baz");
 		this.input.add("lorem", "ipsum");
@@ -82,7 +82,7 @@ public class MultipartRequestMatchersTests {
 	}
 
 	@Test
-	public void testParamsMatch() throws Exception {
+	void paramsMatch() throws Exception {
 		this.input.add("foo", "value 1");
 		this.input.add("bar", "value A");
 		this.input.add("baz", "value B");
@@ -93,7 +93,7 @@ public class MultipartRequestMatchersTests {
 	}
 
 	@Test
-	public void testResourceMatch() throws Exception {
+	void resourceMatch() throws Exception {
 		MultipartFile f1 = new MockMultipartFile("f1", "foo.txt", "text/plain", "Foo Lorem ipsum".getBytes());
 		MultipartFile f2 = new MockMultipartFile("f2", "bar.txt", "text/plain", "Bar Lorem ipsum".getBytes());
 		MultipartFile f3 = new MockMultipartFile("f3", "foobar.txt", "text/plain", "Foobar Lorem ipsum".getBytes());
@@ -110,7 +110,7 @@ public class MultipartRequestMatchersTests {
 	}
 
 	@Test
-	public void testResourceNoMatch() {
+	void resourceNoMatch() {
 		MockMultipartFile foo = new MockMultipartFile("f1", "foo.txt", "text/plain", "Foo Lorem ipsum".getBytes());
 		MockMultipartFile bar = new MockMultipartFile("f2", "bar.txt", "text/plain", "Bar Lorem ipsum".getBytes());
 
@@ -126,7 +126,7 @@ public class MultipartRequestMatchersTests {
 	}
 
 	@Test
-	public void testByteArrayMatch() throws Exception {
+	void byteArrayMatch() throws Exception {
 		MultipartFile f1 = new MockMultipartFile("f1", "foo.txt", "text/plain", "Foo Lorem ipsum".getBytes());
 		MultipartFile f2 = new MockMultipartFile("f2", "bar.txt", "text/plain", "Bar Lorem ipsum".getBytes());
 		MultipartFile f3 = new MockMultipartFile("f3", "foobar.txt", "text/plain", "Foobar Lorem ipsum".getBytes());
@@ -146,7 +146,7 @@ public class MultipartRequestMatchersTests {
 	}
 
 	@Test
-	public void testByteArrayNoMatch() throws Exception {
+	void byteArrayNoMatch() throws Exception {
 		MultipartFile f1 = new MockMultipartFile("f1", "foo.txt", "text/plain", "Foo Lorem ipsum".getBytes());
 		MultipartFile f2 = new MockMultipartFile("f2", "bar.txt", "text/plain", "Bar Lorem ipsum".getBytes());
 
@@ -162,7 +162,7 @@ public class MultipartRequestMatchersTests {
 	}
 
 	@Test // gh-36154
-	public void testHttpEntityMatch() throws Exception {
+	void httpEntityMatch() throws Exception {
 		String contentType = "text/plain";
 		MultipartFile file = new MockMultipartFile("file", "foo.txt", contentType, "Foo Lorem ipsum".getBytes());
 

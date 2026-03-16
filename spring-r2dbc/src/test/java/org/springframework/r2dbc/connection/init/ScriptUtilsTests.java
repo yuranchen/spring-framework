@@ -90,7 +90,7 @@ class ScriptUtilsTests {
 	}
 
 	@Test  // SPR-13218
-	public void splitScriptWithSingleQuotesNestedInsideDoubleQuotes() {
+	void splitScriptWithSingleQuotesNestedInsideDoubleQuotes() {
 		String statement1 = "select '1' as \"Dogbert's owner's\" from dual";
 		String statement2 = "select '2' as \"Dilbert's\" from dual";
 
@@ -103,7 +103,7 @@ class ScriptUtilsTests {
 	}
 
 	@Test  // SPR-11560
-	public void readAndSplitScriptWithMultipleNewlinesAsSeparator() {
+	void readAndSplitScriptWithMultipleNewlinesAsSeparator() {
 		String script = readScript("db-test-data-multi-newline.sql");
 		List<String> statements = splitSqlScript(script, "\n\n");
 
@@ -145,7 +145,7 @@ class ScriptUtilsTests {
 	}
 
 	@Test  // SPR-10330
-	public void readAndSplitScriptContainingCommentsWithLeadingTabs() {
+	void readAndSplitScriptContainingCommentsWithLeadingTabs() {
 		String script = readScript("test-data-with-comments-and-leading-tabs.sql");
 		List<String> statements = splitSqlScript(script, ";");
 
@@ -157,7 +157,7 @@ class ScriptUtilsTests {
 	}
 
 	@Test  // SPR-9531
-	public void readAndSplitScriptContainingMultiLineComments() {
+	void readAndSplitScriptContainingMultiLineComments() {
 		String script = readScript("test-data-with-multi-line-comments.sql");
 		List<String> statements = splitSqlScript(script, ";");
 

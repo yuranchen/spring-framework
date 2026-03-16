@@ -196,7 +196,7 @@ class RedirectViewTests {
 	}
 
 	@Test // SPR-13693
-	public void remoteHost() {
+	void remoteHost() {
 		RedirectView rv = new RedirectView();
 
 		assertThat(rv.isRemoteHost("https://url.somewhere.com")).isFalse();
@@ -211,7 +211,7 @@ class RedirectViewTests {
 	}
 
 	@Test // SPR-16752
-	public void contextRelativeWithValidatedContextPath() throws Exception {
+	void contextRelativeWithValidatedContextPath() throws Exception {
 		String url = "/myUrl";
 
 		this.request.setContextPath("//context");

@@ -263,7 +263,7 @@ class WebMvcConfigurationSupportExtensionTests {
 	}
 
 	@Test
-	public void contentNegotiation() throws Exception {
+	void contentNegotiation() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/foo");
 		NativeWebRequest webRequest = new ServletWebRequest(request);
 

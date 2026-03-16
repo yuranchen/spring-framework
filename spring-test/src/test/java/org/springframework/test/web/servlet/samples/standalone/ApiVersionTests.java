@@ -44,7 +44,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 public class ApiVersionTests {
 
 	@Test
-	public void queryParameter() throws Exception {
+	void queryParameter() throws Exception {
 
 		String header = "API-Version";
 

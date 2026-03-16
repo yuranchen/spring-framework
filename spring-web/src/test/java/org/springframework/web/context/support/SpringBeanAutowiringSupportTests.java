@@ -35,7 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class SpringBeanAutowiringSupportTests {
 
 	@Test
-	void testProcessInjectionBasedOnServletContext() {
+	void processInjectionBasedOnServletContext() {
 		StaticWebApplicationContext wac = new StaticWebApplicationContext();
 		AnnotationConfigUtils.registerAnnotationConfigProcessors(wac);
 

@@ -345,7 +345,7 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 	}
 
 	@Test  // SPR-14435
-	public void setFactory() {
+	void setFactory() {
 		this.factory.setFactory(new SmileFactory());
 		this.factory.afterPropertiesSet();
 

@@ -112,7 +112,7 @@ public class SimpAnnotationMethodMessageHandlerTests {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void headerArgumentResolution() {
+	void headerArgumentResolution() {
 		Map<String, Object> headers = Collections.singletonMap("foo", "bar");
 		Message<?> message = createMessage("/pre/headers", headers);
 		this.messageHandler.registerHandler(this.testController);
@@ -275,7 +275,7 @@ public class SimpAnnotationMethodMessageHandlerTests {
 
 	@Test
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void completableFutureSuccess() {
+	void completableFutureSuccess() {
 		Message emptyMessage = MessageBuilder.withPayload(new byte[0]).build();
 		given(this.channel.send(any(Message.class))).willReturn(true);
 		given(this.converter.toMessage(any(), any(MessageHeaders.class))).willReturn(emptyMessage);
@@ -308,7 +308,7 @@ public class SimpAnnotationMethodMessageHandlerTests {
 
 	@Test
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void monoSuccess() {
+	void monoSuccess() {
 		Message emptyMessage = MessageBuilder.withPayload(new byte[0]).build();
 		given(this.channel.send(any(Message.class))).willReturn(true);
 		given(this.converter.toMessage(any(), any(MessageHeaders.class))).willReturn(emptyMessage);

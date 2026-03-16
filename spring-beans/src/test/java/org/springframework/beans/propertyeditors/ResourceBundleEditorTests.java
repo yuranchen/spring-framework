@@ -37,7 +37,7 @@ class ResourceBundleEditorTests {
 
 
 	@Test
-	void testSetAsTextWithJustBaseName() {
+	void setAsTextWithJustBaseName() {
 		ResourceBundleEditor editor = new ResourceBundleEditor();
 		editor.setAsText(BASE_NAME);
 		Object value = editor.getValue();
@@ -49,7 +49,7 @@ class ResourceBundleEditorTests {
 	}
 
 	@Test
-	void testSetAsTextWithBaseNameThatEndsInDefaultSeparator() {
+	void setAsTextWithBaseNameThatEndsInDefaultSeparator() {
 		ResourceBundleEditor editor = new ResourceBundleEditor();
 		editor.setAsText(BASE_NAME + "_");
 		Object value = editor.getValue();
@@ -61,7 +61,7 @@ class ResourceBundleEditorTests {
 	}
 
 	@Test
-	void testSetAsTextWithBaseNameAndLanguageCode() {
+	void setAsTextWithBaseNameAndLanguageCode() {
 		ResourceBundleEditor editor = new ResourceBundleEditor();
 		editor.setAsText(BASE_NAME + "Lang" + "_en");
 		Object value = editor.getValue();
@@ -73,7 +73,7 @@ class ResourceBundleEditorTests {
 	}
 
 	@Test
-	void testSetAsTextWithBaseNameLanguageAndCountryCode() {
+	void setAsTextWithBaseNameLanguageAndCountryCode() {
 		ResourceBundleEditor editor = new ResourceBundleEditor();
 		editor.setAsText(BASE_NAME + "LangCountry" + "_en_GB");
 		Object value = editor.getValue();
@@ -85,7 +85,7 @@ class ResourceBundleEditorTests {
 	}
 
 	@Test
-	void testSetAsTextWithTheKitchenSink() {
+	void setAsTextWithTheKitchenSink() {
 		ResourceBundleEditor editor = new ResourceBundleEditor();
 		editor.setAsText(BASE_NAME + "LangCountryDialect" + "_en_GB_GLASGOW");
 		Object value = editor.getValue();
@@ -97,28 +97,28 @@ class ResourceBundleEditorTests {
 	}
 
 	@Test
-	void testSetAsTextWithNull() {
+	void setAsTextWithNull() {
 		ResourceBundleEditor editor = new ResourceBundleEditor();
 		assertThatIllegalArgumentException().isThrownBy(() ->
 				editor.setAsText(null));
 	}
 
 	@Test
-	void testSetAsTextWithEmptyString() {
+	void setAsTextWithEmptyString() {
 		ResourceBundleEditor editor = new ResourceBundleEditor();
 		assertThatIllegalArgumentException().isThrownBy(() ->
 				editor.setAsText(""));
 	}
 
 	@Test
-	void testSetAsTextWithWhiteSpaceString() {
+	void setAsTextWithWhiteSpaceString() {
 		ResourceBundleEditor editor = new ResourceBundleEditor();
 		assertThatIllegalArgumentException().isThrownBy(() ->
 				editor.setAsText("   "));
 	}
 
 	@Test
-	void testSetAsTextWithJustSeparatorString() {
+	void setAsTextWithJustSeparatorString() {
 		ResourceBundleEditor editor = new ResourceBundleEditor();
 		assertThatIllegalArgumentException().isThrownBy(() ->
 				editor.setAsText("_"));

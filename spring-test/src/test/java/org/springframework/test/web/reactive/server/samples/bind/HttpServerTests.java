@@ -64,7 +64,7 @@ public class HttpServerTests {
 
 
 	@Test
-	public void test() {
+	void test() {
 		this.client.get().uri("/test")
 				.exchange()
 				.expectStatus().isOk()

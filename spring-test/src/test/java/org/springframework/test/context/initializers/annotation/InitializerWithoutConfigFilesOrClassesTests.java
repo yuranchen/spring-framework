@@ -43,7 +43,7 @@ public class InitializerWithoutConfigFilesOrClassesTests {
 
 
 	@Test
-	public void foo() {
+	void foo() {
 		assertThat(foo).isEqualTo("foo");
 	}
 

@@ -371,7 +371,7 @@ class RequestParamMethodArgumentResolverTests {
 	}
 
 	@Test  // SPR-9079
-	public void isMultipartRequestHttpPut() throws Exception {
+	void isMultipartRequestHttpPut() throws Exception {
 		MockMultipartHttpServletRequest request = new MockMultipartHttpServletRequest();
 		MultipartFile expected = new MockMultipartFile("multipartFileList", "Hello World".getBytes());
 		request.addFile(expected);
@@ -431,7 +431,7 @@ class RequestParamMethodArgumentResolverTests {
 	}
 
 	@Test  // SPR-10578
-	public void missingRequestParamEmptyValueConvertedToNull() throws Exception {
+	void missingRequestParamEmptyValueConvertedToNull() throws Exception {
 		WebDataBinder binder = new WebRequestDataBinder(null);
 		binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
 
@@ -445,7 +445,7 @@ class RequestParamMethodArgumentResolverTests {
 	}
 
 	@Test  // gh-31336
-	public void missingRequestParamAfterConversionWithDefaultValue() throws Exception {
+	void missingRequestParamAfterConversionWithDefaultValue() throws Exception {
 		WebDataBinder binder = new WebRequestDataBinder(null);
 
 		WebDataBinderFactory binderFactory = mock();
@@ -472,7 +472,7 @@ class RequestParamMethodArgumentResolverTests {
 	}
 
 	@Test  // gh-29550
-	public void missingRequestParamEmptyValueNotRequiredWithDefaultValue() throws Exception {
+	void missingRequestParamEmptyValueNotRequiredWithDefaultValue() throws Exception {
 		WebDataBinder binder = new WebRequestDataBinder(null);
 		binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
 
@@ -494,14 +494,14 @@ class RequestParamMethodArgumentResolverTests {
 	}
 
 	@Test  // SPR-8561
-	public void resolveSimpleTypeParamToNull() throws Exception {
+	void resolveSimpleTypeParamToNull() throws Exception {
 		MethodParameter param = this.testMethod.annotNotPresent(RequestParam.class).arg(String.class);
 		Object result = resolver.resolveArgument(param, null, webRequest, null);
 		assertThat(result).isNull();
 	}
 
 	@Test  // SPR-10180
-	public void resolveEmptyValueToDefault() throws Exception {
+	void resolveEmptyValueToDefault() throws Exception {
 		request.addParameter("name", "");
 		MethodParameter param = this.testMethod.annot(requestParam().notRequired("bar")).arg(String.class);
 		Object result = resolver.resolveArgument(param, null, webRequest, null);
@@ -526,7 +526,7 @@ class RequestParamMethodArgumentResolverTests {
 
 	@Test
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void resolveOptionalParamValue() throws Exception {
+	void resolveOptionalParamValue() throws Exception {
 		ConfigurableWebBindingInitializer initializer = new ConfigurableWebBindingInitializer();
 		initializer.setConversionService(new DefaultConversionService());
 		WebDataBinderFactory binderFactory = new DefaultDataBinderFactory(initializer);
@@ -543,7 +543,7 @@ class RequestParamMethodArgumentResolverTests {
 
 	@Test
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void missingOptionalParamValue() throws Exception {
+	void missingOptionalParamValue() throws Exception {
 		ConfigurableWebBindingInitializer initializer = new ConfigurableWebBindingInitializer();
 		initializer.setConversionService(new DefaultConversionService());
 		WebDataBinderFactory binderFactory = new DefaultDataBinderFactory(initializer);
@@ -559,7 +559,7 @@ class RequestParamMethodArgumentResolverTests {
 
 	@Test
 	@SuppressWarnings("rawtypes")
-	public void resolveOptionalParamArray() throws Exception {
+	void resolveOptionalParamArray() throws Exception {
 		ConfigurableWebBindingInitializer initializer = new ConfigurableWebBindingInitializer();
 		initializer.setConversionService(new DefaultConversionService());
 		WebDataBinderFactory binderFactory = new DefaultDataBinderFactory(initializer);
@@ -576,7 +576,7 @@ class RequestParamMethodArgumentResolverTests {
 
 	@Test
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void missingOptionalParamArray() throws Exception {
+	void missingOptionalParamArray() throws Exception {
 		ConfigurableWebBindingInitializer initializer = new ConfigurableWebBindingInitializer();
 		initializer.setConversionService(new DefaultConversionService());
 		WebDataBinderFactory binderFactory = new DefaultDataBinderFactory(initializer);
@@ -592,7 +592,7 @@ class RequestParamMethodArgumentResolverTests {
 
 	@Test
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void resolveOptionalParamList() throws Exception {
+	void resolveOptionalParamList() throws Exception {
 		ConfigurableWebBindingInitializer initializer = new ConfigurableWebBindingInitializer();
 		initializer.setConversionService(new DefaultConversionService());
 		WebDataBinderFactory binderFactory = new DefaultDataBinderFactory(initializer);
@@ -609,7 +609,7 @@ class RequestParamMethodArgumentResolverTests {
 
 	@Test
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void missingOptionalParamList() throws Exception {
+	void missingOptionalParamList() throws Exception {
 		ConfigurableWebBindingInitializer initializer = new ConfigurableWebBindingInitializer();
 		initializer.setConversionService(new DefaultConversionService());
 		WebDataBinderFactory binderFactory = new DefaultDataBinderFactory(initializer);

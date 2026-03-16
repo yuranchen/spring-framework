@@ -42,7 +42,7 @@ class ServiceLoaderTests {
 	}
 
 	@Test
-	void testServiceLoaderFactoryBean() {
+	void serviceLoaderFactoryBean() {
 		DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
 		RootBeanDefinition bd = new RootBeanDefinition(ServiceLoaderFactoryBean.class);
 		bd.getPropertyValues().add("serviceType", DocumentBuilderFactory.class.getName());
@@ -52,7 +52,7 @@ class ServiceLoaderTests {
 	}
 
 	@Test
-	void testServiceFactoryBean() {
+	void serviceFactoryBean() {
 		DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
 		RootBeanDefinition bd = new RootBeanDefinition(ServiceFactoryBean.class);
 		bd.getPropertyValues().add("serviceType", DocumentBuilderFactory.class.getName());
@@ -61,7 +61,7 @@ class ServiceLoaderTests {
 	}
 
 	@Test
-	void testServiceListFactoryBean() {
+	void serviceListFactoryBean() {
 		DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
 		RootBeanDefinition bd = new RootBeanDefinition(ServiceListFactoryBean.class);
 		bd.getPropertyValues().add("serviceType", DocumentBuilderFactory.class.getName());

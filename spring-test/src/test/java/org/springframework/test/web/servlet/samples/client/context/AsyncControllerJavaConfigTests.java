@@ -74,7 +74,7 @@ public class AsyncControllerJavaConfigTests {
 	}
 
 	@Test
-	public void callableInterceptor() throws Exception {
+	void callableInterceptor() throws Exception {
 		testClient.get().uri("/callable")
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()

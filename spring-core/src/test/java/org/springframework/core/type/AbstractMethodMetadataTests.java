@@ -189,7 +189,7 @@ public abstract class AbstractMethodMetadataTests {
 	}
 
 	@Test // gh-24375
-	public void metadataLoadsForNestedAnnotations() {
+	void metadataLoadsForNestedAnnotations() {
 		AnnotationMetadata annotationMetadata = get(AnnotatedComponent.class);
 		assertThat(annotationMetadata.getAnnotationTypes()).containsExactly(EnclosingAnnotation.class.getName());
 	}

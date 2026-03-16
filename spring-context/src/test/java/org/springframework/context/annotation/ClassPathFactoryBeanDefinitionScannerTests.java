@@ -43,7 +43,7 @@ class ClassPathFactoryBeanDefinitionScannerTests {
 
 
 	@Test
-	void testSingletonScopedFactoryMethod() {
+	void singletonScopedFactoryMethod() {
 		GenericApplicationContext context = new GenericApplicationContext();
 		ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(context);
 

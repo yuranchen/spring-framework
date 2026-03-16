@@ -72,12 +72,12 @@ public class XmlContentAssertionTests {
 	}
 
 	@Test
-	public void testXmlEqualTo() throws Exception {
+	void xmlEqualTo() throws Exception {
 		this.mockMvc.perform(get("/music/people")).andExpect(content().xml(PEOPLE_XML));
 	}
 
 	@Test
-	public void testNodeHamcrestMatcher() throws Exception {
+	void nodeHamcrestMatcher() throws Exception {
 		this.mockMvc.perform(get("/music/people"))
 			.andExpect(content().node(hasXPath("/people/composers/composer[1]")));
 	}

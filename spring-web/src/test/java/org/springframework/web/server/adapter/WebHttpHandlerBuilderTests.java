@@ -339,7 +339,7 @@ class WebHttpHandlerBuilderTests {
 	static class ObservationConfig {
 
 		@Bean
-		public TestObservationRegistry testObservationRegistry() {
+		public TestObservationRegistry observationRegistry() {
 			return TestObservationRegistry.create();
 		}
 

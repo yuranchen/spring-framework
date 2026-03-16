@@ -33,7 +33,7 @@ public abstract class AbstractValueAdaptingCacheTests<T extends AbstractValueAda
 	protected abstract T getCache(boolean allowNull);
 
 	@Test
-	protected void testCachePutNullValueAllowNullFalse() {
+	protected void cachePutNullValueAllowNullFalse() {
 		T cache = getCache(false);
 		String key = createRandomKey();
 		assertThatIllegalArgumentException().isThrownBy(() ->

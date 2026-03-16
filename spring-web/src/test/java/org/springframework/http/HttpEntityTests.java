@@ -64,7 +64,7 @@ class HttpEntityTests {
 	}
 
 	@Test
-	void testEquals() {
+	void equals() {
 		HttpHeaders headers1 = new HttpHeaders();
 		headers1.set("Content-Type", "text/plain");
 

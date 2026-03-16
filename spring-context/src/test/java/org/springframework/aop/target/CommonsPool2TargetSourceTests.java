@@ -71,7 +71,7 @@ class CommonsPool2TargetSourceTests {
 		this.beanFactory.destroySingletons();
 	}
 
-	private void testFunctionality(String name) {
+	private void assertFunctionality(String name) {
 		SideEffectBean pooled = (SideEffectBean) beanFactory.getBean(name);
 		assertThat(pooled.getCount()).isEqualTo(INITIAL_COUNT);
 		pooled.doWork();
@@ -85,17 +85,17 @@ class CommonsPool2TargetSourceTests {
 	}
 
 	@Test
-	void testFunctionality() {
-		testFunctionality("pooled");
+	void functionality() {
+		assertFunctionality("pooled");
 	}
 
 	@Test
-	void testFunctionalityWithNoInterceptors() {
-		testFunctionality("pooledNoInterceptors");
+	void functionalityWithNoInterceptors() {
+		assertFunctionality("pooledNoInterceptors");
 	}
 
 	@Test
-	void testConfigMixin() {
+	void configMixin() {
 		SideEffectBean pooled = (SideEffectBean) beanFactory.getBean("pooledWithMixin");
 		assertThat(pooled.getCount()).isEqualTo(INITIAL_COUNT);
 		PoolingConfig conf = (PoolingConfig) beanFactory.getBean("pooledWithMixin");
@@ -110,7 +110,7 @@ class CommonsPool2TargetSourceTests {
 	}
 
 	@Test
-	void testTargetSourceSerializableWithoutConfigMixin() throws Exception {
+	void targetSourceSerializableWithoutConfigMixin() throws Exception {
 		CommonsPool2TargetSource cpts = (CommonsPool2TargetSource) beanFactory.getBean("personPoolTargetSource");
 
 		SingletonTargetSource serialized = SerializationTestUtils.serializeAndDeserialize(cpts, SingletonTargetSource.class);
@@ -118,7 +118,7 @@ class CommonsPool2TargetSourceTests {
 	}
 
 	@Test
-	void testProxySerializableWithoutConfigMixin() throws Exception {
+	void proxySerializableWithoutConfigMixin() throws Exception {
 		Person pooled = (Person) beanFactory.getBean("pooledPerson");
 
 		boolean condition1 = ((Advised) pooled).getTargetSource() instanceof CommonsPool2TargetSource;
@@ -133,7 +133,7 @@ class CommonsPool2TargetSourceTests {
 	}
 
 	@Test
-	void testHitMaxSize() throws Exception {
+	void hitMaxSize() throws Exception {
 		int maxSize = 10;
 
 		CommonsPool2TargetSource targetSource = new CommonsPool2TargetSource();
@@ -164,7 +164,7 @@ class CommonsPool2TargetSourceTests {
 	}
 
 	@Test
-	void testHitMaxSizeLoadedFromContext() throws Exception {
+	void hitMaxSizeLoadedFromContext() throws Exception {
 		Advised person = (Advised) beanFactory.getBean("maxSizePooledPerson");
 		CommonsPool2TargetSource targetSource = (CommonsPool2TargetSource) person.getTargetSource();
 
@@ -192,7 +192,7 @@ class CommonsPool2TargetSourceTests {
 	}
 
 	@Test
-	void testSetWhenExhaustedAction() {
+	void setWhenExhaustedAction() {
 		CommonsPool2TargetSource targetSource = new CommonsPool2TargetSource();
 		targetSource.setBlockWhenExhausted(true);
 		assertThat(targetSource.isBlockWhenExhausted()).isTrue();

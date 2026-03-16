@@ -65,7 +65,7 @@ public class WebAppResourceTests {
 	// Resources served via <mvc:resources/>
 
 	@Test
-	public void resourceRequest() throws Exception {
+	void resourceRequest() throws Exception {
 		this.mockMvc.perform(get("/resources/Spring.js"))
 			.andExpect(content().contentType("text/javascript"))
 			.andExpect(content().string(containsString("Spring={};")));
@@ -74,7 +74,7 @@ public class WebAppResourceTests {
 	// Forwarded to the "default" servlet via <mvc:default-servlet-handler/>
 
 	@Test
-	public void resourcesViaDefaultServlet() throws Exception {
+	void resourcesViaDefaultServlet() throws Exception {
 		this.mockMvc.perform(get("/unknown/resource"))
 			.andExpect(handler().handlerType(DefaultServletHttpRequestHandler.class))
 			.andExpect(forwardedUrl("default"));

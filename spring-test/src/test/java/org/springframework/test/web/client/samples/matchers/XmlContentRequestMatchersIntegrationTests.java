@@ -86,7 +86,7 @@ class XmlContentRequestMatchersIntegrationTests {
 	}
 
 	@Test
-	void testXmlEqualTo() {
+	void xmlEqualTo() {
 		this.mockServer.expect(requestTo("/composers"))
 			.andExpect(content().contentType("application/xml"))
 			.andExpect(content().xml(PEOPLE_XML))
@@ -96,7 +96,7 @@ class XmlContentRequestMatchersIntegrationTests {
 	}
 
 	@Test
-	void testHamcrestNodeMatcher() {
+	void hamcrestNodeMatcher() {
 		this.mockServer.expect(requestTo("/composers"))
 			.andExpect(content().contentType("application/xml"))
 			.andExpect(content().node(hasXPath("/people/composers/composer[1]")))

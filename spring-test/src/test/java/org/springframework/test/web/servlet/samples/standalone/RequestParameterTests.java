@@ -39,7 +39,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 public class RequestParameterTests {
 
 	@Test
-	public void queryParameter() throws Exception {
+	void queryParameter() throws Exception {
 
 		standaloneSetup(new PersonController()).build()
 			.perform(get("/search?name=George").accept(MediaType.APPLICATION_JSON))

@@ -89,7 +89,7 @@ class ResourceHttpMessageConverterTests {
 	}
 
 	@Test  // SPR-13443
-	public void shouldReadInputStreamResource() throws IOException {
+	void shouldReadInputStreamResource() throws IOException {
 		try (InputStream body = getClass().getResourceAsStream("logo.jpg") ) {
 			MockHttpInputMessage inputMessage = new MockHttpInputMessage(body);
 			inputMessage.getHeaders().setContentType(MediaType.IMAGE_JPEG);
@@ -105,7 +105,7 @@ class ResourceHttpMessageConverterTests {
 	}
 
 	@Test  // SPR-14882
-	public void shouldNotReadInputStreamResource() throws IOException {
+	void shouldNotReadInputStreamResource() throws IOException {
 		ResourceHttpMessageConverter noStreamConverter = new ResourceHttpMessageConverter(false);
 		try (InputStream body = getClass().getResourceAsStream("logo.jpg") ) {
 			MockHttpInputMessage inputMessage = new MockHttpInputMessage(body);
@@ -116,7 +116,7 @@ class ResourceHttpMessageConverterTests {
 	}
 
 	@Test // gh-36368
-	public void shouldNotReadStreamResourceAsUnknownType() throws IOException {
+	void shouldNotReadStreamResourceAsUnknownType() throws IOException {
 		try (InputStream body = getClass().getResourceAsStream("logo.jpg") ) {
 			MockHttpInputMessage inputMessage = new MockHttpInputMessage(body);
 			inputMessage.getHeaders().setContentType(MediaType.IMAGE_JPEG);
@@ -138,7 +138,7 @@ class ResourceHttpMessageConverterTests {
 	}
 
 	@Test  // SPR-10848
-	public void writeByteArrayNullMediaType() throws IOException {
+	void writeByteArrayNullMediaType() throws IOException {
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		byte[] byteArray = {1, 2, 3};
 		Resource body = new ByteArrayResource(byteArray);
@@ -148,7 +148,7 @@ class ResourceHttpMessageConverterTests {
 	}
 
 	@Test  // SPR-12999
-	public void writeContentNotGettingInputStream() throws Exception {
+	void writeContentNotGettingInputStream() throws Exception {
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		Resource resource = mock();
 		given(resource.getInputStream()).willThrow(FileNotFoundException.class);
@@ -158,7 +158,7 @@ class ResourceHttpMessageConverterTests {
 	}
 
 	@Test  // SPR-12999
-	public void writeContentNotClosingInputStream() throws Exception {
+	void writeContentNotClosingInputStream() throws Exception {
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		Resource resource = mock();
 		InputStream inputStream = mock();
@@ -171,7 +171,7 @@ class ResourceHttpMessageConverterTests {
 	}
 
 	@Test  // SPR-13620
-	public void writeContentInputStreamThrowingNullPointerException() throws Exception {
+	void writeContentInputStreamThrowingNullPointerException() throws Exception {
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		Resource resource = mock();
 		InputStream in = mock();

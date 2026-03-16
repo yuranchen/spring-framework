@@ -35,7 +35,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 class SimpleMailMessageTests {
 
 	@Test
-	void testSimpleMessageCopyCtor() {
+	void simpleMessageCopyCtor() {
 		SimpleMailMessage message = new SimpleMailMessage();
 		message.setFrom("me@mail.org");
 		message.setTo("you@mail.org");
@@ -81,8 +81,7 @@ class SimpleMailMessageTests {
 	}
 
 	@Test
-	void testDeepCopyOfStringArrayTypedFieldsOnCopyCtor() {
-
+	void deepCopyOfStringArrayTypedFieldsOnCopyCtor() {
 		SimpleMailMessage original = new SimpleMailMessage();
 		original.setTo("fiona@mail.org", "apple@mail.org");
 		original.setCc("he@mail.org", "she@mail.org");
@@ -103,7 +102,7 @@ class SimpleMailMessageTests {
 	 * Tests that two equal SimpleMailMessages have equal hash codes.
 	 */
 	@Test
-	public final void testHashCode() {
+	void equalMessagesHaveEqualHashCodes() {
 		SimpleMailMessage message1 = new SimpleMailMessage();
 		message1.setFrom("from@somewhere");
 		message1.setReplyTo("replyTo@somewhere");
@@ -118,11 +117,11 @@ class SimpleMailMessageTests {
 		SimpleMailMessage message2 = new SimpleMailMessage(message1);
 
 		assertThat(message2).isEqualTo(message1);
-		assertThat(message2.hashCode()).isEqualTo(message1.hashCode());
+		assertThat(message2).hasSameHashCodeAs(message1);
 	}
 
 	@Test
-	public final void testEqualsObject() {
+	void equalsBehavior() {
 		SimpleMailMessage message1;
 		SimpleMailMessage message2;
 
@@ -160,15 +159,13 @@ class SimpleMailMessageTests {
 	}
 
 	@Test
-	void testCopyCtorChokesOnNullOriginalMessage() {
-		assertThatIllegalArgumentException().isThrownBy(() ->
-				new SimpleMailMessage(null));
+	void copyCtorChokesOnNullOriginalMessage() {
+		assertThatIllegalArgumentException().isThrownBy(() -> new SimpleMailMessage(null));
 	}
 
 	@Test
-	void testCopyToChokesOnNullTargetMessage() {
-		assertThatIllegalArgumentException().isThrownBy(() ->
-				new SimpleMailMessage().copyTo(null));
+	void copyToChokesOnNullTargetMessage() {
+		assertThatIllegalArgumentException().isThrownBy(() -> new SimpleMailMessage().copyTo(null));
 	}
 
 }

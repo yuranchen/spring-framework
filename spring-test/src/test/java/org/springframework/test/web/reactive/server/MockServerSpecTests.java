@@ -43,7 +43,7 @@ public class MockServerSpecTests {
 
 
 	@Test
-	public void applyFiltersAfterConfigurerAdded() {
+	void applyFiltersAfterConfigurerAdded() {
 
 		MockServerConfigurer configurer = new MockServerConfigurer() {
 
@@ -67,7 +67,7 @@ public class MockServerSpecTests {
 	}
 
 	@Test
-	public void applyFiltersBeforeServerCreated() {
+	void applyFiltersBeforeServerCreated() {
 
 		MockServerConfigurer configurer = new MockServerConfigurer() {
 

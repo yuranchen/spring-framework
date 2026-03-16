@@ -74,7 +74,7 @@ class BeanNamePointcutTests {
 	// We don't need to test all combination of pointcuts due to BeanNamePointcutMatchingTests
 
 	@Test
-	void testMatchingBeanName() {
+	void matchingBeanName() {
 		boolean condition = this.testBean1 instanceof Advised;
 		assertThat(condition).as("Matching bean must be advised (proxied)").isTrue();
 		// Call two methods to test for SPR-3953-like condition
@@ -84,7 +84,7 @@ class BeanNamePointcutTests {
 	}
 
 	@Test
-	void testNonMatchingBeanName() {
+	void nonMatchingBeanName() {
 		boolean condition = this.testBean2 instanceof Advised;
 		assertThat(condition).as("Non-matching bean must *not* be advised (proxied)").isFalse();
 		this.testBean2.setAge(20);
@@ -92,13 +92,13 @@ class BeanNamePointcutTests {
 	}
 
 	@Test
-	void testNonMatchingNestedBeanName() {
+	void nonMatchingNestedBeanName() {
 		boolean condition = this.testBeanContainingNestedBean.getDoctor() instanceof Advised;
 		assertThat(condition).as("Non-matching bean must *not* be advised (proxied)").isFalse();
 	}
 
 	@Test
-	void testMatchingFactoryBeanObject() {
+	void matchingFactoryBeanObject() {
 		boolean condition1 = this.testFactoryBean1 instanceof Advised;
 		assertThat(condition1).as("Matching bean must be advised (proxied)").isTrue();
 		assertThat(this.testFactoryBean1.get("myKey")).isEqualTo("myValue");
@@ -110,7 +110,7 @@ class BeanNamePointcutTests {
 	}
 
 	@Test
-	void testMatchingFactoryBeanItself() {
+	void matchingFactoryBeanItself() {
 		boolean condition1 = !(this.testFactoryBean2 instanceof Advised);
 		assertThat(condition1).as("Matching bean must *not* be advised (proxied)").isTrue();
 		FactoryBean<?> fb = (FactoryBean<?>) ctx.getBean("&testFactoryBean2");
@@ -122,7 +122,7 @@ class BeanNamePointcutTests {
 	}
 
 	@Test
-	void testPointcutAdvisorCombination() {
+	void pointcutAdvisorCombination() {
 		boolean condition = this.interceptThis instanceof Advised;
 		assertThat(condition).as("Matching bean must be advised (proxied)").isTrue();
 		boolean condition1 = this.dontInterceptThis instanceof Advised;
