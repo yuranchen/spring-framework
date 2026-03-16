@@ -86,12 +86,12 @@ class ScopingTests {
 
 
 	@Test
-	void testScopeOnClasses() {
+	void scopeOnClasses() {
 		genericTestScope("scopedClass");
 	}
 
 	@Test
-	void testScopeOnInterfaces() {
+	void scopeOnInterfaces() {
 		genericTestScope("scopedInterface");
 	}
 
@@ -130,7 +130,7 @@ class ScopingTests {
 	}
 
 	@Test
-	void testSameScopeOnDifferentBeans() {
+	void sameScopeOnDifferentBeans() {
 		Object beanAInScope = ctx.getBean("scopedClass");
 		Object beanBInScope = ctx.getBean("scopedInterface");
 
@@ -147,7 +147,7 @@ class ScopingTests {
 	}
 
 	@Test
-	void testRawScopes() {
+	void rawScopes() {
 		String beanName = "scopedProxyInterface";
 
 		// get hidden bean
@@ -158,7 +158,7 @@ class ScopingTests {
 	}
 
 	@Test
-	void testScopedProxyConfiguration() {
+	void scopedProxyConfiguration() {
 		TestBean singleton = (TestBean) ctx.getBean("singletonWithScopedInterfaceDep");
 		ITestBean spouse = singleton.getSpouse();
 		boolean condition = spouse instanceof ScopedObject;
@@ -191,7 +191,7 @@ class ScopingTests {
 	}
 
 	@Test
-	void testScopedProxyConfigurationWithClasses() {
+	void scopedProxyConfigurationWithClasses() {
 		TestBean singleton = (TestBean) ctx.getBean("singletonWithScopedClassDep");
 		ITestBean spouse = singleton.getSpouse();
 		boolean condition = spouse instanceof ScopedObject;

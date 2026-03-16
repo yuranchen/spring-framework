@@ -84,7 +84,7 @@ class PersistenceContextTransactionTests {
 
 
 	@Test
-	void testTransactionCommitWithSharedEntityManager() {
+	void transactionCommitWithSharedEntityManager() {
 		given(manager.getTransaction()).willReturn(tx);
 
 		tt.execute(status -> {
@@ -98,7 +98,7 @@ class PersistenceContextTransactionTests {
 	}
 
 	@Test
-	void testTransactionCommitWithSharedEntityManagerAndPropagationSupports() {
+	void transactionCommitWithSharedEntityManagerAndPropagationSupports() {
 		given(manager.isOpen()).willReturn(true);
 
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_SUPPORTS);
@@ -113,7 +113,7 @@ class PersistenceContextTransactionTests {
 	}
 
 	@Test
-	void testTransactionCommitWithExtendedEntityManager() {
+	void transactionCommitWithExtendedEntityManager() {
 		given(manager.getTransaction()).willReturn(tx);
 
 		tt.execute(status -> {
@@ -127,7 +127,7 @@ class PersistenceContextTransactionTests {
 	}
 
 	@Test
-	void testTransactionCommitWithExtendedEntityManagerAndPropagationSupports() {
+	void transactionCommitWithExtendedEntityManagerAndPropagationSupports() {
 		given(manager.isOpen()).willReturn(true);
 
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_SUPPORTS);
@@ -141,7 +141,7 @@ class PersistenceContextTransactionTests {
 	}
 
 	@Test
-	void testTransactionCommitWithSharedEntityManagerUnsynchronized() {
+	void transactionCommitWithSharedEntityManagerUnsynchronized() {
 		given(manager.getTransaction()).willReturn(tx);
 
 		tt.execute(status -> {
@@ -155,7 +155,7 @@ class PersistenceContextTransactionTests {
 	}
 
 	@Test
-	void testTransactionCommitWithSharedEntityManagerUnsynchronizedAndPropagationSupports() {
+	void transactionCommitWithSharedEntityManagerUnsynchronizedAndPropagationSupports() {
 		given(manager.isOpen()).willReturn(true);
 
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_SUPPORTS);
@@ -170,7 +170,7 @@ class PersistenceContextTransactionTests {
 	}
 
 	@Test
-	void testTransactionCommitWithExtendedEntityManagerUnsynchronized() {
+	void transactionCommitWithExtendedEntityManagerUnsynchronized() {
 		given(manager.getTransaction()).willReturn(tx);
 
 		tt.execute(status -> {
@@ -184,7 +184,7 @@ class PersistenceContextTransactionTests {
 	}
 
 	@Test
-	void testTransactionCommitWithExtendedEntityManagerUnsynchronizedAndPropagationSupports() {
+	void transactionCommitWithExtendedEntityManagerUnsynchronizedAndPropagationSupports() {
 		given(manager.isOpen()).willReturn(true);
 
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_SUPPORTS);
@@ -198,7 +198,7 @@ class PersistenceContextTransactionTests {
 	}
 
 	@Test
-	void testTransactionCommitWithSharedEntityManagerUnsynchronizedJoined() {
+	void transactionCommitWithSharedEntityManagerUnsynchronizedJoined() {
 		given(manager.getTransaction()).willReturn(tx);
 
 		tt.execute(status -> {
@@ -213,7 +213,7 @@ class PersistenceContextTransactionTests {
 	}
 
 	@Test
-	void testTransactionCommitWithExtendedEntityManagerUnsynchronizedJoined() {
+	void transactionCommitWithExtendedEntityManagerUnsynchronizedJoined() {
 		given(manager.getTransaction()).willReturn(tx);
 
 		tt.execute(status -> {
@@ -228,7 +228,7 @@ class PersistenceContextTransactionTests {
 	}
 
 	@Test
-	void testTransactionCommitWithExtendedEntityManagerUnsynchronizedJoinedAndPropagationSupports() {
+	void transactionCommitWithExtendedEntityManagerUnsynchronizedJoinedAndPropagationSupports() {
 		given(manager.isOpen()).willReturn(true);
 
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_SUPPORTS);

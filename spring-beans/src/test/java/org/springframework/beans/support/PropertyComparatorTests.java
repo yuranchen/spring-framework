@@ -31,7 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PropertyComparatorTests {
 
 	@Test
-	void testPropertyComparator() {
+	void propertyComparator() {
 		Dog dog = new Dog();
 		dog.setNickName("mace");
 
@@ -45,7 +45,7 @@ class PropertyComparatorTests {
 	}
 
 	@Test
-	void testPropertyComparatorNulls() {
+	void propertyComparatorNulls() {
 		Dog dog = new Dog();
 		Dog dog2 = new Dog();
 		PropertyComparator<Dog> c = new PropertyComparator<>("nickName", false, true);
@@ -53,7 +53,7 @@ class PropertyComparatorTests {
 	}
 
 	@Test
-	void testChainedComparators() {
+	void chainedComparators() {
 		Comparator<Dog> c = new PropertyComparator<>("lastName", false, true);
 
 		Dog dog1 = new Dog();
@@ -74,7 +74,7 @@ class PropertyComparatorTests {
 	}
 
 	@Test
-	void testChainedComparatorsReversed() {
+	void chainedComparatorsReversed() {
 		Comparator<Dog> c = (new PropertyComparator<Dog>("lastName", false, true)).
 				thenComparing(new PropertyComparator<>("firstName", false, true));
 

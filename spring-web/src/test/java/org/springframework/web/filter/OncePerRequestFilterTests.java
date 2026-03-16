@@ -100,7 +100,7 @@ class OncePerRequestFilterTests {
 	}
 
 	@Test // gh-23196
-	public void filterNestedErrorDispatch() throws ServletException, IOException {
+	void filterNestedErrorDispatch() throws ServletException, IOException {
 
 		// Opt in for ERROR dispatch
 		this.filter.setShouldNotFilterErrorDispatch(false);

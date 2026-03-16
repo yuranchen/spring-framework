@@ -279,7 +279,7 @@ class RequestMappingHandlerAdapterTests {
 	}
 
 	@Test // gh-15486
-	public void responseBodyAdvice() throws Exception {
+	void responseBodyAdvice() throws Exception {
 		List<HttpMessageConverter<?>> converters = new ArrayList<>();
 		converters.add(new MappingJackson2HttpMessageConverter());
 		this.handlerAdapter.setMessageConverters(converters);
@@ -299,7 +299,7 @@ class RequestMappingHandlerAdapterTests {
 	}
 
 	@Test // gh-30522
-	public void responseBodyAdviceWithEmptyBody() throws Exception {
+	void responseBodyAdviceWithEmptyBody() throws Exception {
 		this.webAppContext.registerBean("rba", EmptyBodyAdvice.class);
 		this.webAppContext.refresh();
 

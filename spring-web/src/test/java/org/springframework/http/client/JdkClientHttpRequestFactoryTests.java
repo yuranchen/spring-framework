@@ -84,7 +84,7 @@ class JdkClientHttpRequestFactoryTests extends AbstractHttpRequestFactoryTests {
 	}
 
 	@Test // gh-31451
-	public void contentLength0() throws IOException {
+	void contentLength0() throws IOException {
 		BufferingClientHttpRequestFactory bufferingFactory = new BufferingClientHttpRequestFactory(this.factory);
 		ClientHttpRequest request = bufferingFactory.createRequest(URI.create(this.baseUrl + "/methods/get"), HttpMethod.GET);
 

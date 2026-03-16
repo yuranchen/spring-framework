@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class RequestParameterTests {
 
 	@Test
-	public void queryParameter() {
+	void queryParameter() {
 
 		WebTestClient client = MockMvcWebTestClient.bindToController(new PersonController()).build();
 

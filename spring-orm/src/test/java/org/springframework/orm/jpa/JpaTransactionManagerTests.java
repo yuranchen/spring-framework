@@ -80,7 +80,7 @@ class JpaTransactionManagerTests {
 
 
 	@Test
-	void testTransactionCommit() {
+	void transactionCommit() {
 		given(manager.getTransaction()).willReturn(tx);
 
 		final List<String> l = new ArrayList<>();
@@ -105,7 +105,7 @@ class JpaTransactionManagerTests {
 	}
 
 	@Test
-	void testTransactionCommitWithRollbackException() {
+	void transactionCommitWithRollbackException() {
 		given(manager.getTransaction()).willReturn(tx);
 		given(tx.getRollbackOnly()).willReturn(true);
 		willThrow(new RollbackException()).given(tx).commit();
@@ -137,7 +137,7 @@ class JpaTransactionManagerTests {
 	}
 
 	@Test
-	void testTransactionRollback() {
+	void transactionRollback() {
 		given(manager.getTransaction()).willReturn(tx);
 		given(tx.isActive()).willReturn(true);
 
@@ -162,7 +162,7 @@ class JpaTransactionManagerTests {
 	}
 
 	@Test
-	void testTransactionRollbackWithAlreadyRolledBack() {
+	void transactionRollbackWithAlreadyRolledBack() {
 		given(manager.getTransaction()).willReturn(tx);
 
 		final List<String> l = new ArrayList<>();
@@ -185,7 +185,7 @@ class JpaTransactionManagerTests {
 	}
 
 	@Test
-	void testTransactionRollbackOnly() {
+	void transactionRollbackOnly() {
 		given(manager.getTransaction()).willReturn(tx);
 		given(tx.isActive()).willReturn(true);
 
@@ -213,7 +213,7 @@ class JpaTransactionManagerTests {
 	}
 
 	@Test
-	void testParticipatingTransactionWithCommit() {
+	void participatingTransactionWithCommit() {
 		given(manager.getTransaction()).willReturn(tx);
 
 		final List<String> l = new ArrayList<>();
@@ -240,7 +240,7 @@ class JpaTransactionManagerTests {
 	}
 
 	@Test
-	void testParticipatingTransactionWithRollback() {
+	void participatingTransactionWithRollback() {
 		given(manager.getTransaction()).willReturn(tx);
 		given(tx.isActive()).willReturn(true);
 
@@ -268,7 +268,7 @@ class JpaTransactionManagerTests {
 	}
 
 	@Test
-	void testParticipatingTransactionWithRollbackOnly() {
+	void participatingTransactionWithRollbackOnly() {
 		given(manager.getTransaction()).willReturn(tx);
 		given(tx.isActive()).willReturn(true);
 		given(tx.getRollbackOnly()).willReturn(true);
@@ -301,7 +301,7 @@ class JpaTransactionManagerTests {
 	}
 
 	@Test
-	void testParticipatingTransactionWithRequiresNew() {
+	void participatingTransactionWithRequiresNew() {
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
 
 		given(factory.createEntityManager()).willReturn(manager);
@@ -332,7 +332,7 @@ class JpaTransactionManagerTests {
 	}
 
 	@Test
-	void testParticipatingTransactionWithRequiresNewAndPrebound() {
+	void participatingTransactionWithRequiresNewAndPrebound() {
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
 
 		given(manager.getTransaction()).willReturn(tx);
@@ -371,7 +371,7 @@ class JpaTransactionManagerTests {
 	}
 
 	@Test
-	void testPropagationSupportsAndRequiresNew() {
+	void propagationSupportsAndRequiresNew() {
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_SUPPORTS);
 
 		given(manager.getTransaction()).willReturn(tx);
@@ -402,7 +402,7 @@ class JpaTransactionManagerTests {
 	}
 
 	@Test
-	void testPropagationSupportsAndRequiresNewAndEarlyAccess() {
+	void propagationSupportsAndRequiresNewAndEarlyAccess() {
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_SUPPORTS);
 
 		given(factory.createEntityManager()).willReturn(manager);
@@ -437,7 +437,7 @@ class JpaTransactionManagerTests {
 	}
 
 	@Test
-	void testTransactionWithRequiresNewInAfterCompletion() {
+	void transactionWithRequiresNewInAfterCompletion() {
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
 
 		EntityManager manager2 = mock();
@@ -478,7 +478,7 @@ class JpaTransactionManagerTests {
 	}
 
 	@Test
-	void testTransactionCommitWithPropagationSupports() {
+	void transactionCommitWithPropagationSupports() {
 		given(manager.isOpen()).willReturn(true);
 
 		final List<String> l = new ArrayList<>();
@@ -506,7 +506,7 @@ class JpaTransactionManagerTests {
 	}
 
 	@Test
-	void testTransactionRollbackWithPropagationSupports() {
+	void transactionRollbackWithPropagationSupports() {
 		given(manager.isOpen()).willReturn(true);
 
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_SUPPORTS);
@@ -531,7 +531,7 @@ class JpaTransactionManagerTests {
 	}
 
 	@Test
-	void testTransactionCommitWithPrebound() {
+	void transactionCommitWithPrebound() {
 		given(manager.getTransaction()).willReturn(tx);
 
 		final List<String> l = new ArrayList<>();
@@ -562,7 +562,7 @@ class JpaTransactionManagerTests {
 	}
 
 	@Test
-	void testTransactionRollbackWithPrebound() {
+	void transactionRollbackWithPrebound() {
 		given(manager.getTransaction()).willReturn(tx);
 		given(tx.isActive()).willReturn(true);
 
@@ -592,7 +592,7 @@ class JpaTransactionManagerTests {
 	}
 
 	@Test
-	void testTransactionCommitWithPreboundAndPropagationSupports() {
+	void transactionCommitWithPreboundAndPropagationSupports() {
 		final List<String> l = new ArrayList<>();
 		l.add("test");
 
@@ -623,7 +623,7 @@ class JpaTransactionManagerTests {
 	}
 
 	@Test
-	void testTransactionRollbackWithPreboundAndPropagationSupports() {
+	void transactionRollbackWithPreboundAndPropagationSupports() {
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_SUPPORTS);
 
 		assertThat(TransactionSynchronizationManager.hasResource(factory)).isFalse();
@@ -652,7 +652,7 @@ class JpaTransactionManagerTests {
 	}
 
 	@Test
-	void testInvalidIsolation() {
+	void invalidIsolation() {
 		tt.setIsolationLevel(TransactionDefinition.ISOLATION_SERIALIZABLE);
 
 		given(manager.isOpen()).willReturn(true);
@@ -668,7 +668,7 @@ class JpaTransactionManagerTests {
 	}
 
 	@Test
-	void testTransactionFlush() {
+	void transactionFlush() {
 		given(manager.getTransaction()).willReturn(tx);
 
 		assertThat(TransactionSynchronizationManager.hasResource(factory)).isFalse();

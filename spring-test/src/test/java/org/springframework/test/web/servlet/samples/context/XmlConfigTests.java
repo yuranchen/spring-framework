@@ -69,7 +69,7 @@ public class XmlConfigTests {
 	}
 
 	@Test
-	public void person() throws Exception {
+	void person() throws Exception {
 		this.mockMvc.perform(get("/person/5").accept(MediaType.APPLICATION_JSON))
 			.andDo(print())
 			.andExpect(status().isOk())

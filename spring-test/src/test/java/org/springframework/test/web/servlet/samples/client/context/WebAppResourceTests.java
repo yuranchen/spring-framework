@@ -65,7 +65,7 @@ public class WebAppResourceTests {
 	// Resources served via <mvc:resources/>
 
 	@Test
-	public void resourceRequest() {
+	void resourceRequest() {
 		testClient.get().uri("/resources/Spring.js")
 				.exchange()
 				.expectStatus().isOk()
@@ -76,7 +76,7 @@ public class WebAppResourceTests {
 	// Forwarded to the "default" servlet via <mvc:default-servlet-handler/>
 
 	@Test
-	public void resourcesViaDefaultServlet() throws Exception {
+	void resourcesViaDefaultServlet() throws Exception {
 		EntityExchangeResult<Void> result = testClient.get().uri("/unknown/resource")
 				.exchange()
 				.expectStatus().isOk()

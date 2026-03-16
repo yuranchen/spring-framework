@@ -1616,7 +1616,7 @@ class ServletAnnotationControllerHandlerMethodTests extends AbstractServletHandl
 	}
 
 	@PathPatternsParameterizedTest
-	void testMatchWithoutMethodLevelPath(boolean usePathPatterns) throws Exception {
+	void matchWithoutMethodLevelPath(boolean usePathPatterns) throws Exception {
 		initDispatcherServlet(NoPathGetAndM2PostController.class, usePathPatterns);
 
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/t1/m2");
@@ -1626,7 +1626,7 @@ class ServletAnnotationControllerHandlerMethodTests extends AbstractServletHandl
 	}
 
 	@PathPatternsParameterizedTest  // SPR-8536
-	void testHeadersCondition(boolean usePathPatterns) throws Exception {
+	void headersCondition(boolean usePathPatterns) throws Exception {
 		initDispatcherServlet(HeadersConditionController.class, usePathPatterns);
 
 		// No "Accept" header

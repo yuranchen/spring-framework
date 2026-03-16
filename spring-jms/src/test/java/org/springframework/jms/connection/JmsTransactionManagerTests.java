@@ -58,7 +58,7 @@ class JmsTransactionManagerTests {
 
 
 	@Test
-	void testTransactionCommit() throws JMSException {
+	void transactionCommit() throws JMSException {
 		ConnectionFactory cf = mock();
 		Connection con = mock();
 		final Session session = mock();
@@ -81,7 +81,7 @@ class JmsTransactionManagerTests {
 	}
 
 	@Test
-	void testTransactionRollback() throws JMSException {
+	void transactionRollback() throws JMSException {
 		ConnectionFactory cf = mock();
 		Connection con = mock();
 		final Session session = mock();
@@ -104,7 +104,7 @@ class JmsTransactionManagerTests {
 	}
 
 	@Test
-	void testParticipatingTransactionWithCommit() throws JMSException {
+	void participatingTransactionWithCommit() throws JMSException {
 		ConnectionFactory cf = mock();
 		Connection con = mock();
 		final Session session = mock();
@@ -137,7 +137,7 @@ class JmsTransactionManagerTests {
 	}
 
 	@Test
-	void testParticipatingTransactionWithRollbackOnly() throws JMSException {
+	void participatingTransactionWithRollbackOnly() throws JMSException {
 		ConnectionFactory cf = mock();
 		Connection con = mock();
 		final Session session = mock();
@@ -172,7 +172,7 @@ class JmsTransactionManagerTests {
 	}
 
 	@Test
-	void testSuspendedTransaction() throws JMSException {
+	void suspendedTransaction() throws JMSException {
 		final ConnectionFactory cf = mock();
 		Connection con = mock();
 		final Session session = mock();
@@ -213,7 +213,7 @@ class JmsTransactionManagerTests {
 	}
 
 	@Test
-	void testTransactionSuspension() throws JMSException {
+	void transactionSuspension() throws JMSException {
 		final ConnectionFactory cf = mock();
 		Connection con = mock();
 		final Session session = mock();
@@ -254,7 +254,7 @@ class JmsTransactionManagerTests {
 	}
 
 	@Test
-	void testTransactionCommitWithMessageProducer() throws JMSException {
+	void transactionCommitWithMessageProducer() throws JMSException {
 		Destination dest = new StubQueue();
 
 		ConnectionFactory cf = mock();
@@ -282,7 +282,7 @@ class JmsTransactionManagerTests {
 	}
 
 	@Test
-	void testLazyTransactionalSession() throws JMSException {
+	void lazyTransactionalSession() throws JMSException {
 		ConnectionFactory cf = mock();
 		Connection con = mock();
 		final Session session = mock();
@@ -307,7 +307,7 @@ class JmsTransactionManagerTests {
 	}
 
 	@Test
-	void testLazyWithoutSessionAccess() {
+	void lazyWithoutSessionAccess() {
 		ConnectionFactory cf = mock();
 
 		JmsTransactionManager tm = new JmsTransactionManager(cf);

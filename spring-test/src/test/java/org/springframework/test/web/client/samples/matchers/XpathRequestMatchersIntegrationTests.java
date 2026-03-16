@@ -91,7 +91,7 @@ public class XpathRequestMatchersIntegrationTests {
 
 
 	@Test
-	public void testExists() throws Exception {
+	void exists() throws Exception {
 		String composer = "/ns:people/composers/composer[%s]";
 		String performer = "/ns:people/performers/performer[%s]";
 
@@ -109,7 +109,7 @@ public class XpathRequestMatchersIntegrationTests {
 	}
 
 	@Test
-	public void testDoesNotExist() throws Exception {
+	void doesNotExist() throws Exception {
 		String composer = "/ns:people/composers/composer[%s]";
 		String performer = "/ns:people/performers/performer[%s]";
 
@@ -125,7 +125,7 @@ public class XpathRequestMatchersIntegrationTests {
 	}
 
 	@Test
-	public void testString() throws Exception {
+	void string() throws Exception {
 		String composerName = "/ns:people/composers/composer[%s]/name";
 		String performerName = "/ns:people/performers/performer[%s]/name";
 
@@ -146,7 +146,7 @@ public class XpathRequestMatchersIntegrationTests {
 	}
 
 	@Test
-	public void testNumber() throws Exception {
+	void number() throws Exception {
 		String composerDouble = "/ns:people/composers/composer[%s]/someDouble";
 
 		this.mockServer.expect(requestTo("/composers"))
@@ -163,7 +163,7 @@ public class XpathRequestMatchersIntegrationTests {
 	}
 
 	@Test
-	public void testBoolean() throws Exception {
+	void booleanCase() throws Exception {
 
 		String performerBooleanValue = "/ns:people/performers/performer[%s]/someBoolean";
 
@@ -177,7 +177,7 @@ public class XpathRequestMatchersIntegrationTests {
 	}
 
 	@Test
-	public void testNodeCount() throws Exception {
+	void nodeCount() throws Exception {
 		this.mockServer.expect(requestTo("/composers"))
 			.andExpect(content().contentType("application/xml"))
 			.andExpect(xpath("/ns:people/composers/composer", NS).nodeCount(4))

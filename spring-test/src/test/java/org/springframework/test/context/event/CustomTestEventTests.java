@@ -56,7 +56,7 @@ public class CustomTestEventTests {
 	}
 
 	@Test
-	public void customTestEventPublished() {
+	void customTestEventPublished() {
 		assertThat(events).hasSize(1);
 		CustomEvent customEvent = events.get(0);
 		assertThat(customEvent.getSource()).isEqualTo(getClass());

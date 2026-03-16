@@ -52,7 +52,7 @@ class PrototypeTargetSourceTests {
 	 * With the singleton, there will be change.
 	 */
 	@Test
-	void testPrototypeAndSingletonBehaveDifferently() {
+	void prototypeAndSingletonBehaveDifferently() {
 		SideEffectBean singleton = (SideEffectBean) beanFactory.getBean("singleton");
 		assertThat(singleton.getCount()).isEqualTo(INITIAL_COUNT);
 		singleton.doWork();

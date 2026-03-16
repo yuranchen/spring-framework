@@ -46,18 +46,18 @@ class HibernateEntityManagerFactoryIntegrationTests extends AbstractContainerEnt
 
 
 	@Test
-	void testCanCastNativeEntityManagerFactoryToHibernateEntityManagerFactoryImpl() {
+	void canCastNativeEntityManagerFactoryToHibernateEntityManagerFactoryImpl() {
 		EntityManagerFactoryInfo emfi = (EntityManagerFactoryInfo) entityManagerFactory;
 		assertThat(emfi.getNativeEntityManagerFactory()).isInstanceOf(SessionFactory.class);
 	}
 
 	@Test
-	void testCanCastSharedEntityManagerProxyToHibernateEntityManager() {
+	void canCastSharedEntityManagerProxyToHibernateEntityManager() {
 		assertThat(((EntityManagerProxy) sharedEntityManager).getTargetEntityManager()).isInstanceOf(Session.class);
 	}
 
 	@Test
-	void testCanUnwrapAopProxy() {
+	void canUnwrapAopProxy() {
 		EntityManager em = entityManagerFactory.createEntityManager();
 		EntityManager proxy = ProxyFactory.getProxy(EntityManager.class, new SingletonTargetSource(em));
 		assertThat(proxy.unwrap(Session.class)).isSameAs(em);
@@ -65,7 +65,7 @@ class HibernateEntityManagerFactoryIntegrationTests extends AbstractContainerEnt
 	}
 
 	@Test  // SPR-16956
-	public void testReadOnly() {
+	void readOnly() {
 		assertThat(sharedEntityManager.unwrap(Session.class).getHibernateFlushMode()).isSameAs(FlushMode.AUTO);
 		assertThat(sharedEntityManager.unwrap(Session.class).isDefaultReadOnly()).isFalse();
 		endTransaction();

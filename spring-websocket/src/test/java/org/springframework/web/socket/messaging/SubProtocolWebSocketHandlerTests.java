@@ -157,7 +157,7 @@ public class SubProtocolWebSocketHandlerTests {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void checkSession() throws Exception {
+	void checkSession() throws Exception {
 		TestWebSocketSession session1 = new TestWebSocketSession("id1");
 		TestWebSocketSession session2 = new TestWebSocketSession("id2");
 		session1.setOpen(true);

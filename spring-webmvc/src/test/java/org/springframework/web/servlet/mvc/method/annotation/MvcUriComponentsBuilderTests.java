@@ -252,14 +252,14 @@ public class MvcUriComponentsBuilderTests {
 	}
 
 	@Test  // SPR-12977
-	public void fromMethodNameWithBridgedMethod() {
+	void fromMethodNameWithBridgedMethod() {
 		UriComponents uriComponents = fromMethodName(PersonCrudController.class, "get", (long) 42).build();
 
 		assertThat(uriComponents.toUriString()).isEqualTo("http://localhost/42");
 	}
 
 	@Test  // SPR-11391
-	public void fromMethodNameTypeLevelPathVariableWithoutArgumentValue() {
+	void fromMethodNameTypeLevelPathVariableWithoutArgumentValue() {
 		UriComponents uriComponents = fromMethodName(UserContactController.class, "showCreate", 123).build();
 
 		assertThat(uriComponents.getPath()).isEqualTo("/user/123/contacts/create");
@@ -273,7 +273,7 @@ public class MvcUriComponentsBuilderTests {
 	}
 
 	@Test  // gh-29897
-	public void fromMethodNameInUnmappedControllerMethod() {
+	void fromMethodNameInUnmappedControllerMethod() {
 		UriComponents uriComponents = fromMethodName(UnmappedControllerMethod.class, "getMethod").build();
 
 		assertThat(uriComponents.toUriString()).isEqualTo("http://localhost/path");
@@ -301,7 +301,7 @@ public class MvcUriComponentsBuilderTests {
 	}
 
 	@Test  // SPR-14405
-	public void fromMethodNameWithOptionalParam() {
+	void fromMethodNameWithOptionalParam() {
 		UriComponents uriComponents = fromMethodName(ControllerWithMethods.class,
 				"methodWithOptionalParam", new Object[] {null}).build();
 
@@ -309,7 +309,7 @@ public class MvcUriComponentsBuilderTests {
 	}
 
 	@Test  // gh-22656
-	public void fromMethodNameWithOptionalNamedParam() {
+	void fromMethodNameWithOptionalNamedParam() {
 		UriComponents uriComponents = fromMethodName(ControllerWithMethods.class,
 				"methodWithOptionalNamedParam", Optional.of("foo")).build();
 
@@ -444,7 +444,7 @@ public class MvcUriComponentsBuilderTests {
 	}
 
 	@Test  // SPR-16710
-	public void fromMethodCallWithModelAndViewReturnType() {
+	void fromMethodCallWithModelAndViewReturnType() {
 		UriComponents uriComponents = fromMethodCall(
 				on(BookingControllerWithModelAndView.class).getBooking(21L)).buildAndExpand(42);
 
@@ -452,7 +452,7 @@ public class MvcUriComponentsBuilderTests {
 	}
 
 	@Test  // SPR-16710
-	public void fromMethodCallWithObjectReturnType() {
+	void fromMethodCallWithObjectReturnType() {
 		UriComponents uriComponents = fromMethodCall(
 				on(BookingControllerWithObject.class).getBooking(21L)).buildAndExpand(42);
 
@@ -460,7 +460,7 @@ public class MvcUriComponentsBuilderTests {
 	}
 
 	@Test  // SPR-16710
-	public void fromMethodCallWithStringReturnType() {
+	void fromMethodCallWithStringReturnType() {
 		assertThatIllegalStateException().isThrownBy(() -> {
 				UriComponents uriComponents = fromMethodCall(
 						on(BookingControllerWithString.class).getBooking(21L)).buildAndExpand(42);
@@ -469,7 +469,7 @@ public class MvcUriComponentsBuilderTests {
 	}
 
 	@Test  // SPR-16710
-	public void fromMethodNameWithStringReturnType() {
+	void fromMethodNameWithStringReturnType() {
 		UriComponents uriComponents = fromMethodName(
 				BookingControllerWithString.class, "getBooking", 21L).buildAndExpand(42);
 
@@ -477,7 +477,7 @@ public class MvcUriComponentsBuilderTests {
 	}
 
 	@Test  // gh-30210
-	public void fromMethodCallWithCharSequenceReturnType() {
+	void fromMethodCallWithCharSequenceReturnType() {
 		UriComponents uriComponents = fromMethodCall(
 				on(BookingControllerWithCharSequence.class).getBooking(21L)).buildAndExpand(42);
 
@@ -485,7 +485,7 @@ public class MvcUriComponentsBuilderTests {
 	}
 
 	@Test  // gh-30210
-	public void fromMethodCallWithJdbc30115ReturnType() {
+	void fromMethodCallWithJdbc30115ReturnType() {
 		UriComponents uriComponents = fromMethodCall(
 				on(BookingControllerWithJdbcSavepoint.class).getBooking(21L)).buildAndExpand(42);
 
@@ -516,7 +516,7 @@ public class MvcUriComponentsBuilderTests {
 	}
 
 	@Test  // SPR-17027
-	public void fromMappingNameWithEncoding() {
+	void fromMappingNameWithEncoding() {
 		initWebApplicationContext(WebConfig.class);
 
 		this.request.setServerName("example.org");

@@ -55,14 +55,14 @@ class HibernateNativeEntityManagerFactoryIntegrationTests extends AbstractContai
 
 	@Override
 	@Test
-	protected void testEntityManagerFactoryImplementsEntityManagerFactoryInfo() {
-		boolean condition = entityManagerFactory instanceof EntityManagerFactoryInfo;
-		assertThat(condition).as("Must not have introduced config interface").isFalse();
+	protected void entityManagerFactoryImplementsEntityManagerFactoryInfo() {
+		assertThat(entityManagerFactory).as("Must not have introduced config interface")
+				.isNotInstanceOf(EntityManagerFactoryInfo.class);
 	}
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void testEntityListener() {
+	void entityListener() {
 		String firstName = "Tony";
 		insertPerson(firstName);
 
@@ -74,7 +74,7 @@ class HibernateNativeEntityManagerFactoryIntegrationTests extends AbstractContai
 
 	@Test
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void testCurrentSession() {
+	void currentSession() {
 		String firstName = "Tony";
 		insertPerson(firstName);
 
@@ -86,7 +86,7 @@ class HibernateNativeEntityManagerFactoryIntegrationTests extends AbstractContai
 	}
 
 	@Test  // SPR-16956
-	public void testReadOnly() {
+	void readOnly() {
 		assertThat(sessionFactory.getCurrentSession().getHibernateFlushMode()).isSameAs(FlushMode.AUTO);
 		assertThat(sessionFactory.getCurrentSession().isDefaultReadOnly()).isFalse();
 		endTransaction();

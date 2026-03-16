@@ -261,7 +261,7 @@ public class SendToMethodReturnValueHandlerTests {
 	}
 
 	@Test // SPR-14238
-	public void sendToUserWithSendToDefaultOverride() throws Exception {
+	void sendToUserWithSendToDefaultOverride() throws Exception {
 		given(this.messageChannel.send(any(Message.class))).willReturn(true);
 
 		Class<?> clazz = SendToUserWithSendToOverrideTestBean.class;
@@ -277,7 +277,7 @@ public class SendToMethodReturnValueHandlerTests {
 	}
 
 	@Test // SPR-14238
-	public void sendToUserWithSendToOverride() throws Exception {
+	void sendToUserWithSendToOverride() throws Exception {
 		given(this.messageChannel.send(any(Message.class))).willReturn(true);
 
 		Class<?> clazz = SendToUserWithSendToOverrideTestBean.class;
@@ -319,7 +319,7 @@ public class SendToMethodReturnValueHandlerTests {
 	}
 
 	@Test
-	void testHeadersToSend() throws Exception {
+	void headersToSend() throws Exception {
 		Message<?> message = createMessage("sess1", "sub1", "/app", "/dest", null);
 
 		SimpMessageSendingOperations messagingTemplate = mock();
@@ -395,7 +395,7 @@ public class SendToMethodReturnValueHandlerTests {
 	}
 
 	@Test  // SPR-12170
-	public void sendToWithDestinationPlaceholders() throws Exception {
+	void sendToWithDestinationPlaceholders() throws Exception {
 		given(this.messageChannel.send(any(Message.class))).willReturn(true);
 
 		Map<String, String> vars = new LinkedHashMap<>(1);

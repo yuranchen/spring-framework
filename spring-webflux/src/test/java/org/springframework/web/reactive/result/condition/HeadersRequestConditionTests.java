@@ -121,7 +121,7 @@ class HeadersRequestConditionTests {
 	}
 
 	@Test // SPR-16674
-	public void compareToWithMoreSpecificMatchByValue() {
+	void compareToWithMoreSpecificMatchByValue() {
 		ServerWebExchange exchange = MockServerWebExchange.from(get("/"));
 
 		HeadersRequestCondition condition1 = new HeadersRequestCondition("foo=a");

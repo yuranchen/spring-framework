@@ -246,7 +246,7 @@ class ApplicationContextEventTests extends AbstractApplicationEventListenerTests
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void proxiedListeners() {
+	void proxiedListeners() {
 		MyOrderedListener1 listener1 = new MyOrderedListener1();
 		MyOrderedListener2 listener2 = new MyOrderedListener2(listener1);
 		ApplicationListener<ApplicationEvent> proxy1 = (ApplicationListener<ApplicationEvent>) new ProxyFactory(listener1).getProxy();
@@ -263,7 +263,7 @@ class ApplicationContextEventTests extends AbstractApplicationEventListenerTests
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void proxiedListenersMixedWithTargetListeners() {
+	void proxiedListenersMixedWithTargetListeners() {
 		MyOrderedListener1 listener1 = new MyOrderedListener1();
 		MyOrderedListener2 listener2 = new MyOrderedListener2(listener1);
 		ApplicationListener<ApplicationEvent> proxy1 = (ApplicationListener<ApplicationEvent>) new ProxyFactory(listener1).getProxy();
@@ -299,7 +299,7 @@ class ApplicationContextEventTests extends AbstractApplicationEventListenerTests
 	}
 
 	@Test
-	void testEventPublicationInterceptor() throws Throwable {
+	void eventPublicationInterceptorWithEventClass() throws Throwable {
 		MethodInvocation invocation = mock();
 		ApplicationContext ctx = mock();
 

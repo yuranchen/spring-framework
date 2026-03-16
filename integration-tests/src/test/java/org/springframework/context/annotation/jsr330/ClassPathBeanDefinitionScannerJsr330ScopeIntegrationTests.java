@@ -83,7 +83,7 @@ class ClassPathBeanDefinitionScannerJsr330ScopeIntegrationTests {
 
 
 	@Test
-	void testPrototype() {
+	void prototype() {
 		ApplicationContext context = createContext(ScopedProxyMode.NO);
 		ScopedTestBean bean = (ScopedTestBean) context.getBean("prototype");
 		assertThat(bean).isNotNull();
@@ -92,7 +92,7 @@ class ClassPathBeanDefinitionScannerJsr330ScopeIntegrationTests {
 	}
 
 	@Test
-	void testSingletonScopeWithNoProxy() {
+	void singletonScopeWithNoProxy() {
 		RequestContextHolder.setRequestAttributes(oldRequestAttributes);
 		ApplicationContext context = createContext(ScopedProxyMode.NO);
 		ScopedTestBean bean = (ScopedTestBean) context.getBean("singleton");
@@ -115,7 +115,7 @@ class ClassPathBeanDefinitionScannerJsr330ScopeIntegrationTests {
 	}
 
 	@Test
-	void testSingletonScopeIgnoresProxyInterfaces() {
+	void singletonScopeIgnoresProxyInterfaces() {
 		RequestContextHolder.setRequestAttributes(oldRequestAttributes);
 		ApplicationContext context = createContext(ScopedProxyMode.INTERFACES);
 		ScopedTestBean bean = (ScopedTestBean) context.getBean("singleton");
@@ -136,7 +136,7 @@ class ClassPathBeanDefinitionScannerJsr330ScopeIntegrationTests {
 	}
 
 	@Test
-	void testSingletonScopeIgnoresProxyTargetClass() {
+	void singletonScopeIgnoresProxyTargetClass() {
 		RequestContextHolder.setRequestAttributes(oldRequestAttributes);
 		ApplicationContext context = createContext(ScopedProxyMode.TARGET_CLASS);
 		ScopedTestBean bean = (ScopedTestBean) context.getBean("singleton");
@@ -157,7 +157,7 @@ class ClassPathBeanDefinitionScannerJsr330ScopeIntegrationTests {
 	}
 
 	@Test
-	void testRequestScopeWithNoProxy() {
+	void requestScopeWithNoProxy() {
 		RequestContextHolder.setRequestAttributes(oldRequestAttributes);
 		ApplicationContext context = createContext(ScopedProxyMode.NO);
 		ScopedTestBean bean = (ScopedTestBean) context.getBean("request");
@@ -178,7 +178,7 @@ class ClassPathBeanDefinitionScannerJsr330ScopeIntegrationTests {
 	}
 
 	@Test
-	void testRequestScopeWithProxiedInterfaces() {
+	void requestScopeWithProxiedInterfaces() {
 		RequestContextHolder.setRequestAttributes(oldRequestAttributes);
 		ApplicationContext context = createContext(ScopedProxyMode.INTERFACES);
 		IScopedTestBean bean = (IScopedTestBean) context.getBean("request");
@@ -200,7 +200,7 @@ class ClassPathBeanDefinitionScannerJsr330ScopeIntegrationTests {
 	}
 
 	@Test
-	void testRequestScopeWithProxiedTargetClass() {
+	void requestScopeWithProxiedTargetClass() {
 		RequestContextHolder.setRequestAttributes(oldRequestAttributes);
 		ApplicationContext context = createContext(ScopedProxyMode.TARGET_CLASS);
 		IScopedTestBean bean = (IScopedTestBean) context.getBean("request");
@@ -222,7 +222,7 @@ class ClassPathBeanDefinitionScannerJsr330ScopeIntegrationTests {
 	}
 
 	@Test
-	void testSessionScopeWithNoProxy() {
+	void sessionScopeWithNoProxy() {
 		RequestContextHolder.setRequestAttributes(oldRequestAttributesWithSession);
 		ApplicationContext context = createContext(ScopedProxyMode.NO);
 		ScopedTestBean bean = (ScopedTestBean) context.getBean("session");
@@ -243,7 +243,7 @@ class ClassPathBeanDefinitionScannerJsr330ScopeIntegrationTests {
 	}
 
 	@Test
-	void testSessionScopeWithProxiedInterfaces() {
+	void sessionScopeWithProxiedInterfaces() {
 		RequestContextHolder.setRequestAttributes(oldRequestAttributesWithSession);
 		ApplicationContext context = createContext(ScopedProxyMode.INTERFACES);
 		IScopedTestBean bean = (IScopedTestBean) context.getBean("session");
@@ -271,7 +271,7 @@ class ClassPathBeanDefinitionScannerJsr330ScopeIntegrationTests {
 	}
 
 	@Test
-	void testSessionScopeWithProxiedTargetClass() {
+	void sessionScopeWithProxiedTargetClass() {
 		RequestContextHolder.setRequestAttributes(oldRequestAttributesWithSession);
 		ApplicationContext context = createContext(ScopedProxyMode.TARGET_CLASS);
 		IScopedTestBean bean = (IScopedTestBean) context.getBean("session");

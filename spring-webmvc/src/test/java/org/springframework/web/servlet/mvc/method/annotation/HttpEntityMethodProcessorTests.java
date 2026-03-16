@@ -117,7 +117,7 @@ public class HttpEntityMethodProcessorTests {
 	}
 
 	@Test  // SPR-12861
-	public void resolveArgumentWithEmptyBody() throws Exception {
+	void resolveArgumentWithEmptyBody() throws Exception {
 		this.servletRequest.setContent(new byte[0]);
 		this.servletRequest.setContentType("application/json");
 
@@ -194,7 +194,7 @@ public class HttpEntityMethodProcessorTests {
 	}
 
 	@Test  // SPR-12811
-	public void jacksonTypeInfoList() throws Exception {
+	void jacksonTypeInfoList() throws Exception {
 		Method method = JacksonController.class.getMethod("handleList");
 		HandlerMethod handlerMethod = new HandlerMethod(new JacksonController(), method);
 		MethodParameter methodReturnType = handlerMethod.getReturnType();
@@ -212,7 +212,7 @@ public class HttpEntityMethodProcessorTests {
 	}
 
 	@Test  // SPR-13423
-	public void handleReturnValueCharSequence() throws Exception {
+	void handleReturnValueCharSequence() throws Exception {
 		List<HttpMessageConverter<?>>converters = new ArrayList<>();
 		converters.add(new ByteArrayHttpMessageConverter());
 		converters.add(new StringHttpMessageConverter());
@@ -229,7 +229,7 @@ public class HttpEntityMethodProcessorTests {
 	}
 
 	@Test  // SPR-13423
-	public void handleReturnValueWithETagAndETagFilter() throws Exception {
+	void handleReturnValueWithETagAndETagFilter() throws Exception {
 		String eTagValue = "\"deadb33f8badf00d\"";
 		String content = "body";
 
@@ -263,7 +263,7 @@ public class HttpEntityMethodProcessorTests {
 	}
 
 	@Test  // gh-24539
-	public void handleReturnValueWithMalformedAcceptHeader() throws Exception {
+	void handleReturnValueWithMalformedAcceptHeader() throws Exception {
 		webRequest.getNativeRequest(MockHttpServletRequest.class).addHeader("Accept", "null");
 
 		List<HttpMessageConverter<?>>converters = new ArrayList<>();

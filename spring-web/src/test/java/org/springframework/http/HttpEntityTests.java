@@ -67,7 +67,7 @@ class HttpEntityTests {
 	}
 
 	@Test
-	void testEquals() {
+	void equals() {
 		MultiValueMap<String, String> map1 = new LinkedMultiValueMap<>();
 		map1.set("Content-Type", "text/plain");
 

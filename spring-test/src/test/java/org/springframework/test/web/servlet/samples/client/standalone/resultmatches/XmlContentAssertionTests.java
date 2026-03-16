@@ -66,14 +66,14 @@ public class XmlContentAssertionTests {
 
 
 	@Test
-	public void testXmlEqualTo() {
+	void xmlEqualTo() {
 		testClient.get().uri("/music/people")
 				.exchange()
 				.expectBody().xml(PEOPLE_XML);
 	}
 
 	@Test
-	public void testNodeHamcrestMatcher() {
+	void nodeHamcrestMatcher() {
 		testClient.get().uri("/music/people")
 				.exchange()
 				.expectBody().xpath("/people/composers/composer[1]").exists();

@@ -144,7 +144,7 @@ public class InterceptorRegistryTests {
 	}
 
 	@Test  // SPR-11130
-	public void addInterceptorWithExcludePathPatternOnly() {
+	void addInterceptorWithExcludePathPatternOnly() {
 		this.registry.addInterceptor(this.interceptor1).excludePathPatterns("/path1/secret");
 		this.registry.addInterceptor(this.interceptor2).addPathPatterns("/path2");
 

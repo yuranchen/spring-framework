@@ -29,7 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class LocaleContextHolderTests {
 
 	@Test
-	void testSetLocaleContext() {
+	void setLocaleContext() {
 		LocaleContext lc = new SimpleLocaleContext(Locale.GERMAN);
 		LocaleContextHolder.setLocaleContext(lc);
 		assertThat(LocaleContextHolder.getLocaleContext()).isSameAs(lc);
@@ -49,7 +49,7 @@ class LocaleContextHolderTests {
 	}
 
 	@Test
-	void testSetTimeZoneAwareLocaleContext() {
+	void setTimeZoneAwareLocaleContext() {
 		LocaleContext lc = new SimpleTimeZoneAwareLocaleContext(Locale.GERMANY, TimeZone.getTimeZone("GMT+1"));
 		LocaleContextHolder.setLocaleContext(lc);
 		assertThat(LocaleContextHolder.getLocaleContext()).isSameAs(lc);
@@ -63,7 +63,7 @@ class LocaleContextHolderTests {
 	}
 
 	@Test
-	void testSetLocale() {
+	void setLocale() {
 		LocaleContextHolder.setLocale(Locale.GERMAN);
 		assertThat(LocaleContextHolder.getLocale()).isEqualTo(Locale.GERMAN);
 		assertThat(LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getDefault());
@@ -90,7 +90,7 @@ class LocaleContextHolderTests {
 	}
 
 	@Test
-	void testSetTimeZone() {
+	void setTimeZone() {
 		LocaleContextHolder.setTimeZone(TimeZone.getTimeZone("GMT+1"));
 		assertThat(LocaleContextHolder.getLocale()).isEqualTo(Locale.getDefault());
 		assertThat(LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getTimeZone("GMT+1"));
@@ -119,7 +119,7 @@ class LocaleContextHolderTests {
 	}
 
 	@Test
-	void testSetLocaleAndSetTimeZoneMixed() {
+	void setLocaleAndSetTimeZoneMixed() {
 		LocaleContextHolder.setLocale(Locale.GERMANY);
 		assertThat(LocaleContextHolder.getLocale()).isEqualTo(Locale.GERMANY);
 		assertThat(LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getDefault());

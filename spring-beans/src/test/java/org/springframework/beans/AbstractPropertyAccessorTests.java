@@ -375,7 +375,7 @@ abstract class AbstractPropertyAccessorTests {
 	}
 
 	@Test
-	void testErrorMessageOfNestedProperty() {
+	void errorMessageOfNestedProperty() {
 		ITestBean target = new TestBean();
 		ITestBean child = new DifferentTestBean();
 		child.setName("test");

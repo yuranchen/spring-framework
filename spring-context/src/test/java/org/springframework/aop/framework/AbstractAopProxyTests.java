@@ -338,7 +338,7 @@ abstract class AbstractAopProxyTests {
 
 	@Test
 	// Should fail to get proxy as exposeProxy wasn't set to true
-	public void targetCantGetProxyByDefault() {
+	void targetCantGetProxyByDefault() {
 		NeedsToSeeProxy et = new NeedsToSeeProxy();
 		ProxyFactory pf1 = new ProxyFactory(et);
 		assertThat(pf1.isExposeProxy()).isFalse();

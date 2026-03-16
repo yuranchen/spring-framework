@@ -34,7 +34,7 @@ import static org.mockito.Mockito.mock;
 class JmsGatewaySupportTests {
 
 	@Test
-	void testJmsGatewaySupportWithConnectionFactory() {
+	void jmsGatewaySupportWithConnectionFactory() {
 		ConnectionFactory mockConnectionFactory = mock();
 		final List<String> test = new ArrayList<>(1);
 		JmsGatewaySupport gateway = new JmsGatewaySupport() {
@@ -51,7 +51,7 @@ class JmsGatewaySupportTests {
 	}
 
 	@Test
-	void testJmsGatewaySupportWithJmsTemplate() {
+	void jmsGatewaySupportWithJmsTemplate() {
 		JmsTemplate template = new JmsTemplate();
 		final List<String> test = new ArrayList<>(1);
 		JmsGatewaySupport gateway = new JmsGatewaySupport() {

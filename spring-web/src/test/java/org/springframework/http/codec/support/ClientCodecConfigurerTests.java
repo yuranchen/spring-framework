@@ -259,7 +259,7 @@ class ClientCodecConfigurerTests {
 	}
 
 	@Test // gh-24194
-	public void cloneShouldNotDropMultipartCodecs() {
+	void cloneShouldNotDropMultipartCodecs() {
 
 		ClientCodecConfigurer clone = this.configurer.clone();
 		List<HttpMessageWriter<?>> writers =

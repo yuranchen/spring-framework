@@ -68,8 +68,9 @@ class JmsListenerAnnotationBeanPostProcessorTests {
 		assertThat(endpoint.getClass()).as("Wrong endpoint type").isEqualTo(MethodJmsListenerEndpoint.class);
 		MethodJmsListenerEndpoint methodEndpoint = (MethodJmsListenerEndpoint) endpoint;
 		assertThat(methodEndpoint.getBean().getClass()).isEqualTo(SimpleMessageListenerTestBean.class);
-		assertThat(methodEndpoint.getMethod()).isEqualTo(SimpleMessageListenerTestBean.class.getMethod("handleIt", String.class));
-		assertThat(methodEndpoint.getMostSpecificMethod()).isEqualTo(SimpleMessageListenerTestBean.class.getMethod("handleIt", String.class));
+		Method method = SimpleMessageListenerTestBean.class.getMethod("handleIt", String.class);
+		assertThat(methodEndpoint.getMethod()).isEqualTo(method);
+		assertThat(methodEndpoint.getMostSpecificMethod()).isEqualTo(method);
 
 		SimpleMessageListenerContainer listenerContainer = new SimpleMessageListenerContainer();
 		methodEndpoint.setupListenerContainer(listenerContainer);

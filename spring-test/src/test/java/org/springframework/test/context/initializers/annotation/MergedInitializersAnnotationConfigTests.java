@@ -37,7 +37,7 @@ public class MergedInitializersAnnotationConfigTests extends SingleInitializerAn
 
 	@Override
 	@Test
-	public void activeBeans() {
+	void activeBeans() {
 		assertThat(foo).isEqualTo("foo");
 		assertThat(bar).isEqualTo("foo");
 		assertThat(baz).isEqualTo("dev profile config");

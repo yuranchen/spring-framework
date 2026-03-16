@@ -67,7 +67,7 @@ public class XpathAssertionTests {
 
 
 	@Test
-	public void testExists() {
+	void exists() {
 		String composer = "/ns:people/composers/composer[%s]";
 		String performer = "/ns:people/performers/performer[%s]";
 
@@ -84,7 +84,7 @@ public class XpathAssertionTests {
 	}
 
 	@Test
-	public void testDoesNotExist() {
+	void doesNotExist() {
 		String composer = "/ns:people/composers/composer[%s]";
 		String performer = "/ns:people/performers/performer[%s]";
 
@@ -98,7 +98,7 @@ public class XpathAssertionTests {
 	}
 
 	@Test
-	public void testString() {
+	void string() {
 
 		String composerName = "/ns:people/composers/composer[%s]/name";
 		String performerName = "/ns:people/performers/performer[%s]/name";
@@ -118,7 +118,7 @@ public class XpathAssertionTests {
 	}
 
 	@Test
-	public void testNumber() {
+	void number() {
 		String expression = "/ns:people/composers/composer[%s]/someDouble";
 
 		testClient.get().uri("/music/people")
@@ -133,7 +133,7 @@ public class XpathAssertionTests {
 	}
 
 	@Test
-	public void testBoolean() {
+	void booleanCase() {
 		String expression = "/ns:people/performers/performer[%s]/someBoolean";
 
 		testClient.get().uri("/music/people")
@@ -144,7 +144,7 @@ public class XpathAssertionTests {
 	}
 
 	@Test
-	public void testNodeCount() {
+	void nodeCount() {
 		testClient.get().uri("/music/people")
 				.exchange()
 				.expectBody()
@@ -155,7 +155,7 @@ public class XpathAssertionTests {
 	}
 
 	@Test
-	public void testFeedWithLinefeedChars() {
+	void feedWithLinefeedChars() {
 		MockMvcWebTestClient.bindToController(new BlogFeedController()).build()
 				.get().uri("/blog.atom")
 				.accept(MediaType.APPLICATION_ATOM_XML)

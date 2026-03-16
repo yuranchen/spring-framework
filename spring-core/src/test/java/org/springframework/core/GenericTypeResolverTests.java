@@ -85,7 +85,7 @@ class GenericTypeResolverTests {
 	}
 
 	@Test
-	void testResolveType() {
+	void resolveTypeWithMap() {
 		Method intMessageMethod = method(MyTypeWithMethods.class, "readIntegerInputMessage", MyInterfaceType.class);
 		MethodParameter intMessageMethodParam = new MethodParameter(intMessageMethod, 0);
 		assertThat(resolveType(intMessageMethodParam.getGenericParameterType(), new HashMap<>())).isEqualTo(MyInterfaceType.class);
@@ -108,7 +108,7 @@ class GenericTypeResolverTests {
 	}
 
 	@Test
-	void testGetTypeVariableMap() {
+	void getTypeVariableMapBehavior() {
 		Map<TypeVariable, Type> map;
 
 		map = getTypeVariableMap(MySimpleInterfaceType.class);

@@ -177,7 +177,7 @@ class DefaultCorsProcessorTests {
 	}
 
 	@Test // gh-26892
-	public void actualRequestTrailingSlashOriginMatch() {
+	void actualRequestTrailingSlashOriginMatch() {
 		ServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest
 				.method(HttpMethod.GET, "http://localhost/test.html")
 				.header(HttpHeaders.ORIGIN, "https://domain2.com/"));
@@ -191,7 +191,7 @@ class DefaultCorsProcessorTests {
 	}
 
 	@Test // gh-33682
-	public void actualRequestMalformedOriginRejected() {
+	void actualRequestMalformedOriginRejected() {
 		ServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest
 				.method(HttpMethod.GET, "http://localhost/test.html")
 				.header(HttpHeaders.ORIGIN, "http://*@:;"));

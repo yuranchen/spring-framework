@@ -30,7 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class CompositeSetTests {
 
 	@Test
-	void testEquals() {
+	void equals() {
 		Set<String> first = Set.of("foo", "bar");
 		Set<String> second = Set.of("baz", "qux");
 		CompositeSet<String> composite = new CompositeSet<>(first, second);

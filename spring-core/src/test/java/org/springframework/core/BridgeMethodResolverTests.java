@@ -369,12 +369,12 @@ class BridgeMethodResolverTests {
 	}
 
 	@Test  // SPR-16103
-	void testClassHierarchy() throws Exception {
+	void classHierarchy() throws Exception {
 		doTestHierarchyResolution(FooClass.class);
 	}
 
 	@Test  // SPR-16103
-	void testInterfaceHierarchy() throws Exception {
+	void interfaceHierarchy() throws Exception {
 		doTestHierarchyResolution(FooInterface.class);
 	}
 

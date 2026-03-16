@@ -47,7 +47,7 @@ public class RouterFunctionTests {
 	}
 
 	@Test
-	public void test() throws Exception {
+	void test() throws Exception {
 		this.testClient.get().uri("/test")
 				.exchange()
 				.expectStatus().isOk()

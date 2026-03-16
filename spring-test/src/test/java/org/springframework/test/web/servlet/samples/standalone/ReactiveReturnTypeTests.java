@@ -43,7 +43,7 @@ public class ReactiveReturnTypeTests {
 
 
 	@Test // SPR-16869
-	public void sseWithFlux() throws Exception {
+	void sseWithFlux() throws Exception {
 
 		MockMvc mockMvc = MockMvcBuilders.standaloneSetup(ReactiveController.class).build();
 

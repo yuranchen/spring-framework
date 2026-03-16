@@ -54,7 +54,7 @@ public class PrintingResultHandlerSmokeTests {
 	// Comment out class-level @Disabled to see the output.
 
 	@Test
-	public void testPrint() throws Exception {
+	void printToVariousOutputs() throws Exception {
 		StringWriter writer = new StringWriter();
 
 		standaloneSetup(new SimpleController())
@@ -82,4 +82,5 @@ public class PrintingResultHandlerSmokeTests {
 			return "Hello Response";
 		}
 	}
+
 }

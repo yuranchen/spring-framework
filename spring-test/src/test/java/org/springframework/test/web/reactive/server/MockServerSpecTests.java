@@ -41,7 +41,7 @@ public class MockServerSpecTests {
 
 
 	@Test
-	public void applyFiltersAfterConfigurerAdded() {
+	void applyFiltersAfterConfigurerAdded() {
 
 		this.serverSpec.webFilter(new TestWebFilter("A"));
 
@@ -61,7 +61,7 @@ public class MockServerSpecTests {
 	}
 
 	@Test
-	public void applyFiltersBeforeServerCreated() {
+	void applyFiltersBeforeServerCreated() {
 
 		this.serverSpec.webFilter(new TestWebFilter("App-A"));
 		this.serverSpec.webFilter(new TestWebFilter("App-B"));

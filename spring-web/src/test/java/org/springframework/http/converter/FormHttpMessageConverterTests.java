@@ -333,7 +333,7 @@ class FormHttpMessageConverterTests {
 	}
 
 	@Test  // SPR-13309
-	public void writeMultipartOrder() throws Exception {
+	void writeMultipartOrder() throws Exception {
 		MyBean myBean = new MyBean();
 		myBean.setString("foo");
 

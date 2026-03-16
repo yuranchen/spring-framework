@@ -108,7 +108,7 @@ class RequestParamMapMethodArgumentResolverTests {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void resolveMapOfMultipartFile() throws Exception {
+	void resolveMapOfMultipartFile() throws Exception {
 		MockMultipartHttpServletRequest request = new MockMultipartHttpServletRequest();
 		MultipartFile expected1 = new MockMultipartFile("mfile", "Hello World".getBytes());
 		MultipartFile expected2 = new MockMultipartFile("other", "Hello World 3".getBytes());
@@ -129,7 +129,7 @@ class RequestParamMapMethodArgumentResolverTests {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void resolveMultiValueMapOfMultipartFile() throws Exception {
+	void resolveMultiValueMapOfMultipartFile() throws Exception {
 		MockMultipartHttpServletRequest request = new MockMultipartHttpServletRequest();
 		MultipartFile expected1 = new MockMultipartFile("mfilelist", "Hello World 1".getBytes());
 		MultipartFile expected2 = new MockMultipartFile("mfilelist", "Hello World 2".getBytes());
@@ -152,7 +152,7 @@ class RequestParamMapMethodArgumentResolverTests {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void resolveMapOfPart() throws Exception {
+	void resolveMapOfPart() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setContentType("multipart/form-data");
 		Part expected1 = new MockPart("mfile", "Hello World".getBytes());
@@ -174,7 +174,7 @@ class RequestParamMapMethodArgumentResolverTests {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void resolveMultiValueMapOfPart() throws Exception {
+	void resolveMultiValueMapOfPart() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setContentType("multipart/form-data");
 		Part expected1 = new MockPart("mfilelist", "Hello World 1".getBytes());

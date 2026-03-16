@@ -220,7 +220,7 @@ class WebMvcConfigurationSupportTests {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void handlerExceptionResolver() {
+	void handlerExceptionResolver() {
 		ApplicationContext context = initContext(WebConfig.class);
 		HandlerExceptionResolverComposite compositeResolver =
 				context.getBean("handlerExceptionResolver", HandlerExceptionResolverComposite.class);

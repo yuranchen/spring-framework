@@ -203,7 +203,7 @@ class ResponseEntityExceptionHandlerTests {
 	}
 
 	@Test // gh-30300
-	public void reasonAsDetailShouldBeUpdatedViaMessageSource() {
+	void reasonAsDetailShouldBeUpdatedViaMessageSource() {
 
 		Locale locale = Locale.UK;
 		LocaleContextHolder.setLocale(locale);
@@ -262,7 +262,7 @@ class ResponseEntityExceptionHandlerTests {
 
 	@Test
 	@SuppressWarnings("deprecation")
-	public void httpMessageNotReadable() {
+	void httpMessageNotReadable() {
 		testException(new HttpMessageNotReadableException("message"));
 	}
 

@@ -151,7 +151,7 @@ class InvocableHandlerMethodTests {
 	}
 
 	@Test  // SPR-13917
-	public void invocationErrorMessage() {
+	void invocationErrorMessage() {
 		this.composite.addResolver(new StubArgumentResolver(double.class));
 		assertThatIllegalStateException()
 			.isThrownBy(() -> getInvocable(double.class).invokeForRequest(this.request, null))

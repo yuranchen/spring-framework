@@ -97,7 +97,7 @@ class RequestHeaderMapMethodArgumentResolverTests {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void resolveMultiValueMapArgument() {
+	void resolveMultiValueMapArgument() {
 		String name = "foo";
 		String value1 = "bar";
 		String value2 = "baz";

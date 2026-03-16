@@ -37,25 +37,25 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 class ModelMBeanNotificationPublisherTests {
 
 	@Test
-	void testCtorWithNullMBean() {
+	void ctorWithNullMBean() {
 		assertThatIllegalArgumentException().isThrownBy(() ->
 				new ModelMBeanNotificationPublisher(null, createObjectName(), this));
 	}
 
 	@Test
-	void testCtorWithNullObjectName() {
+	void ctorWithNullObjectName() {
 		assertThatIllegalArgumentException().isThrownBy(() ->
 				new ModelMBeanNotificationPublisher(new SpringModelMBean(), null, this));
 	}
 
 	@Test
-	void testCtorWithNullManagedResource() {
+	void ctorWithNullManagedResource() {
 		assertThatIllegalArgumentException().isThrownBy(() ->
 				new ModelMBeanNotificationPublisher(new SpringModelMBean(), createObjectName(), null));
 	}
 
 	@Test
-	void testSendNullNotification() throws Exception {
+	void sendNullNotification() throws Exception {
 		NotificationPublisher publisher
 				= new ModelMBeanNotificationPublisher(new SpringModelMBean(), createObjectName(), this);
 		assertThatIllegalArgumentException().isThrownBy(() ->
@@ -63,7 +63,7 @@ class ModelMBeanNotificationPublisherTests {
 	}
 
 	@Test
-	void testSendVanillaNotification() throws Exception {
+	void sendVanillaNotification() throws Exception {
 		StubSpringModelMBean mbean = new StubSpringModelMBean();
 		Notification notification = new Notification("network.alarm.router", mbean, 1872);
 		ObjectName objectName = createObjectName();
@@ -77,7 +77,7 @@ class ModelMBeanNotificationPublisherTests {
 	}
 
 	@Test
-	void testSendAttributeChangeNotification() throws Exception {
+	void sendAttributeChangeNotification() throws Exception {
 		StubSpringModelMBean mbean = new StubSpringModelMBean();
 		Notification notification = new AttributeChangeNotification(mbean, 1872, System.currentTimeMillis(), "Shall we break for some tea?", "agree", "java.lang.Boolean", Boolean.FALSE, Boolean.TRUE);
 		ObjectName objectName = createObjectName();
@@ -93,7 +93,7 @@ class ModelMBeanNotificationPublisherTests {
 	}
 
 	@Test
-	void testSendAttributeChangeNotificationWhereSourceIsNotTheManagedResource() throws Exception {
+	void sendAttributeChangeNotificationWhereSourceIsNotTheManagedResource() throws Exception {
 		StubSpringModelMBean mbean = new StubSpringModelMBean();
 		Notification notification = new AttributeChangeNotification(this, 1872, System.currentTimeMillis(), "Shall we break for some tea?", "agree", "java.lang.Boolean", Boolean.FALSE, Boolean.TRUE);
 		ObjectName objectName = createObjectName();

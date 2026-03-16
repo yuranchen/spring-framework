@@ -77,7 +77,7 @@ class ModelAndViewContainerTests {
 	}
 
 	@Test  // SPR-14045
-	public void ignoreDefaultModelAndWithoutRedirectModel() {
+	void ignoreDefaultModelAndWithoutRedirectModel() {
 		this.mavContainer.setRedirectModelScenario(true);
 		this.mavContainer.addAttribute("name", "value");
 

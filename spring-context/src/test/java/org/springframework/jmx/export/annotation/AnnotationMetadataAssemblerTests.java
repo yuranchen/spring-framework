@@ -38,7 +38,7 @@ class AnnotationMetadataAssemblerTests extends AbstractMetadataAssemblerTests {
 
 
 	@Test
-	void testAttributeFromInterface() throws Exception {
+	void attributeFromInterface() throws Exception {
 		ModelMBeanInfo inf = getMBeanInfoFromAssembler();
 		ModelMBeanAttributeInfo attr = inf.getAttribute("Colour");
 		assertThat(attr.isWritable()).as("The name attribute should be writable").isTrue();
@@ -46,21 +46,21 @@ class AnnotationMetadataAssemblerTests extends AbstractMetadataAssemblerTests {
 	}
 
 	@Test
-	void testOperationFromInterface() throws Exception {
+	void operationFromInterface() throws Exception {
 		ModelMBeanInfo inf = getMBeanInfoFromAssembler();
 		ModelMBeanOperationInfo op = inf.getOperation("fromInterface");
 		assertThat(op).isNotNull();
 	}
 
 	@Test
-	void testOperationOnGetter() throws Exception {
+	void operationOnGetter() throws Exception {
 		ModelMBeanInfo inf = getMBeanInfoFromAssembler();
 		ModelMBeanOperationInfo op = inf.getOperation("getExpensiveToCalculate");
 		assertThat(op).isNotNull();
 	}
 
 	@Test
-	void testRegistrationOnInterface() throws Exception {
+	void registrationOnInterface() throws Exception {
 		Object bean = getContext().getBean("testInterfaceBean");
 		ModelMBeanInfo inf = getAssembler().getMBeanInfo(bean, "bean:name=interfaceTestBean");
 		assertThat(inf).isNotNull();

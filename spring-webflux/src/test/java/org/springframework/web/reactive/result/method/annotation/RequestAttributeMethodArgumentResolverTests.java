@@ -138,7 +138,7 @@ class RequestAttributeMethodArgumentResolverTests {
 	}
 
 	@Test  // SPR-16158
-	public void resolveMonoParameter() {
+	void resolveMonoParameter() {
 		MethodParameter param = this.testMethod.annot(requestAttribute().noName()).arg(Mono.class, Foo.class);
 
 		// Mono attribute

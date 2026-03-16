@@ -81,7 +81,7 @@ class MethodParameterTests {
 	}
 
 	@Test
-	void testHashCode() throws NoSuchMethodException {
+	void hashCodeBehavior() throws NoSuchMethodException {
 		assertThat(stringParameter.hashCode()).isEqualTo(stringParameter.hashCode());
 		assertThat(longParameter.hashCode()).isEqualTo(longParameter.hashCode());
 		assertThat(intReturnType.hashCode()).isEqualTo(intReturnType.hashCode());
@@ -94,7 +94,7 @@ class MethodParameterTests {
 
 	@Test
 	@SuppressWarnings("deprecation")
-	void testFactoryMethods() {
+	void factoryMethods() {
 		assertThat(MethodParameter.forMethodOrConstructor(method, 0)).isEqualTo(stringParameter);
 		assertThat(MethodParameter.forMethodOrConstructor(method, 1)).isEqualTo(longParameter);
 

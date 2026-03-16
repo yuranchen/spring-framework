@@ -49,7 +49,7 @@ public class SingleInitializerAnnotationConfigTests {
 
 
 	@Test
-	public void activeBeans() {
+	void activeBeans() {
 		assertThat(foo).isEqualTo("foo");
 		assertThat(bar).isEqualTo("foo");
 		assertThat(baz).isEqualTo("global config");

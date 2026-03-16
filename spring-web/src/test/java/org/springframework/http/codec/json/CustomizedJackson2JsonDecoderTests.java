@@ -49,7 +49,7 @@ class CustomizedJackson2JsonDecoderTests extends AbstractDecoderTests<Jackson2Js
 
 	@Test
 	@Override
-	public void decode() throws Exception {
+	protected void decode() throws Exception {
 		Flux<DataBuffer> input = Flux.concat(stringBuffer("{\"property\":\"Value1\"}"));
 
 		testDecodeAll(input, MyCustomizedDecoderBean.class, step -> step
@@ -59,7 +59,7 @@ class CustomizedJackson2JsonDecoderTests extends AbstractDecoderTests<Jackson2Js
 
 	@Test
 	@Override
-	public void decodeToMono() throws Exception {
+	protected void decodeToMono() throws Exception {
 		Mono<DataBuffer> input = stringBuffer("{\"property\":\"Value2\"}");
 
 		ResolvableType elementType = ResolvableType.forClass(MyCustomizedDecoderBean.class);

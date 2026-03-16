@@ -56,7 +56,7 @@ class HeaderRequestMatchersIntegrationTests {
 
 
 	@Test
-	void testString() {
+	void string() {
 		this.mockServer.expect(requestTo("/person/1"))
 			.andExpect(header("Accept", "application/json, application/*+json"))
 			.andRespond(withSuccess(RESPONSE_BODY, MediaType.APPLICATION_JSON));
@@ -65,7 +65,7 @@ class HeaderRequestMatchersIntegrationTests {
 	}
 
 	@Test
-	void testStringContains() {
+	void stringContains() {
 		this.mockServer.expect(requestTo("/person/1"))
 			.andExpect(header("Accept", containsString("json")))
 			.andRespond(withSuccess(RESPONSE_BODY, MediaType.APPLICATION_JSON));

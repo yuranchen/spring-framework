@@ -57,7 +57,7 @@ public class JsonPathAssertionTests {
 
 
 	@Test
-	public void exists() {
+	void exists() {
 		String composerByName = "$.composers[?(@.name == '%s')]";
 		String performerByName = "$.performers[?(@.name == '%s')]";
 
@@ -77,7 +77,7 @@ public class JsonPathAssertionTests {
 	}
 
 	@Test
-	public void doesNotExist() {
+	void doesNotExist() {
 		client.get().uri("/music/people")
 				.exchange()
 				.expectBody()
@@ -87,7 +87,7 @@ public class JsonPathAssertionTests {
 	}
 
 	@Test
-	public void equality() {
+	void equality() {
 		client.get().uri("/music/people")
 				.exchange()
 				.expectBody()
@@ -105,7 +105,7 @@ public class JsonPathAssertionTests {
 	}
 
 	@Test
-	public void hamcrestMatcher() {
+	void hamcrestMatcher() {
 		client.get().uri("/music/people")
 				.exchange()
 				.expectBody()
@@ -116,7 +116,7 @@ public class JsonPathAssertionTests {
 	}
 
 	@Test
-	public void hamcrestMatcherWithParameterizedJsonPath() {
+	void hamcrestMatcherWithParameterizedJsonPath() {
 		client.get().uri("/music/people")
 				.exchange()
 				.expectBody()

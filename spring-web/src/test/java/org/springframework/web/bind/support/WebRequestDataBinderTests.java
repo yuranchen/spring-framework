@@ -44,7 +44,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class WebRequestDataBinderTests {
 
 	@Test
-	void testBindingWithNestedObjectCreation() {
+	void bindingWithNestedObjectCreation() {
 		TestBean tb = new TestBean();
 
 		WebRequestDataBinder binder = new WebRequestDataBinder(tb, "person");
@@ -65,7 +65,7 @@ class WebRequestDataBinderTests {
 	}
 
 	@Test
-	void testBindingWithNestedObjectCreationThroughAutoGrow() {
+	void bindingWithNestedObjectCreationThroughAutoGrow() {
 		TestBean tb = new TestBeanWithConcreteSpouse();
 
 		WebRequestDataBinder binder = new WebRequestDataBinder(tb, "person");
@@ -80,7 +80,7 @@ class WebRequestDataBinderTests {
 	}
 
 	@Test
-	void testFieldPrefixCausesFieldReset() {
+	void fieldPrefixCausesFieldReset() {
 		TestBean target = new TestBean();
 		WebRequestDataBinder binder = new WebRequestDataBinder(target);
 
@@ -96,7 +96,7 @@ class WebRequestDataBinderTests {
 	}
 
 	@Test
-	void testFieldPrefixCausesFieldResetWithIgnoreUnknownFields() {
+	void fieldPrefixCausesFieldResetWithIgnoreUnknownFields() {
 		TestBean target = new TestBean();
 		WebRequestDataBinder binder = new WebRequestDataBinder(target);
 		binder.setIgnoreUnknownFields(false);
@@ -113,7 +113,7 @@ class WebRequestDataBinderTests {
 	}
 
 	@Test // gh-25836
-	public void testFieldWithEmptyArrayIndex() {
+	void fieldWithEmptyArrayIndex() {
 		TestBean target = new TestBean();
 		WebRequestDataBinder binder = new WebRequestDataBinder(target);
 
@@ -125,7 +125,7 @@ class WebRequestDataBinderTests {
 	}
 
 	@Test
-	void testFieldDefault() {
+	void fieldDefault() {
 		TestBean target = new TestBean();
 		WebRequestDataBinder binder = new WebRequestDataBinder(target);
 
@@ -142,7 +142,7 @@ class WebRequestDataBinderTests {
 
 	// SPR-13502
 	@Test
-	void testCollectionFieldsDefault() {
+	void collectionFieldsDefault() {
 		TestBean target = new TestBean();
 		target.setSomeSet(null);
 		target.setSomeList(null);
@@ -161,7 +161,7 @@ class WebRequestDataBinderTests {
 	}
 
 	@Test
-	void testFieldDefaultPreemptsFieldMarker() {
+	void fieldDefaultPreemptsFieldMarker() {
 		TestBean target = new TestBean();
 		WebRequestDataBinder binder = new WebRequestDataBinder(target);
 
@@ -182,7 +182,7 @@ class WebRequestDataBinderTests {
 	}
 
 	@Test
-	void testFieldDefaultWithNestedProperty() {
+	void fieldDefaultWithNestedProperty() {
 		TestBean target = new TestBean();
 		target.setSpouse(new TestBean());
 		WebRequestDataBinder binder = new WebRequestDataBinder(target);
@@ -204,7 +204,7 @@ class WebRequestDataBinderTests {
 	}
 
 	@Test
-	void testFieldDefaultNonBoolean() {
+	void fieldDefaultNonBoolean() {
 		TestBean target = new TestBean();
 		WebRequestDataBinder binder = new WebRequestDataBinder(target);
 
@@ -220,7 +220,7 @@ class WebRequestDataBinderTests {
 	}
 
 	@Test
-	void testWithCommaSeparatedStringArray() {
+	void withCommaSeparatedStringArray() {
 		TestBean target = new TestBean();
 		WebRequestDataBinder binder = new WebRequestDataBinder(target);
 
@@ -238,7 +238,7 @@ class WebRequestDataBinderTests {
 	}
 
 	@Test
-	void testEnumBinding() {
+	void enumBinding() {
 		EnumHolder target = new EnumHolder();
 		WebRequestDataBinder binder = new WebRequestDataBinder(target);
 
@@ -249,7 +249,7 @@ class WebRequestDataBinderTests {
 	}
 
 	@Test
-	void testMultipartFileAsString() {
+	void multipartFileAsString() {
 		TestBean target = new TestBean();
 		WebRequestDataBinder binder = new WebRequestDataBinder(target);
 		binder.registerCustomEditor(String.class, new StringMultipartFileEditor());
@@ -261,7 +261,7 @@ class WebRequestDataBinderTests {
 	}
 
 	@Test
-	void testMultipartFileAsStringArray() {
+	void multipartFileAsStringArray() {
 		TestBean target = new TestBean();
 		WebRequestDataBinder binder = new WebRequestDataBinder(target);
 		binder.registerCustomEditor(String.class, new StringMultipartFileEditor());
@@ -274,7 +274,7 @@ class WebRequestDataBinderTests {
 	}
 
 	@Test
-	void testMultipartFilesAsStringArray() {
+	void multipartFilesAsStringArray() {
 		TestBean target = new TestBean();
 		WebRequestDataBinder binder = new WebRequestDataBinder(target);
 		binder.registerCustomEditor(String.class, new StringMultipartFileEditor());
@@ -289,7 +289,7 @@ class WebRequestDataBinderTests {
 	}
 
 	@Test
-	void testNoPrefix() {
+	void noPrefix() {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addParameter("forname", "Tony");
 		request.addParameter("surname", "Blair");
@@ -300,7 +300,7 @@ class WebRequestDataBinderTests {
 	}
 
 	@Test
-	void testPrefix() {
+	void prefix() {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addParameter("test_forname", "Tony");
 		request.addParameter("test_surname", "Blair");
@@ -318,7 +318,7 @@ class WebRequestDataBinderTests {
 	/**
 	 * Must contain: forname=Tony surname=Blair age=50
 	 */
-	protected void doTestTony(PropertyValues pvs) {
+	void doTestTony(PropertyValues pvs) {
 		assertThat(pvs.getPropertyValues().length).as("Contains 3").isEqualTo(3);
 		assertThat(pvs.contains("forname")).as("Contains forname").isTrue();
 		assertThat(pvs.contains("surname")).as("Contains surname").isTrue();
@@ -343,14 +343,14 @@ class WebRequestDataBinderTests {
 	}
 
 	@Test
-	void testNoParameters() {
+	void noParameters() {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		ServletRequestParameterPropertyValues pvs = new ServletRequestParameterPropertyValues(request);
 		assertThat(pvs.getPropertyValues().length).as("Found no parameters").isEqualTo(0);
 	}
 
 	@Test
-	void testMultipleValuesForParameter() {
+	void multipleValuesForParameter() {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		String[] original = new String[] {"Tony", "Rod"};
 		request.addParameter("forname", original);

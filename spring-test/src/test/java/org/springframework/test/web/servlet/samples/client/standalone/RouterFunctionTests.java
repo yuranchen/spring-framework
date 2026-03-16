@@ -40,7 +40,7 @@ import static org.springframework.web.servlet.function.ServerResponse.ok;
  *
  * @author Arjen Poutsma
  */
-public class RouterFunctionTests {
+class RouterFunctionTests {
 
 	@Test
 	void json() {
@@ -51,7 +51,7 @@ public class RouterFunctionTests {
 	}
 
 	@Test
-	public void queryParameter() {
+	void queryParameter() {
 		execute("/search?name=George", body -> body.jsonPath("$.name").isEqualTo("George"));
 	}
 
@@ -134,4 +134,5 @@ public class RouterFunctionTests {
 			this.age = age;
 		}
 	}
+
 }

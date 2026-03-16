@@ -211,12 +211,12 @@ public class DispatcherHandlerErrorTests {
 	static class TestConfig {
 
 		@Bean
-		public RequestMappingHandlerMapping handlerMapping() {
+		RequestMappingHandlerMapping handlerMapping() {
 			return new RequestMappingHandlerMapping();
 		}
 
 		@Bean
-		public RequestMappingHandlerAdapter handlerAdapter() {
+		RequestMappingHandlerAdapter handlerAdapter() {
 			return new RequestMappingHandlerAdapter();
 		}
 
@@ -228,7 +228,7 @@ public class DispatcherHandlerErrorTests {
 		}
 
 		@Bean
-		public TestController testController() {
+		public TestController controller() {
 			return new TestController();
 		}
 	}

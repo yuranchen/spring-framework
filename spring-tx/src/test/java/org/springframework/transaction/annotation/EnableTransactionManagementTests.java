@@ -75,7 +75,7 @@ class EnableTransactionManagementTests {
 	}
 
 	@Test  // gh-31238
-	public void cglibProxyClassIsCachedAcrossApplicationContexts() {
+	void cglibProxyClassIsCachedAcrossApplicationContexts() {
 		ConfigurableApplicationContext ctx;
 
 		// Round #1
