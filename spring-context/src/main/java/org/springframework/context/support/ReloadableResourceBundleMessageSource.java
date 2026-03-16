@@ -60,9 +60,13 @@ import org.springframework.util.StringUtils;
  * are treated in a slightly different fashion than the "basenames" property of
  * {@link ResourceBundleMessageSource}. It follows the basic ResourceBundle rule of not
  * specifying file extension or language codes, but can refer to any Spring resource
- * location (instead of being restricted to classpath resources). With a "classpath:"
- * prefix, resources can still be loaded from the classpath, but "cacheSeconds" values
- * other than "-1" (caching forever) might not work reliably in this case.
+ * location (instead of being restricted to classpath resources).
+ *
+ * <p>With a "classpath:" prefix, resources can still be loaded from the classpath,
+ * but "cacheSeconds" values other than "-1" (caching forever) are not expected to
+ * be effective in this case. As of 7.1, a "classpath*:" prefix is accepted as well,
+ * loading all classpath resources of the same fully-qualified name: for example,
+ * "classpath*:/messages.properties" or "classpath*:META-INF/messages.properties".
  *
  * <p>For a typical web application, message files could be placed in {@code WEB-INF}:
  * for example, a "WEB-INF/messages" basename would find a "WEB-INF/messages.properties",
@@ -562,8 +566,8 @@ public class ReloadableResourceBundleMessageSource extends AbstractResourceBased
 	 */
 	protected Properties loadProperties(Resource resource, String filename) throws IOException {
 		Properties props = newProperties();
-		try (InputStream inputStream = resource.getInputStream()) {
-			String resourceFilename = resource.getFilename();
+		String resourceFilename = resource.getFilename();
+		resource.consumeContent(inputStream -> {
 			if (resourceFilename != null && resourceFilename.endsWith(XML_EXTENSION)) {
 				if (logger.isDebugEnabled()) {
 					logger.debug("Loading properties [" + resource.getFilename() + "]");
@@ -594,8 +598,8 @@ public class ReloadableResourceBundleMessageSource extends AbstractResourceBased
 					this.propertiesPersister.load(props, inputStream);
 				}
 			}
-			return props;
-		}
+		});
+		return props;
 	}
 
 	/**
