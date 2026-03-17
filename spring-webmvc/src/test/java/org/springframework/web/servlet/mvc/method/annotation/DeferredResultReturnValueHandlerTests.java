@@ -89,7 +89,7 @@ class DeferredResultReturnValueHandlerTests {
 
 	@Test
 	@SuppressWarnings({"deprecation", "removal"})
-	public void listenableFuture() throws Exception {
+	void listenableFuture() throws Exception {
 		org.springframework.util.concurrent.SettableListenableFuture<String> future =
 				new org.springframework.util.concurrent.SettableListenableFuture<>();
 		testHandle(future, org.springframework.util.concurrent.ListenableFuture.class,
@@ -110,7 +110,7 @@ class DeferredResultReturnValueHandlerTests {
 
 	@Test
 	@SuppressWarnings({"deprecation", "removal"})
-	public void listenableFutureWithError() throws Exception {
+	void listenableFutureWithError() throws Exception {
 		org.springframework.util.concurrent.SettableListenableFuture<String> future =
 				new org.springframework.util.concurrent.SettableListenableFuture<>();
 		IllegalStateException ex = new IllegalStateException();

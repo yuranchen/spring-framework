@@ -57,7 +57,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.HEAD;
  * @see ContentAssertionTests
  * @see XmlContentAssertionTests
  */
-public class XpathAssertionTests {
+class XpathAssertionTests {
 
 	private static final Map<String, String> musicNamespace =
 		Collections.singletonMap("ns", "https://example.org/music/people");
@@ -65,7 +65,7 @@ public class XpathAssertionTests {
 	private MockMvc mockMvc;
 
 	@BeforeEach
-	public void setup() throws Exception {
+	void setup() throws Exception {
 		this.mockMvc = standaloneSetup(new MusicController())
 				.defaultRequest(get("/").accept(MediaType.APPLICATION_XML, MediaType.parseMediaType("application/xml;charset=UTF-8")))
 				.alwaysExpect(status().isOk())

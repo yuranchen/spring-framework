@@ -63,7 +63,7 @@ import static org.mockito.Mockito.mock;
  * @author Chris Beams
  */
 @SuppressWarnings("resource")
-public class GroovyScriptFactoryTests {
+class GroovyScriptFactoryTests {
 
 	@Test
 	void staticScript() {

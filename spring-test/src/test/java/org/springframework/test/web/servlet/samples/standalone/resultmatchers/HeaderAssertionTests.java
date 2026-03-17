@@ -57,7 +57,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
  * @author Sam Brannen
  * @author Brian Clozel
  */
-public class HeaderAssertionTests {
+class HeaderAssertionTests {
 
 	private static final String ERROR_MESSAGE = "Should have thrown an AssertionError";
 
@@ -74,7 +74,7 @@ public class HeaderAssertionTests {
 
 
 	@BeforeEach
-	public void setup() {
+	void setup() {
 		this.dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
 		this.dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 		this.now = dateFormat.format(new Date(this.currentTime));

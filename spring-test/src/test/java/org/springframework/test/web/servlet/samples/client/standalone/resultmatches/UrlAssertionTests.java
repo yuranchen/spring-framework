@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author Rossen Stoyanchev
  */
-public class UrlAssertionTests {
+class UrlAssertionTests {
 
 	private final WebTestClient testClient =
 			MockMvcWebTestClient.bindToController(new SimpleController()).build();

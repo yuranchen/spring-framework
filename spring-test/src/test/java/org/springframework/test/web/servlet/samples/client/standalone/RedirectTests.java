@@ -43,7 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author Rossen Stoyanchev
  */
-public class RedirectTests {
+class RedirectTests {
 
 	private final WebTestClient testClient =
 			MockMvcWebTestClient.bindToController(new PersonController()).build();

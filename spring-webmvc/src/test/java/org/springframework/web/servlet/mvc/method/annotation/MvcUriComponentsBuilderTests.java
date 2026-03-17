@@ -86,7 +86,7 @@ import static org.springframework.web.servlet.mvc.method.annotation.MvcUriCompon
  * @author Sam Brannen
  */
 @SuppressWarnings("unused")
-public class MvcUriComponentsBuilderTests {
+class MvcUriComponentsBuilderTests {
 
 	private final MockHttpServletRequest request = new MockHttpServletRequest();
 

@@ -14,30 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.context.annotation.configuration.a;
+package org.springframework.context.annotation.configuration;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.configuration.Bar;
-
-public abstract class BaseConfig {
-
-	// ---- reproduce ----
-	@Bean
-	Bar packagePrivateBar() {
-		return new Bar();
-	}
-
-	public Bar reproBar() {
-		return packagePrivateBar();
-	}
-
-	// ---- workaround ----
-	@Bean
-	protected Bar protectedBar() {
-		return new Bar();
-	}
-
-	public Bar workaroundBar() {
-		return protectedBar();
-	}
+public class Bar {
 }

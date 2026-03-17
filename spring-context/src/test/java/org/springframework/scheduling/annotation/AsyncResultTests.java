@@ -33,7 +33,7 @@ class AsyncResultTests {
 
 	@Test
 	@SuppressWarnings({ "deprecation", "removal" })
-	public void asyncResultWithCallbackAndValue() throws Exception {
+	void asyncResultWithCallbackAndValue() throws Exception {
 		String value = "val";
 		final Set<String> values = new HashSet<>(1);
 		org.springframework.util.concurrent.ListenableFuture<String> future = AsyncResult.forValue(value);
@@ -55,7 +55,7 @@ class AsyncResultTests {
 
 	@Test
 	@SuppressWarnings({ "deprecation", "removal" })
-	public void asyncResultWithCallbackAndException() {
+	void asyncResultWithCallbackAndException() {
 		IOException ex = new IOException();
 		final Set<Throwable> values = new HashSet<>(1);
 		org.springframework.util.concurrent.ListenableFuture<String> future = AsyncResult.forExecutionException(ex);
@@ -80,7 +80,7 @@ class AsyncResultTests {
 
 	@Test
 	@SuppressWarnings({ "deprecation", "removal" })
-	public void asyncResultWithSeparateCallbacksAndValue() throws Exception {
+	void asyncResultWithSeparateCallbacksAndValue() throws Exception {
 		String value = "val";
 		final Set<String> values = new HashSet<>(1);
 		org.springframework.util.concurrent.ListenableFuture<String> future = AsyncResult.forValue(value);
@@ -93,7 +93,7 @@ class AsyncResultTests {
 
 	@Test
 	@SuppressWarnings({ "deprecation", "removal" })
-	public void asyncResultWithSeparateCallbacksAndException() {
+	void asyncResultWithSeparateCallbacksAndException() {
 		IOException ex = new IOException();
 		final Set<Throwable> values = new HashSet<>(1);
 		org.springframework.util.concurrent.ListenableFuture<String> future = AsyncResult.forExecutionException(ex);

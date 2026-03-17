@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author Rossen Stoyanchev
  */
-public class CookieAssertionTests {
+class CookieAssertionTests {
 
 	private static final String COOKIE_NAME = CookieLocaleResolver.DEFAULT_COOKIE_NAME;
 
@@ -46,7 +46,7 @@ public class CookieAssertionTests {
 
 
 	@BeforeEach
-	public void setup() {
+	void setup() {
 		CookieLocaleResolver localeResolver = new CookieLocaleResolver();
 		localeResolver.setCookieDomain("domain");
 		localeResolver.setCookieHttpOnly(true);

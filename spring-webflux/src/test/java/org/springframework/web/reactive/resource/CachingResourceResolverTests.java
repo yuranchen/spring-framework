@@ -41,7 +41,7 @@ import static org.springframework.web.testfixture.http.server.reactive.MockServe
  * @author Rossen Stoyanchev
  */
 @ExtendWith(GzipSupport.class)
-public class CachingResourceResolverTests {
+class CachingResourceResolverTests {
 
 	private static final Duration TIMEOUT = Duration.ofSeconds(5);
 

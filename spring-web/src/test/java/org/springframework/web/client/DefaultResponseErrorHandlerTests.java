@@ -145,7 +145,7 @@ class DefaultResponseErrorHandlerTests {
 	}
 
 	@Test  // SPR-16108
-	public void hasErrorForUnknownStatusCode() throws Exception {
+	void hasErrorForUnknownStatusCode() throws Exception {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.TEXT_PLAIN);
 
@@ -157,7 +157,7 @@ class DefaultResponseErrorHandlerTests {
 	}
 
 	@Test // SPR-9406
-	public void handleErrorUnknownStatusCode() throws Exception {
+	void handleErrorUnknownStatusCode() throws Exception {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.TEXT_PLAIN);
 
@@ -170,7 +170,7 @@ class DefaultResponseErrorHandlerTests {
 	}
 
 	@Test  // SPR-17461
-	public void hasErrorForCustomClientError() throws Exception {
+	void hasErrorForCustomClientError() throws Exception {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.TEXT_PLAIN);
 
@@ -210,7 +210,7 @@ class DefaultResponseErrorHandlerTests {
 	}
 
 	@Test  // SPR-17461
-	public void hasErrorForCustomServerError() throws Exception {
+	void hasErrorForCustomServerError() throws Exception {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.TEXT_PLAIN);
 
@@ -250,7 +250,7 @@ class DefaultResponseErrorHandlerTests {
 	}
 
 	@Test  // SPR-16604
-	public void bodyAvailableAfterHasErrorForUnknownStatusCode() throws Exception {
+	void bodyAvailableAfterHasErrorForUnknownStatusCode() throws Exception {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.TEXT_PLAIN);
 		TestByteArrayInputStream body = new TestByteArrayInputStream("Hello World".getBytes(UTF_8));

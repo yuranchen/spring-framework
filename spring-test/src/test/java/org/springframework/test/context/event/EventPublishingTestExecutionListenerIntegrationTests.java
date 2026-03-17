@@ -66,7 +66,7 @@ import static org.mockito.Mockito.verify;
  * @author Sam Brannen
  * @since 5.2
  */
-public class EventPublishingTestExecutionListenerIntegrationTests {
+class EventPublishingTestExecutionListenerIntegrationTests {
 
 	private static final String THREAD_NAME_PREFIX = "Test-";
 
@@ -88,7 +88,7 @@ public class EventPublishingTestExecutionListenerIntegrationTests {
 
 
 	@AfterEach
-	public void closeApplicationContext() {
+	void closeApplicationContext() {
 		this.testContext.markApplicationContextDirty(null);
 	}
 

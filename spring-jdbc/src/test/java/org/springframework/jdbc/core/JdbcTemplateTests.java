@@ -826,7 +826,7 @@ class JdbcTemplateTests {
 				}));
 	}
 
-	void test3BatchesOf2ItemsFailing(Consumer<Exception> exception) throws Exception {
+	private void test3BatchesOf2ItemsFailing(Consumer<Exception> exception) throws Exception {
 		String sql = "INSERT INTO NOSUCHTABLE values (?)";
 		List<Integer> ids = Arrays.asList(1, 2, 3, 2, 4, 5);
 		int[] rowsAffected = new int[] {1, 1};

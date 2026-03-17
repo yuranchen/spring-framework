@@ -45,13 +45,13 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
  * @author Rossen Stoyanchev
  * @author Juergen Hoeller
  */
-public class RedirectTests {
+class RedirectTests {
 
 	private MockMvc mockMvc;
 
 
 	@BeforeEach
-	public void setup() {
+	void setup() {
 		this.mockMvc = standaloneSetup(new PersonController()).build();
 	}
 

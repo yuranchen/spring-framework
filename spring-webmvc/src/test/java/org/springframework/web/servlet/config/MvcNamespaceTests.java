@@ -167,7 +167,7 @@ import static org.assertj.core.api.InstanceOfAssertFactories.BOOLEAN;
  */
 
 @SuppressWarnings("deprecation")
-public class MvcNamespaceTests {
+class MvcNamespaceTests {
 
 	public static final String VIEWCONTROLLER_BEAN_NAME =
 			"org.springframework.web.servlet.config.viewControllerHandlerMapping";

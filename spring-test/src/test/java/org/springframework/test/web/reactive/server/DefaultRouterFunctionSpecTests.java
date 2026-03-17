@@ -30,7 +30,7 @@ import org.springframework.web.reactive.function.server.ServerResponse;
  *
  * @author Rossen Stoyanchev
  */
-public class DefaultRouterFunctionSpecTests {
+class DefaultRouterFunctionSpecTests {
 
 	@Test
 	void webFilter() {

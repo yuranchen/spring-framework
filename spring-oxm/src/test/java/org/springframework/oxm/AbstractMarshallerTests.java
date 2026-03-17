@@ -57,7 +57,7 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 	protected Object flights;
 
 	@BeforeEach
-	public final void setUp() throws Exception {
+	final void setUp() throws Exception {
 		marshaller = createMarshaller();
 		flights = createFlights();
 	}

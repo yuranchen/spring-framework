@@ -42,7 +42,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  * @author Sam Brannen
  */
 @SuppressWarnings("deprecation")
-public class ResourceBundleViewResolverTests {
+class ResourceBundleViewResolverTests {
 
 	/** Comes from this package */
 	private static final String PROPS_FILE = "org.springframework.web.servlet.view.testviews";

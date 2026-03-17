@@ -29,13 +29,13 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author Rossen Stoyanchev
  */
-public class ControllerTests {
+class ControllerTests {
 
 	private WebTestClient client;
 
 
 	@BeforeEach
-	public void setUp() throws Exception {
+	void setUp() throws Exception {
 		this.client = WebTestClient.bindToController(new TestController()).build();
 	}
 

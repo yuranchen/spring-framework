@@ -39,7 +39,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
  * @author Sam Brannen
  * @author Stephane Nicoll
  */
-public class DefaultMockMvcBuilderTests {
+class DefaultMockMvcBuilderTests {
 
 	private final MockServletContext servletContext = new MockServletContext();
 

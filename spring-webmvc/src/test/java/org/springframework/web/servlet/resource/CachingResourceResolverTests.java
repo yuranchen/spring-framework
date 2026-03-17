@@ -39,7 +39,7 @@ import static org.mockito.Mockito.mock;
  * @author Rossen Stoyanchev
  */
 @ExtendWith(GzipSupport.class)
-public class CachingResourceResolverTests {
+class CachingResourceResolverTests {
 
 	private Cache cache;
 

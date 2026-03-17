@@ -49,7 +49,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 	@ContextConfiguration("../../context/servlet-context.xml")
 })
 @DisabledInAotMode("@ContextHierarchy is not supported in AOT")
-public class WebAppResourceTests {
+class WebAppResourceTests {
 
 	@Autowired
 	private WebApplicationContext wac;
@@ -58,7 +58,7 @@ public class WebAppResourceTests {
 
 
 	@BeforeEach
-	public void setup() {
+	void setup() {
 		this.testClient = MockMvcWebTestClient.bindToApplicationContext(this.wac).build();
 	}
 

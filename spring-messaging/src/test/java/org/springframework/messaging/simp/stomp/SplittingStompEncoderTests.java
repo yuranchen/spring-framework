@@ -33,11 +33,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  * @author Injae Kim
  * @author Rossen Stoyanchev
  */
-public class SplittingStompEncoderTests {
+class SplittingStompEncoderTests {
 
 	private static final StompEncoder ENCODER = new StompEncoder();
 
-	public static final byte[] EMPTY_PAYLOAD = new byte[0];
+	private static final byte[] EMPTY_PAYLOAD = new byte[0];
 
 
 	@Test

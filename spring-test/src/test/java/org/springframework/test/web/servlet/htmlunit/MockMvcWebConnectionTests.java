@@ -37,7 +37,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
  * @author Rob Winch
  * @since 4.2
  */
-public class MockMvcWebConnectionTests {
+class MockMvcWebConnectionTests {
 
 	private final WebClient webClient = new WebClient();
 

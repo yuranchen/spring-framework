@@ -61,7 +61,7 @@ import static org.mockito.Mockito.when;
  * @author Brian Clozel
  */
 @MockitoSettings(strictness = Strictness.LENIENT)
-public class DefaultWebClientTests {
+class DefaultWebClientTests {
 
 	@Mock
 	private ExchangeFunction exchangeFunction;
@@ -137,7 +137,7 @@ public class DefaultWebClientTests {
 
 	@Test
 	@SuppressWarnings("deprecation")
-	public void contextFromThreadLocal() {
+	void contextFromThreadLocal() {
 		WebClient client = this.builder
 				.filter((request, next) ->
 						// Async, continue on different thread

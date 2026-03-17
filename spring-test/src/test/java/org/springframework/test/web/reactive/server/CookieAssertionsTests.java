@@ -37,7 +37,7 @@ import static org.mockito.Mockito.mock;
  *
  * @author Rossen Stoyanchev
  */
-public class CookieAssertionsTests {
+class CookieAssertionsTests {
 
 	private final ResponseCookie cookie = ResponseCookie.from("foo", "bar")
 			.maxAge(Duration.ofMinutes(30))

@@ -32,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
  *
  * @author Rossen Stoyanchev
  */
-public class XpathResultMatchersTests {
+class XpathResultMatchersTests {
 
 	private static final String RESPONSE_CONTENT = "<foo><bar>111</bar><bar>true</bar></foo>";
 

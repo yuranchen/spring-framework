@@ -48,7 +48,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
  * @see org.springframework.test.web.servlet.result.PrintingResultHandlerTests
  */
 @Disabled
-public class PrintingResultHandlerSmokeTests {
+class PrintingResultHandlerSmokeTests {
 
 	// Not intended to be executed with the build.
 	// Comment out class-level @Disabled to see the output.

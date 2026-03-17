@@ -52,7 +52,7 @@ import static org.springframework.web.testfixture.method.ResolvableMethod.on;
  * Tests for streaming of {@link ModelAndView} fragments.
  * @author Rossen Stoyanchev
  */
-public class FragmentRenderingStreamTests {
+class FragmentRenderingStreamTests {
 
 	private final MockHttpServletRequest request = new MockHttpServletRequest();
 

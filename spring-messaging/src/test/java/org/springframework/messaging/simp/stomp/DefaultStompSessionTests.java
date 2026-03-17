@@ -65,7 +65,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
  * @author Rossen Stoyanchev
  */
 @MockitoSettings(strictness = Strictness.LENIENT)
-public class DefaultStompSessionTests {
+class DefaultStompSessionTests {
 
 	private DefaultStompSession session;
 

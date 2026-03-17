@@ -106,7 +106,7 @@ class PatternsRequestConditionTests {
 
 	@Test
 	@SuppressWarnings("deprecation")
-	public void matchTrailingSlash() {
+	void matchTrailingSlash() {
 		MockServerWebExchange exchange = MockServerWebExchange.from(get("/foo/"));
 
 		PathPatternParser patternParser = new PathPatternParser();

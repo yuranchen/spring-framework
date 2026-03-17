@@ -34,13 +34,13 @@ import org.springframework.web.reactive.config.EnableWebFlux;
  * @author Rossen Stoyanchev
  * @since 5.0
  */
-public class ApplicationContextTests {
+class ApplicationContextTests {
 
 	private WebTestClient client;
 
 
 	@BeforeEach
-	public void setUp() throws Exception {
+	void setUp() throws Exception {
 
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 		context.register(WebConfig.class);
@@ -50,7 +50,7 @@ public class ApplicationContextTests {
 	}
 
 	@Test
-	public void test() throws Exception {
+	void test() throws Exception {
 		this.client.get().uri("/test")
 				.exchange()
 				.expectStatus().isOk()

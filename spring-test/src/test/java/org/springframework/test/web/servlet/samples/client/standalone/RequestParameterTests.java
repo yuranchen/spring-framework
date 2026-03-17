@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  *
  * @author Rossen Stoyanchev
  */
-public class RequestParameterTests {
+class RequestParameterTests {
 
 	@Test
 	void queryParameter() {

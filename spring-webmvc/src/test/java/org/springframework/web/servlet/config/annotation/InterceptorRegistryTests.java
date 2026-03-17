@@ -51,7 +51,7 @@ import static org.mockito.Mockito.mock;
  * @author Eko Kurniawan Khannedy
  */
 @SuppressWarnings("deprecation")
-public class InterceptorRegistryTests {
+class InterceptorRegistryTests {
 
 	private InterceptorRegistry registry;
 

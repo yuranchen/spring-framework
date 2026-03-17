@@ -173,7 +173,7 @@ public abstract class AbstractDataBufferAllocatingTests {
 
 	@BeforeAll
 	@SuppressWarnings("deprecation") // PooledByteBufAllocator no longer supports tinyCacheSize.
-	public static void createAllocators() {
+	static void createAllocators() {
 		netty4OnHeapUnpooled = new UnpooledByteBufAllocator(false);
 		netty4OffHeapUnpooled = new UnpooledByteBufAllocator(true);
 		netty4OnHeapPooled = new PooledByteBufAllocator(false, 1, 1, 4096, 4, 0, 0, 0, true);

@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Brian Clozel
  * @author Sam Brannen
  */
-public class MockMvcResultMatchersTests {
+class MockMvcResultMatchersTests {
 
 	@Test
 	void redirect() throws Exception {

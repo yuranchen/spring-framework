@@ -49,12 +49,12 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 class MethodInvocationProceedingJoinPointTests {
 
 	@Test
-	void testingBindingWithJoinPoint() {
+	void bindingWithJoinPoint() {
 		assertThatIllegalStateException().isThrownBy(AbstractAspectJAdvice::currentJoinPoint);
 	}
 
 	@Test
-	void testingBindingWithProceedingJoinPoint() {
+	void bindingWithProceedingJoinPoint() {
 		assertThatIllegalStateException().isThrownBy(AbstractAspectJAdvice::currentJoinPoint);
 	}
 

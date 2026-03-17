@@ -73,7 +73,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
  * @author Sam Brannen
  */
 @SuppressWarnings("deprecation")
-public class Jackson2ObjectMapperFactoryBeanTests {
+class Jackson2ObjectMapperFactoryBeanTests {
 
 	private static final String DATE_FORMAT = "yyyy-MM-dd";
 

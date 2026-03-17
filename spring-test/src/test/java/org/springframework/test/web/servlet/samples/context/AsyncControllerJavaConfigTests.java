@@ -63,7 +63,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @ContextHierarchy(@ContextConfiguration(classes = AsyncControllerJavaConfigTests.WebConfig.class))
 @DisabledInAotMode("@ContextHierarchy is not supported in AOT")
-public class AsyncControllerJavaConfigTests {
+class AsyncControllerJavaConfigTests {
 
 	@Autowired
 	private WebApplicationContext wac;
@@ -75,7 +75,7 @@ public class AsyncControllerJavaConfigTests {
 
 
 	@BeforeEach
-	public void setup() {
+	void setup() {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 

@@ -79,7 +79,7 @@ import static org.mockito.Mockito.verify;
  * @author Sebastien Deleuze
  */
 @ExtendWith(MockitoExtension.class)
-public class SimpAnnotationMethodMessageHandlerTests {
+class SimpAnnotationMethodMessageHandlerTests {
 
 	private static final String TEST_INVALID_VALUE = "invalidValue";
 

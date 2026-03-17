@@ -41,7 +41,7 @@ import static org.junit.jupiter.api.condition.JRE.JAVA_21;
  * @author Rossen Stoyanchev
  */
 @DisabledForJreRange(min = JAVA_21, disabledReason = "Kotlin doesn't support Java 21+ yet")
-public class DefaultFragmentsRenderingTests {
+class DefaultFragmentsRenderingTests {
 
 	@Test
 	void render() throws Exception {

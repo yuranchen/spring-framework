@@ -47,7 +47,7 @@ import static org.springframework.core.testfixture.TestGroup.LONG_RUNNING;
  * @author Stephane Nicoll
  */
 @EnabledForTestGroups(LONG_RUNNING)
-public class AnnotationAsyncExecutionAspectTests {
+class AnnotationAsyncExecutionAspectTests {
 
 	private static final long WAIT_TIME = 1000; //milliseconds
 
@@ -57,7 +57,7 @@ public class AnnotationAsyncExecutionAspectTests {
 
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		executor = new CountingExecutor();
 		AnnotationAsyncExecutionAspect.aspectOf().setExecutor(executor);
 	}

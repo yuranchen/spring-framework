@@ -202,7 +202,7 @@ class AsyncAnnotationBeanPostProcessorTests {
 
 	@Test
 	@SuppressWarnings("resource")
-	public void handleExceptionWithListenableFuture() {
+	void handleExceptionWithListenableFuture() {
 		ConfigurableApplicationContext context =
 				new AnnotationConfigApplicationContext(ConfigWithExceptionHandler.class);
 		ITestBean testBean = context.getBean("target", ITestBean.class);

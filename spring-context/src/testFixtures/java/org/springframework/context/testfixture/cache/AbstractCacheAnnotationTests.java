@@ -19,7 +19,7 @@ package org.springframework.context.testfixture.cache;
 import java.util.Collection;
 import java.util.UUID;
 
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AutoClose;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -46,6 +46,7 @@ import static org.assertj.core.api.Assertions.assertThatIOException;
  */
 public abstract class AbstractCacheAnnotationTests {
 
+	@AutoClose
 	protected ConfigurableApplicationContext ctx;
 
 	protected CacheableService<?> cs;
@@ -62,7 +63,7 @@ public abstract class AbstractCacheAnnotationTests {
 
 
 	@BeforeEach
-	public void setup() {
+	void setup() {
 		this.ctx = getApplicationContext();
 		this.cs = ctx.getBean("service", CacheableService.class);
 		this.ccs = ctx.getBean("classService", CacheableService.class);
@@ -70,13 +71,6 @@ public abstract class AbstractCacheAnnotationTests {
 
 		Collection<String> cn = this.cm.getCacheNames();
 		assertThat(cn).containsOnly("testCache", "secondary", "primary");
-	}
-
-	@AfterEach
-	public void close() {
-		if (this.ctx != null) {
-			this.ctx.close();
-		}
 	}
 
 

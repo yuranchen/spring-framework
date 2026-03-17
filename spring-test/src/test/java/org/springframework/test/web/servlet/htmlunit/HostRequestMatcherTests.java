@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
  * @author Sam Brannen
  * @since 4.2
  */
-public class HostRequestMatcherTests extends AbstractWebRequestMatcherTests {
+class HostRequestMatcherTests extends AbstractWebRequestMatcherTests {
 
 	@Test
 	void localhost() throws Exception {

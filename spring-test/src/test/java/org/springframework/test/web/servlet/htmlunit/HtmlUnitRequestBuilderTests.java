@@ -54,7 +54,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
  * @author Sam Brannen
  * @since 4.2
  */
-public class HtmlUnitRequestBuilderTests {
+class HtmlUnitRequestBuilderTests {
 
 	private final WebClient webClient = new WebClient();
 

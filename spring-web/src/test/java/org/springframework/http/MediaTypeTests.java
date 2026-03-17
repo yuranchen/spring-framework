@@ -337,7 +337,7 @@ class MediaTypeTests {
 
 	@Test
 	@SuppressWarnings("removal")
-	public void sortBySpecificityRelated() {
+	void sortBySpecificityRelated() {
 		MediaType audioBasic = new MediaType("audio", "basic");
 		MediaType audio = new MediaType("audio");
 		MediaType audio03 = new MediaType("audio", "*", 0.3);
@@ -368,7 +368,7 @@ class MediaTypeTests {
 
 	@Test
 	@SuppressWarnings("removal")
-	public void sortBySpecificityUnrelated() {
+	void sortBySpecificityUnrelated() {
 		MediaType audioBasic = new MediaType("audio", "basic");
 		MediaType audioWave = new MediaType("audio", "wave");
 		MediaType textHtml = new MediaType("text", "html");
@@ -445,7 +445,7 @@ class MediaTypeTests {
 
 	@Test
 	@SuppressWarnings("removal")
-	public void sortByQualityRelated() {
+	void sortByQualityRelated() {
 		MediaType audioBasic = new MediaType("audio", "basic");
 		MediaType audio = new MediaType("audio");
 		MediaType audio03 = new MediaType("audio", "*", 0.3);
@@ -476,7 +476,7 @@ class MediaTypeTests {
 
 	@Test
 	@SuppressWarnings("removal")
-	public void sortByQualityUnrelated() {
+	void sortByQualityUnrelated() {
 		MediaType audioBasic = new MediaType("audio", "basic");
 		MediaType audioWave = new MediaType("audio", "wave");
 		MediaType textHtml = new MediaType("text", "html");

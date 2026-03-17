@@ -125,7 +125,7 @@ class ExchangeFilterFunctionsTests {
 
 	@Test
 	@SuppressWarnings("deprecation")
-	public void basicAuthenticationAttributes() {
+	void basicAuthenticationAttributes() {
 		ClientRequest request = ClientRequest.create(HttpMethod.GET, DEFAULT_URL)
 				.attributes(org.springframework.web.reactive.function.client.ExchangeFilterFunctions
 						.Credentials.basicAuthenticationCredentials("foo", "bar"))
@@ -146,7 +146,7 @@ class ExchangeFilterFunctionsTests {
 
 	@Test
 	@SuppressWarnings("deprecation")
-	public void basicAuthenticationAbsentAttributes() {
+	void basicAuthenticationAbsentAttributes() {
 		ClientRequest request = ClientRequest.create(HttpMethod.GET, DEFAULT_URL).build();
 		ClientResponse response = mock();
 

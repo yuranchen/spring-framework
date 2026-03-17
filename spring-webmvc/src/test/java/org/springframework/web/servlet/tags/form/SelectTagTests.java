@@ -58,7 +58,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
  * @author Sam Brannen
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
-public class SelectTagTests extends AbstractFormTagTests {
+class SelectTagTests extends AbstractFormTagTests {
 
 	private static final Locale LOCALE_AT = new Locale("de", "AT");
 	private static final Locale LOCALE_NL = new Locale("nl", "NL");

@@ -312,7 +312,7 @@ class ContentNegotiatingViewResolverTests {
 
 	@Test
 	@SuppressWarnings("deprecation")
-	public void resolveViewNameFilename() throws Exception {
+	void resolveViewNameFilename() throws Exception {
 		request.setRequestURI("/test.html");
 
 		ContentNegotiationManager manager =
@@ -344,7 +344,7 @@ class ContentNegotiatingViewResolverTests {
 
 	@Test
 	@SuppressWarnings("deprecation")
-	public void resolveViewNameFilenameDefaultView() throws Exception {
+	void resolveViewNameFilenameDefaultView() throws Exception {
 		request.setRequestURI("/test.json");
 
 		Map<String, MediaType> mapping = Collections.singletonMap("json", MediaType.APPLICATION_JSON);

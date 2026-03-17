@@ -334,7 +334,7 @@ class WebMvcConfigurationSupportTests {
 
 	@Test
 	@SuppressWarnings("deprecation")
-	public void defaultThemeResolverConfiguration() {
+	void defaultThemeResolverConfiguration() {
 		ApplicationContext context = initContext(WebConfig.class);
 		org.springframework.web.servlet.ThemeResolver themeResolver =
 				context.getBean(THEME_RESOLVER_BEAN_NAME, org.springframework.web.servlet.ThemeResolver.class);

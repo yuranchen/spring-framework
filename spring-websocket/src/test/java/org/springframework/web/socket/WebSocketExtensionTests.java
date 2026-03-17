@@ -55,10 +55,11 @@ class WebSocketExtensionTests {
 	}
 
 	@Test // gh-26449
-	public void equality() {
+	void equality() {
 		WebSocketExtension ext1 = new WebSocketExtension("myExtension");
 		WebSocketExtension ext2 = new StandardToWebSocketExtensionAdapter(new TyrusExtension("myExtension"));
 
 		assertThat(ext1).isEqualTo(ext2);
 	}
+
 }

@@ -53,7 +53,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @ExtendWith(SpringExtension.class)
 @ComposedContextConfiguration(BarConfig.class)
-public class InitializerConfiguredViaMetaAnnotationTests {
+class InitializerConfiguredViaMetaAnnotationTests {
 
 	@Autowired
 	String foo;

@@ -31,7 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @since 19.06.2003
  */
 @SuppressWarnings("deprecation")
-public class ThemeResolverTests {
+class ThemeResolverTests {
 
 	private static final String TEST_THEME_NAME = "test.theme";
 	private static final String DEFAULT_TEST_THEME_NAME = "default.theme";

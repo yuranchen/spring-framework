@@ -65,7 +65,7 @@ class Jackson2JsonEncoderTests extends AbstractEncoderTests<Jackson2JsonEncoder>
 	@Override
 	@Test
 	@SuppressWarnings("deprecation")
-	public void canEncode() {
+	protected void canEncode() {
 		ResolvableType pojoType = ResolvableType.forClass(Pojo.class);
 		assertThat(this.encoder.canEncode(pojoType, APPLICATION_JSON)).isTrue();
 		assertThat(this.encoder.canEncode(pojoType, APPLICATION_NDJSON)).isTrue();

@@ -71,7 +71,7 @@ import static org.mockito.Mockito.verify;
  * @author Stephane Nicoll
  */
 @ExtendWith(MockitoExtension.class)
-public class SendToMethodReturnValueHandlerTests {
+class SendToMethodReturnValueHandlerTests {
 
 	private static final MimeType MIME_TYPE = new MimeType("text", "plain", StandardCharsets.UTF_8);
 

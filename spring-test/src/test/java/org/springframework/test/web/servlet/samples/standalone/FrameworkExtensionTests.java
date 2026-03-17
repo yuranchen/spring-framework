@@ -50,7 +50,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
  * @author Rossen Stoyanchev
  * @since 4.1
  */
-public class FrameworkExtensionTests {
+class FrameworkExtensionTests {
 
 	private final MockMvc mockMvc = standaloneSetup(new SampleController()).apply(defaultSetup()).build();
 

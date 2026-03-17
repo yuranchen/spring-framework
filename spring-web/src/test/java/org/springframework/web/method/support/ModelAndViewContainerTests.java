@@ -59,7 +59,7 @@ class ModelAndViewContainerTests {
 
 	@Test
 	@SuppressWarnings("deprecation")
-	public void redirectScenarioWithoutRedirectModel() {
+	void redirectScenarioWithoutRedirectModel() {
 		this.mavContainer.setIgnoreDefaultModelOnRedirect(false);
 		this.mavContainer.addAttribute("name", "value");
 		this.mavContainer.setRedirectModelScenario(true);

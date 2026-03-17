@@ -42,7 +42,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Rossen Stoyanchev
  */
 @ExtendWith(GzipSupport.class)
-public class EncodedResourceResolverTests {
+class EncodedResourceResolverTests {
 
 	private static final Duration TIMEOUT = Duration.ofSeconds(5);
 
