@@ -56,7 +56,8 @@ public class KotlinSerializationJsonDecoder extends KotlinSerializationStringDec
 	private static final MimeType[] DEFAULT_JSON_MIME_TYPES = new MimeType[] {
 			MediaType.APPLICATION_JSON,
 			new MediaType("application", "*+json"),
-			MediaType.APPLICATION_NDJSON
+			MediaType.APPLICATION_NDJSON,
+			MediaType.APPLICATION_JSONL
 	};
 
 	/**
