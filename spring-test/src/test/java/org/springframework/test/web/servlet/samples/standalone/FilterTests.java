@@ -65,7 +65,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
  * Tests with {@link Filter}'s.
  * @author Rob Winch
  */
-public class FilterTests {
+class FilterTests {
 
 	@Test
 	void whenFiltersCompleteMvcProcessesRequest() throws Exception {

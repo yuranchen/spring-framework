@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Rossen Stoyanchev
  */
 @Disabled
-public class PrintingResultHandlerSmokeTests {
+class PrintingResultHandlerSmokeTests {
 
 	private final WebTestClient testClient =
 			MockMvcWebTestClient.bindToController(new SimpleController()).build();

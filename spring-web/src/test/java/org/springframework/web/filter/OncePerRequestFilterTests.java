@@ -51,7 +51,7 @@ class OncePerRequestFilterTests {
 
 	@BeforeEach
 	@SuppressWarnings("serial")
-	public void setup() throws Exception {
+	void setup() throws Exception {
 		this.request = new MockHttpServletRequest();
 		this.request.setScheme("http");
 		this.request.setServerName("localhost");

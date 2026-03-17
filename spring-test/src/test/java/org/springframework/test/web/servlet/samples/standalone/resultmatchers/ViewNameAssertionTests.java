@@ -35,12 +35,12 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
  *
  * @author Rossen Stoyanchev
  */
-public class ViewNameAssertionTests {
+class ViewNameAssertionTests {
 
 	private MockMvc mockMvc;
 
 	@BeforeEach
-	public void setup() {
+	void setup() {
 		this.mockMvc = standaloneSetup(new SimpleController())
 				.alwaysExpect(status().isOk())
 				.build();

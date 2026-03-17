@@ -37,7 +37,7 @@ import static org.hamcrest.Matchers.hasXPath;
  *
  * @author Rossen Stoyanchev
  */
-public class ContentRequestMatchersTests {
+class ContentRequestMatchersTests {
 
 	private final MockClientHttpRequest request = new MockClientHttpRequest();
 

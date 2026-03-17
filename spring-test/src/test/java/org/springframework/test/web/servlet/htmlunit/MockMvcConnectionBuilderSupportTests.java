@@ -51,7 +51,7 @@ import static org.mockito.Mockito.mock;
  */
 @SpringJUnitWebConfig
 @SuppressWarnings("rawtypes")
-public class MockMvcConnectionBuilderSupportTests {
+class MockMvcConnectionBuilderSupportTests {
 
 	private final WebClient client = mock();
 
@@ -62,7 +62,7 @@ public class MockMvcConnectionBuilderSupportTests {
 
 
 	@BeforeEach
-	public void setup() {
+	void setup() {
 		given(this.client.getWebConnection()).willReturn(mock());
 		this.builder = new MockMvcWebConnectionBuilderSupport(this.wac) {};
 	}

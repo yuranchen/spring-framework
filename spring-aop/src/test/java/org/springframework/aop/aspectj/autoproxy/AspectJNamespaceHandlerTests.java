@@ -47,7 +47,7 @@ class AspectJNamespaceHandlerTests {
 
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		SourceExtractor sourceExtractor = new PassThroughSourceExtractor();
 		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(this.registry);
 		XmlReaderContext readerContext =

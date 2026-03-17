@@ -46,7 +46,7 @@ import static org.mockito.Mockito.mock;
  *
  * @author Sebastien Deleuze
  */
-public class ScriptTemplateViewTests {
+class ScriptTemplateViewTests {
 
 	private ScriptTemplateView view;
 
@@ -56,7 +56,7 @@ public class ScriptTemplateViewTests {
 
 
 	@BeforeEach
-	public void setup() {
+	void setup() {
 		this.configurer = new ScriptTemplateConfigurer();
 		this.context = new StaticApplicationContext();
 		this.context.getBeanFactory().registerSingleton("scriptTemplateConfigurer", this.configurer);

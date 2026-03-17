@@ -32,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
  * @author Arjen Poutsma
  * @author Brian Clozel
  */
-public class JettyDataBufferTests {
+class JettyDataBufferTests {
 
 	private final JettyDataBufferFactory dataBufferFactory = new JettyDataBufferFactory();
 

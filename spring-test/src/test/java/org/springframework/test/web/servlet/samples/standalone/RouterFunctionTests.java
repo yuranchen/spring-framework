@@ -45,7 +45,7 @@ import static org.springframework.web.servlet.function.ServerResponse.ok;
 /**
  * @author Arjen Poutsma
  */
-public class RouterFunctionTests {
+class RouterFunctionTests {
 
 	private MockMvc mockMvc = routerFunctions(testRoute()).defaultResponseCharacterEncoding(UTF_8).build();
 

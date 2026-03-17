@@ -47,7 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author Rossen Stoyanchev
  */
-public class FrameworkExtensionTests {
+class FrameworkExtensionTests {
 
 	private final WebTestClient client =
 			MockMvcWebTestClient.bindToController(new SampleController())

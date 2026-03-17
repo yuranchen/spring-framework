@@ -56,7 +56,7 @@ import static org.mockito.Mockito.verify;
  * @author Brian Clozel
  */
 @MockitoSettings(strictness = Strictness.LENIENT)
-public class DelegatingWebFluxConfigurationTests {
+class DelegatingWebFluxConfigurationTests {
 
 	@Mock
 	private WebFluxConfigurer webFluxConfigurer;

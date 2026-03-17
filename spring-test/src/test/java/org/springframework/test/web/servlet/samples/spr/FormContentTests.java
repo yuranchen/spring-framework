@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author Rossen Stoyanchev
  */
-public class FormContentTests {
+class FormContentTests {
 
 	@Test // SPR-15753
 	void formContentIsNotDuplicated() throws Exception {

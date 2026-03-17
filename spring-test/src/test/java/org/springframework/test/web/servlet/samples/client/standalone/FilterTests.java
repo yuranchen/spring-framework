@@ -58,7 +58,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author Rossen Stoyanchev
  */
-public class FilterTests {
+class FilterTests {
 
 	@Test
 	void whenFiltersCompleteMvcProcessesRequest() throws Exception {

@@ -53,7 +53,7 @@ class HeaderMethodArgumentResolverTests {
 
 
 	@BeforeEach
-	public void setup() {
+	void setup() {
 		GenericApplicationContext context = new GenericApplicationContext();
 		context.refresh();
 		this.resolver = new HeaderMethodArgumentResolver(new DefaultConversionService(), context.getBeanFactory());

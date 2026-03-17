@@ -39,7 +39,7 @@ import static org.assertj.core.api.Assertions.fail;
  *
  * @author Rossen Stoyanchev
  */
-public class StatusResultMatchersTests {
+class StatusResultMatchersTests {
 
 	private final StatusResultMatchers matchers = new StatusResultMatchers();
 

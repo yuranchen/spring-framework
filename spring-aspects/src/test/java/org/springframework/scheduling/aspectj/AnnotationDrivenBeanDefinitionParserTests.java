@@ -37,13 +37,13 @@ class AnnotationDrivenBeanDefinitionParserTests {
 	private ConfigurableApplicationContext context;
 
 	@BeforeEach
-	public void setup() {
+	void setup() {
 		this.context = new ClassPathXmlApplicationContext(
 				"annotationDrivenContext.xml", AnnotationDrivenBeanDefinitionParserTests.class);
 	}
 
 	@AfterEach
-	public void after() {
+	void after() {
 		if (this.context != null) {
 			this.context.close();
 		}

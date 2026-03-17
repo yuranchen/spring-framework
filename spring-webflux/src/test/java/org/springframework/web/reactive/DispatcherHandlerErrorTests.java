@@ -72,7 +72,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
  * @author Rossen Stoyanchev
  */
 @SuppressWarnings({"ThrowableResultOfMethodCallIgnored", "ThrowableInstanceNeverThrown"})
-public class DispatcherHandlerErrorTests {
+class DispatcherHandlerErrorTests {
 
 	private static final IllegalStateException EXCEPTION = new IllegalStateException("boo");
 

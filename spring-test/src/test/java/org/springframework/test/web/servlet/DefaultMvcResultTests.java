@@ -29,7 +29,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
  *
  * @author Rossen Stoyanchev
  */
-public class DefaultMvcResultTests {
+class DefaultMvcResultTests {
 
 	private final DefaultMvcResult mvcResult = new DefaultMvcResult(new MockHttpServletRequest(), null);
 

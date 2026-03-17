@@ -74,7 +74,7 @@ class RSocketClientToServerIntegrationTests {
 
 	@BeforeAll
 	@SuppressWarnings("ConstantConditions")
-	public static void setupOnce() {
+	static void setupOnce() {
 
 		MimeType metadataMimeType = MimeTypeUtils.parseMimeType(
 				WellKnownMimeType.MESSAGE_RSOCKET_COMPOSITE_METADATA.getString());

@@ -62,7 +62,7 @@ import static org.mockito.Mockito.verify;
  * @author Rossen Stoyanchev
  */
 @ExtendWith(MockitoExtension.class)
-public class DelegatingWebMvcConfigurationTests {
+class DelegatingWebMvcConfigurationTests {
 
 	@Mock
 	private WebMvcConfigurer webMvcConfigurer;

@@ -660,9 +660,8 @@ class ClassUtilsTests {
 		}
 
 		@Test
-		// This method is intentionally public.
-		public void publicMethodInNonPublicClass(TestInfo testInfo) {
-			Method originalMethod = testInfo.getTestMethod().get();
+		void publicMethodInNonPublicClass() throws Exception {
+			Method originalMethod = getClass().getMethod("publicMethod");
 
 			// Prerequisites for this use case:
 			assertPublic(originalMethod);
@@ -671,6 +670,9 @@ class ClassUtilsTests {
 			Method publiclyAccessibleMethod = ClassUtils.getPubliclyAccessibleMethodIfPossible(originalMethod, null);
 			assertThat(publiclyAccessibleMethod).isSameAs(originalMethod);
 			assertNotPubliclyAccessible(publiclyAccessibleMethod);
+		}
+
+		public void publicMethod() {
 		}
 
 		@Test

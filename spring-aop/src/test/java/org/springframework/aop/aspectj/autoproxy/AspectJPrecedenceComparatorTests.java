@@ -33,6 +33,7 @@ import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.aspectj.AspectJMethodBeforeAdvice;
 import org.springframework.aop.aspectj.AspectJPointcutAdvisor;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
+import org.springframework.util.ClassUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -48,18 +49,15 @@ class AspectJPrecedenceComparatorTests {
 	private static final int LATE_ADVICE_DECLARATION_ORDER = 10;
 
 
-	private AspectJPrecedenceComparator comparator;
+	private final AspectJPrecedenceComparator comparator = new AspectJPrecedenceComparator();
 
-	private Method anyOldMethod;
+	private final Method anyOldMethod = ClassUtils.getMethod(MessageService.class, "getMessage");
 
-	private AspectJExpressionPointcut anyOldPointcut;
+	private final AspectJExpressionPointcut anyOldPointcut = new AspectJExpressionPointcut();
 
 
 	@BeforeEach
-	public void setUp() {
-		this.comparator = new AspectJPrecedenceComparator();
-		this.anyOldMethod = getClass().getMethods()[0];
-		this.anyOldPointcut = new AspectJExpressionPointcut();
+	void setUp() {
 		this.anyOldPointcut.setExpression("execution(* *(..))");
 	}
 
@@ -207,6 +205,13 @@ class AspectJPrecedenceComparatorTests {
 		DefaultPointcutAdvisor advisor = new DefaultPointcutAdvisor(this.anyOldPointcut, advice);
 		advisor.setOrder(order);
 		return advisor;
+	}
+
+	static class MessageService {
+
+		public String getMessage() {
+			return "test";
+		}
 	}
 
 }

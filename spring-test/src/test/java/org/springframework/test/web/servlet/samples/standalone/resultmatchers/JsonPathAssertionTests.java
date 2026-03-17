@@ -48,13 +48,13 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
  * @author Rossen Stoyanchev
  * @see ContentAssertionTests
  */
-public class JsonPathAssertionTests {
+class JsonPathAssertionTests {
 
 	private MockMvc mockMvc;
 
 
 	@BeforeEach
-	public void setup() {
+	void setup() {
 		this.mockMvc = standaloneSetup(new MusicController())
 				.defaultRequest(get("/").accept(MediaType.APPLICATION_JSON))
 				.alwaysExpect(status().isOk())

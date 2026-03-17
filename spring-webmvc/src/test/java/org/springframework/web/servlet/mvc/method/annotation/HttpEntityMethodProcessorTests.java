@@ -66,7 +66,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Rossen Stoyanchev
  */
 @SuppressWarnings("unused")
-public class HttpEntityMethodProcessorTests {
+class HttpEntityMethodProcessorTests {
 
 	private MethodParameter paramList;
 

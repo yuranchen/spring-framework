@@ -38,7 +38,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
  * @author Rob Winch
  * @since 4.2
  */
-public class MockWebResponseBuilderTests {
+class MockWebResponseBuilderTests {
 
 	private final MockHttpServletResponse response = new MockHttpServletResponse();
 
@@ -48,7 +48,7 @@ public class MockWebResponseBuilderTests {
 
 
 	@BeforeEach
-	public void setup() throws Exception {
+	void setup() throws Exception {
 		this.webRequest = new WebRequest(new URL("http://company.example:80/test/this/here"));
 		this.responseBuilder = new MockWebResponseBuilder(System.currentTimeMillis(), this.webRequest, this.response);
 	}

@@ -53,7 +53,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
  * @since 4.2
  * @see RequestContextHolderTests
  */
-public class CustomRequestAttributesRequestContextHolderTests {
+class CustomRequestAttributesRequestContextHolderTests {
 
 	private static final String FROM_CUSTOM_MOCK = "fromCustomMock";
 	private static final String FROM_MVC_TEST_DEFAULT = "fromSpringMvcTestDefault";
@@ -65,7 +65,7 @@ public class CustomRequestAttributesRequestContextHolderTests {
 
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		ServletContext servletContext = new MockServletContext();
 		MockHttpServletRequest mockRequest = new MockHttpServletRequest(servletContext);
 		mockRequest.setAttribute(FROM_CUSTOM_MOCK, FROM_CUSTOM_MOCK);

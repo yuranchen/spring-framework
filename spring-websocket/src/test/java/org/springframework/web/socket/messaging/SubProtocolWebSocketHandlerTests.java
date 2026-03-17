@@ -49,7 +49,7 @@ import static org.mockito.Mockito.verify;
  * @author Andy Wilkinson
  */
 @MockitoSettings(strictness = Strictness.LENIENT)
-public class SubProtocolWebSocketHandlerTests {
+class SubProtocolWebSocketHandlerTests {
 
 	@Mock SubProtocolHandler stompHandler;
 

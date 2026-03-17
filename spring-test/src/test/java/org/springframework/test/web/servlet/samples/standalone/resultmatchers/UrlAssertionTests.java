@@ -35,12 +35,12 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
  *
  * @author Rossen Stoyanchev
  */
-public class UrlAssertionTests {
+class UrlAssertionTests {
 
 	private MockMvc mockMvc;
 
 	@BeforeEach
-	public void setup() {
+	void setup() {
 		this.mockMvc = standaloneSetup(new SimpleController()).build();
 	}
 

@@ -60,7 +60,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
  */
 @ExtendWith(MockitoExtension.class)
 @SuppressWarnings("unchecked")
-public class SimpleBrokerMessageHandlerTests {
+class SimpleBrokerMessageHandlerTests {
 
 	private SimpleBrokerMessageHandler messageHandler;
 

@@ -40,7 +40,7 @@ class ThreadLocalTargetSourceTests {
 
 
 	@BeforeEach
-	public void setup() {
+	void setup() {
 		this.beanFactory = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(this.beanFactory).loadBeanDefinitions(
 				qualifiedResource(ThreadLocalTargetSourceTests.class, "context.xml"));

@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.setup.SharedHttpSessionConfig
  *
  * @author Rossen Stoyanchev
  */
-public class SharedHttpSessionTests {
+class SharedHttpSessionTests {
 
 	@Test
 	void httpSession() throws Exception {
