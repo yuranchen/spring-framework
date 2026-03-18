@@ -68,7 +68,7 @@ class HotSwappableTargetSourceTests {
 	 * Check it works like a normal invoker
 	 */
 	@Test
-	void testBasicFunctionality() {
+	void basicFunctionality() {
 		SideEffectBean proxied = (SideEffectBean) beanFactory.getBean("swappable");
 		assertThat(proxied.getCount()).isEqualTo(INITIAL_COUNT);
 		proxied.doWork();
@@ -80,7 +80,7 @@ class HotSwappableTargetSourceTests {
 	}
 
 	@Test
-	void testValidSwaps() {
+	void validSwaps() {
 		SideEffectBean target1 = (SideEffectBean) beanFactory.getBean("target1");
 		SideEffectBean target2 = (SideEffectBean) beanFactory.getBean("target2");
 
@@ -107,17 +107,17 @@ class HotSwappableTargetSourceTests {
 	}
 
 	@Test
-	void testRejectsSwapToNull() {
+	void rejectsSwapToNull() {
 		HotSwappableTargetSource swapper = (HotSwappableTargetSource) beanFactory.getBean("swapper");
 		assertThatIllegalArgumentException().as("Shouldn't be able to swap to invalid value").isThrownBy(() ->
 				swapper.swap(null))
 			.withMessageContaining("null");
 		// It shouldn't be corrupted, it should still work
-		testBasicFunctionality();
+		basicFunctionality();
 	}
 
 	@Test
-	void testSerialization() throws Exception {
+	void serialization() throws Exception {
 		SerializablePerson sp1 = new SerializablePerson();
 		sp1.setName("Tony");
 		SerializablePerson sp2 = new SerializablePerson();

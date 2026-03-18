@@ -44,7 +44,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class DefaultControllerSpecTests {
 
 	@Test
-	public void controller() {
+	void controller() {
 		new DefaultControllerSpec(new MyController()).build()
 				.get().uri("/")
 				.exchange()
@@ -59,7 +59,7 @@ public class DefaultControllerSpecTests {
 	}
 
 	@Test
-	public void controllerAdvice() {
+	void controllerAdvice() {
 		new DefaultControllerSpec(new MyController())
 				.controllerAdvice(new MyControllerAdvice())
 				.build()
@@ -70,7 +70,7 @@ public class DefaultControllerSpecTests {
 	}
 
 	@Test
-	public void controllerAdviceWithClassArgument() {
+	void controllerAdviceWithClassArgument() {
 		new DefaultControllerSpec(MyController.class)
 				.controllerAdvice(MyControllerAdvice.class)
 				.build()
@@ -81,7 +81,7 @@ public class DefaultControllerSpecTests {
 	}
 
 	@Test
-	public void configurerConsumers() {
+	void configurerConsumers() {
 		TestConsumer<ArgumentResolverConfigurer> argumentResolverConsumer = new TestConsumer<>();
 		TestConsumer<RequestedContentTypeResolverBuilder> contentTypeResolverConsumer = new TestConsumer<>();
 		TestConsumer<CorsRegistry> corsRegistryConsumer = new TestConsumer<>();
@@ -113,7 +113,7 @@ public class DefaultControllerSpecTests {
 	}
 
 	@Test // gh-25854
-	public void uriTemplate() {
+	void uriTemplate() {
 		new DefaultControllerSpec(new MyController()).build()
 				.get().uri("/")
 				.exchange()

@@ -67,7 +67,7 @@ public class XmlConfigTests {
 
 
 	@Test
-	public void person() {
+	void person() {
 		testClient.get().uri("/person/5")
 				.accept(MediaType.APPLICATION_JSON)
 				.exchange()

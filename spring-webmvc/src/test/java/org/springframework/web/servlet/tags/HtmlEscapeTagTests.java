@@ -42,7 +42,7 @@ class HtmlEscapeTagTests extends AbstractTagTests {
 		tag.doStartTag();
 		HtmlEscapingAwareTag testTag = new HtmlEscapingAwareTag() {
 			@Override
-			public int doStartTagInternal() {
+			protected int doStartTagInternal() {
 				return EVAL_BODY_INCLUDE;
 			}
 		};

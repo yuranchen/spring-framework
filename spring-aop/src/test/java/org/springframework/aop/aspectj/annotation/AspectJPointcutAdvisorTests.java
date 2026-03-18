@@ -39,7 +39,7 @@ class AspectJPointcutAdvisorTests {
 
 
 	@Test
-	void testSingleton() throws SecurityException, NoSuchMethodException {
+	void singleton() throws SecurityException, NoSuchMethodException {
 		AspectJExpressionPointcut ajexp = new AspectJExpressionPointcut();
 		ajexp.setExpression(CommonExpressions.MATCH_ALL_METHODS);
 
@@ -53,7 +53,7 @@ class AspectJPointcutAdvisorTests {
 	}
 
 	@Test
-	void testPerTarget() throws SecurityException, NoSuchMethodException {
+	void perTarget() throws SecurityException, NoSuchMethodException {
 		AspectJExpressionPointcut ajexp = new AspectJExpressionPointcut();
 		ajexp.setExpression(CommonExpressions.MATCH_ALL_METHODS);
 
@@ -76,13 +76,13 @@ class AspectJPointcutAdvisorTests {
 	}
 
 	@Test
-	void testPerCflowTarget() {
+	void perCflowTarget() {
 		assertThatExceptionOfType(AopConfigException.class).isThrownBy(() ->
 				testIllegalInstantiationModel(AbstractAspectJAdvisorFactoryTests.PerCflowAspect.class));
 	}
 
 	@Test
-	void testPerCflowBelowTarget() {
+	void perCflowBelowTarget() {
 		assertThatExceptionOfType(AopConfigException.class).isThrownBy(() ->
 				testIllegalInstantiationModel(AbstractAspectJAdvisorFactoryTests.PerCflowBelowAspect.class));
 	}

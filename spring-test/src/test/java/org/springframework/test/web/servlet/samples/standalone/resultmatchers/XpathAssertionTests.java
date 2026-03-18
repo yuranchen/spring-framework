@@ -74,7 +74,7 @@ public class XpathAssertionTests {
 	}
 
 	@Test
-	public void testExists() throws Exception {
+	void exists() throws Exception {
 
 		String composer = "/ns:people/composers/composer[%s]";
 		String performer = "/ns:people/performers/performer[%s]";
@@ -90,7 +90,7 @@ public class XpathAssertionTests {
 	}
 
 	@Test
-	public void testDoesNotExist() throws Exception {
+	void doesNotExist() throws Exception {
 
 		String composer = "/ns:people/composers/composer[%s]";
 		String performer = "/ns:people/performers/performer[%s]";
@@ -104,7 +104,7 @@ public class XpathAssertionTests {
 	}
 
 	@Test
-	public void testString() throws Exception {
+	void string() throws Exception {
 
 		String composerName = "/ns:people/composers/composer[%s]/name";
 		String performerName = "/ns:people/performers/performer[%s]/name";
@@ -122,7 +122,7 @@ public class XpathAssertionTests {
 	}
 
 	@Test
-	public void testNumber() throws Exception {
+	void number() throws Exception {
 
 		String composerDouble = "/ns:people/composers/composer[%s]/someDouble";
 
@@ -136,7 +136,7 @@ public class XpathAssertionTests {
 	}
 
 	@Test
-	public void testBoolean() throws Exception {
+	void booleanCase() throws Exception {
 
 		String performerBooleanValue = "/ns:people/performers/performer[%s]/someBoolean";
 
@@ -146,7 +146,7 @@ public class XpathAssertionTests {
 	}
 
 	@Test
-	public void testNodeCount() throws Exception {
+	void nodeCount() throws Exception {
 
 		this.mockMvc.perform(get("/music/people"))
 			.andExpect(xpath("/ns:people/composers/composer", musicNamespace).nodeCount(4))
@@ -157,7 +157,7 @@ public class XpathAssertionTests {
 
 
 	@Test  // SPR-10704
-	public void testFeedWithLinefeedChars() throws Exception {
+	void feedWithLinefeedChars() throws Exception {
 		standaloneSetup(new BlogFeedController()).build()
 			.perform(get("/blog.atom").accept(MediaType.APPLICATION_ATOM_XML))
 				.andExpect(status().isOk())

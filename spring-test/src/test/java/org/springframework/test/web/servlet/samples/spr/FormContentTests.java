@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class FormContentTests {
 
 	@Test // SPR-15753
-	public void formContentIsNotDuplicated() throws Exception {
+	void formContentIsNotDuplicated() throws Exception {
 
 		MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new Spr15753Controller())
 				.addFilter(new FormContentFilter())

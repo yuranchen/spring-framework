@@ -42,7 +42,7 @@ public class SseTests {
 
 
 	@Test
-	public void sse() {
+	void sse() {
 		FluxExchangeResult<Person> exchangeResult = this.testClient.get()
 				.uri("/persons")
 				.exchange()

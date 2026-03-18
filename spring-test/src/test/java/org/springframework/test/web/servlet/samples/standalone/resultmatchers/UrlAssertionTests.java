@@ -45,22 +45,22 @@ public class UrlAssertionTests {
 	}
 
 	@Test
-	public void testRedirect() throws Exception {
+	void redirect() throws Exception {
 		this.mockMvc.perform(get("/persons")).andExpect(redirectedUrl("/persons/1"));
 	}
 
 	@Test
-	public void testRedirectPattern() throws Exception {
+	void redirectPattern() throws Exception {
 		this.mockMvc.perform(get("/persons")).andExpect(redirectedUrlPattern("/persons/*"));
 	}
 
 	@Test
-	public void testForward() throws Exception {
+	void forward() throws Exception {
 		this.mockMvc.perform(get("/")).andExpect(forwardedUrl("/home"));
 	}
 
 	@Test
-	public void testForwardPattern() throws Exception {
+	void forwardPattern() throws Exception {
 		this.mockMvc.perform(get("/")).andExpect(forwardedUrlPattern("/ho?e"));
 	}
 

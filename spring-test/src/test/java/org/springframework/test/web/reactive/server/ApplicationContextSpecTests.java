@@ -38,7 +38,7 @@ public class ApplicationContextSpecTests {
 
 
 	@Test // SPR-17094
-	public void sessionManagerBean() {
+	void sessionManagerBean() {
 		ApplicationContext context = new AnnotationConfigApplicationContext(WebConfig.class);
 		ApplicationContextSpec spec = new ApplicationContextSpec(context);
 		WebTestClient testClient = spec.configureClient().build();

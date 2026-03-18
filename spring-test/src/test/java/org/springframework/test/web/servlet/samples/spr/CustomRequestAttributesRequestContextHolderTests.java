@@ -82,12 +82,12 @@ public class CustomRequestAttributesRequestContextHolderTests {
 	}
 
 	@Test
-	public void singletonController() throws Exception {
+	void singletonController() throws Exception {
 		this.mockMvc.perform(get("/singletonController").requestAttr(FROM_MVC_TEST_MOCK, FROM_MVC_TEST_MOCK));
 	}
 
 	@AfterEach
-	public void verifyCustomRequestAttributesAreRestored() {
+	void verifyCustomRequestAttributesAreRestored() {
 		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
 		assertThat(requestAttributes).isInstanceOf(ServletRequestAttributes.class);
 		HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();

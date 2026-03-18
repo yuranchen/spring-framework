@@ -56,12 +56,12 @@ public class FrameworkExtensionTests {
 
 
 	@Test
-	public void fooHeader() throws Exception {
+	void fooHeader() throws Exception {
 		this.mockMvc.perform(get("/").with(headers().foo("a=b"))).andExpect(content().string("Foo"));
 	}
 
 	@Test
-	public void barHeader() throws Exception {
+	void barHeader() throws Exception {
 		this.mockMvc.perform(get("/").with(headers().bar("a=b"))).andExpect(content().string("Bar"));
 	}
 

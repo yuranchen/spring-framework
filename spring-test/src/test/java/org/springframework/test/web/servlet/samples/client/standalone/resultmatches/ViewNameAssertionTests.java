@@ -44,14 +44,14 @@ public class ViewNameAssertionTests {
 
 
 	@Test
-	public void testEqualTo() throws Exception {
+	void hamcrestEqualTo() throws Exception {
 		MockMvcWebTestClient.resultActionsFor(performRequest())
 			.andExpect(view().name("mySpecialView"))
 			.andExpect(view().name(equalTo("mySpecialView")));
 	}
 
 	@Test
-	public void testHamcrestMatcher() throws Exception {
+	void hamcrestMatcher() throws Exception {
 		MockMvcWebTestClient.resultActionsFor(performRequest())
 				.andExpect(view().name(containsString("Special")));
 	}

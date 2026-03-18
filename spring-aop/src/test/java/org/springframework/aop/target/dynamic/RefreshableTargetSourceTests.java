@@ -33,7 +33,7 @@ class RefreshableTargetSourceTests {
 	 * Test what happens when checking for refresh but not refreshing object.
 	 */
 	@Test
-	void testRefreshCheckWithNonRefresh() throws Exception {
+	void refreshCheckWithNonRefresh() throws Exception {
 		CountingRefreshableTargetSource ts = new CountingRefreshableTargetSource();
 		ts.setRefreshCheckDelay(0);
 
@@ -49,7 +49,7 @@ class RefreshableTargetSourceTests {
 	 * Test what happens when checking for refresh and refresh occurs.
 	 */
 	@Test
-	void testRefreshCheckWithRefresh() throws Exception {
+	void refreshCheckWithRefresh() throws Exception {
 		CountingRefreshableTargetSource ts = new CountingRefreshableTargetSource(true);
 		ts.setRefreshCheckDelay(0);
 
@@ -65,7 +65,7 @@ class RefreshableTargetSourceTests {
 	 * Test what happens when no refresh occurs.
 	 */
 	@Test
-	void testWithNoRefreshCheck() {
+	void withNoRefreshCheck() {
 		CountingRefreshableTargetSource ts = new CountingRefreshableTargetSource(true);
 		ts.setRefreshCheckDelay(-1);
 
@@ -78,7 +78,7 @@ class RefreshableTargetSourceTests {
 
 	@Test
 	@EnabledForTestGroups(LONG_RUNNING)
-	public void testRefreshOverTime() throws Exception {
+	void refreshOverTime() throws Exception {
 		CountingRefreshableTargetSource ts = new CountingRefreshableTargetSource(true);
 		ts.setRefreshCheckDelay(100);
 

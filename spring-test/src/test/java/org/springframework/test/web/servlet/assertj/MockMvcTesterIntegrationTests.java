@@ -442,12 +442,12 @@ public class MockMvcTesterIntegrationTests {
 		private final ByteArrayOutputStream capturedOut = new ByteArrayOutputStream();
 
 		@BeforeEach
-		public void setUp() {
+		void setUp() {
 			System.setOut(new PrintStream(capturedOut));
 		}
 
 		@AfterEach
-		public void tearDown() {
+		void tearDown() {
 			System.setOut(standardOut);
 		}
 

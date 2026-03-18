@@ -176,7 +176,7 @@ class MimeTypeTests {
 	}
 
 	@Test
-	void testToString() {
+	void toStringOutput() {
 		MimeType mimeType = new MimeType("text", "plain");
 		String result = mimeType.toString();
 		assertThat(result).as("Invalid toString() returned").isEqualTo("text/plain");

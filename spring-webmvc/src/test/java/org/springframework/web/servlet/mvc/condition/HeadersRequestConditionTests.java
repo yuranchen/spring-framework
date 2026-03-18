@@ -131,7 +131,7 @@ class HeadersRequestConditionTests {
 	}
 
 	@Test // SPR-16674
-	public void compareToWithMoreSpecificMatchByValue() {
+	void compareToWithMoreSpecificMatchByValue() {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 
 		HeadersRequestCondition condition1 = new HeadersRequestCondition("foo=a");

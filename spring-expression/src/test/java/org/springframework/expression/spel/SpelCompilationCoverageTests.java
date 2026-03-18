@@ -2158,7 +2158,7 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 	}
 
 	@Test  // gh-27421
-	public void nullSafeMethodChainingWithNonStaticVoidMethod() {
+	void nullSafeMethodChainingWithNonStaticVoidMethod() {
 		FooObjectHolder foh = new FooObjectHolder();
 		StandardEvaluationContext context = new StandardEvaluationContext(foh);
 		SpelExpression expression = (SpelExpression) parser.parseExpression("getFoo()?.doFoo()");
@@ -2437,7 +2437,7 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 
 	@ParameterizedTest
 	@ValueSource(strings = {"voidMethod", "voidWrapperMethod"})
-	public void voidFunctionReference(String method) throws Exception {
+	void voidFunctionReference(String method) throws Exception {
 		assertVoidFunctionReferenceBehavior(method);
 	}
 
@@ -5348,7 +5348,7 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 	}
 
 	@Test  // gh-27421
-	public void nullSafeInvocationOfNonStaticVoidMethod() {
+	void nullSafeInvocationOfNonStaticVoidMethod() {
 		// non-static method, no args, void return
 		expression = parser.parseExpression("new %s()?.one()".formatted(TestClass5.class.getName()));
 
@@ -5365,7 +5365,7 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 	}
 
 	@Test  // gh-27421
-	public void nullSafeInvocationOfStaticVoidMethod() {
+	void nullSafeInvocationOfStaticVoidMethod() {
 		// static method, no args, void return
 		expression = parser.parseExpression("T(%s)?.two()".formatted(TestClass5.class.getName()));
 
@@ -5382,7 +5382,7 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 	}
 
 	@Test  // gh-27421
-	public void nullSafeInvocationOfNonStaticVoidWrapperMethod() {
+	void nullSafeInvocationOfNonStaticVoidWrapperMethod() {
 		// non-static method, no args, Void return
 		expression = parser.parseExpression("new %s()?.oneVoidWrapper()".formatted(TestClass5.class.getName()));
 
@@ -5399,7 +5399,7 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 	}
 
 	@Test  // gh-27421
-	public void nullSafeInvocationOfStaticVoidWrapperMethod() {
+	void nullSafeInvocationOfStaticVoidWrapperMethod() {
 		// static method, no args, Void return
 		expression = parser.parseExpression("T(%s)?.twoVoidWrapper()".formatted(TestClass5.class.getName()));
 
@@ -6191,7 +6191,7 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 	}
 
 	@Test
-	void testNullComparison_SPR22358() {
+	void nullComparison_SPR22358() {
 		SpelParserConfiguration configuration = new SpelParserConfiguration(SpelCompilerMode.OFF, null);
 		SpelExpressionParser parser = new SpelExpressionParser(configuration);
 		StandardEvaluationContext ctx = new StandardEvaluationContext();

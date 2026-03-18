@@ -46,7 +46,7 @@ class ExposeBeanNameAdvisorsTests {
 	}
 
 	@Test
-	void testNoIntroduction() {
+	void noIntroduction() {
 		String beanName = "foo";
 		TestBean target = new RequiresBeanNameBoundTestBean(beanName);
 		ProxyFactory pf = new ProxyFactory(target);
@@ -61,7 +61,7 @@ class ExposeBeanNameAdvisorsTests {
 	}
 
 	@Test
-	void testWithIntroduction() {
+	void withIntroduction() {
 		String beanName = "foo";
 		TestBean target = new RequiresBeanNameBoundTestBean(beanName);
 		ProxyFactory pf = new ProxyFactory(target);

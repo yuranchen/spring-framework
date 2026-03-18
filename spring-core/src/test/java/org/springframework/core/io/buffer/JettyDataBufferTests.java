@@ -58,7 +58,7 @@ public class JettyDataBufferTests {
 	}
 
 	@AfterEach
-	public void tearDown() throws Exception {
+	void tearDown() throws Exception {
 		this.byteBufferPool.clear();
 	}
 }

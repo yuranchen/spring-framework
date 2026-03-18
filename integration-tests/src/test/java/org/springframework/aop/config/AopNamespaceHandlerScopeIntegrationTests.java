@@ -61,7 +61,7 @@ class AopNamespaceHandlerScopeIntegrationTests {
 
 
 	@Test
-	void testSingletonScoping() throws Exception {
+	void singletonScoping() throws Exception {
 		assertThat(AopUtils.isAopProxy(singletonScoped)).as("Should be AOP proxy").isTrue();
 		boolean condition = singletonScoped instanceof TestBean;
 		assertThat(condition).as("Should be target class proxy").isTrue();
@@ -75,7 +75,7 @@ class AopNamespaceHandlerScopeIntegrationTests {
 	}
 
 	@Test
-	void testRequestScoping() {
+	void requestScoping() {
 		MockHttpServletRequest oldRequest = new MockHttpServletRequest();
 		MockHttpServletRequest newRequest = new MockHttpServletRequest();
 
@@ -103,7 +103,7 @@ class AopNamespaceHandlerScopeIntegrationTests {
 	}
 
 	@Test
-	void testSessionScoping() {
+	void sessionScoping() {
 		MockHttpSession oldSession = new MockHttpSession();
 		MockHttpSession newSession = new MockHttpSession();
 

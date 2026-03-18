@@ -40,7 +40,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ServletRequestDataBinderTests {
 
 	@Test
-	void testBindingWithNestedObjectCreation() {
+	void bindingWithNestedObjectCreation() {
 		TestBean tb = new TestBean();
 
 		ServletRequestDataBinder binder = new ServletRequestDataBinder(tb, "person");
@@ -61,7 +61,7 @@ class ServletRequestDataBinderTests {
 	}
 
 	@Test
-	void testFieldPrefixCausesFieldReset() {
+	void fieldPrefixCausesFieldReset() {
 		TestBean target = new TestBean();
 		ServletRequestDataBinder binder = new ServletRequestDataBinder(target);
 
@@ -77,7 +77,7 @@ class ServletRequestDataBinderTests {
 	}
 
 	@Test
-	void testFieldPrefixCausesFieldResetWithIgnoreUnknownFields() {
+	void fieldPrefixCausesFieldResetWithIgnoreUnknownFields() {
 		TestBean target = new TestBean();
 		ServletRequestDataBinder binder = new ServletRequestDataBinder(target);
 		binder.setIgnoreUnknownFields(false);
@@ -94,7 +94,7 @@ class ServletRequestDataBinderTests {
 	}
 
 	@Test
-	void testFieldDefault() {
+	void fieldDefault() {
 		TestBean target = new TestBean();
 		ServletRequestDataBinder binder = new ServletRequestDataBinder(target);
 
@@ -110,7 +110,7 @@ class ServletRequestDataBinderTests {
 	}
 
 	@Test
-	void testFieldDefaultPreemptsFieldMarker() {
+	void fieldDefaultPreemptsFieldMarker() {
 		TestBean target = new TestBean();
 		ServletRequestDataBinder binder = new ServletRequestDataBinder(target);
 
@@ -131,7 +131,7 @@ class ServletRequestDataBinderTests {
 	}
 
 	@Test
-	void testFieldDefaultNonBoolean() {
+	void fieldDefaultNonBoolean() {
 		TestBean target = new TestBean();
 		ServletRequestDataBinder binder = new ServletRequestDataBinder(target);
 
@@ -147,7 +147,7 @@ class ServletRequestDataBinderTests {
 	}
 
 	@Test
-	void testWithCommaSeparatedStringArray() {
+	void withCommaSeparatedStringArray() {
 		TestBean target = new TestBean();
 		ServletRequestDataBinder binder = new ServletRequestDataBinder(target);
 
@@ -165,7 +165,7 @@ class ServletRequestDataBinderTests {
 	}
 
 	@Test
-	void testBindingWithNestedObjectCreationAndWrongOrder() {
+	void bindingWithNestedObjectCreationAndWrongOrder() {
 		TestBean tb = new TestBean();
 
 		ServletRequestDataBinder binder = new ServletRequestDataBinder(tb, "person");
@@ -186,7 +186,7 @@ class ServletRequestDataBinderTests {
 	}
 
 	@Test
-	void testNoPrefix() {
+	void noPrefix() {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addParameter("forname", "Tony");
 		request.addParameter("surname", "Blair");
@@ -197,7 +197,7 @@ class ServletRequestDataBinderTests {
 	}
 
 	@Test
-	void testPrefix() {
+	void prefix() {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addParameter("test_forname", "Tony");
 		request.addParameter("test_surname", "Blair");
@@ -213,14 +213,14 @@ class ServletRequestDataBinderTests {
 	}
 
 	@Test
-	void testNoParameters() {
+	void noParameters() {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		ServletRequestParameterPropertyValues pvs = new ServletRequestParameterPropertyValues(request);
 		assertThat(pvs.getPropertyValues().length).as("Found no parameters").isEqualTo(0);
 	}
 
 	@Test
-	void testMultipleValuesForParameter() {
+	void multipleValuesForParameter() {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		String[] original = new String[] {"Tony", "Rod"};
 		request.addParameter("forname", original);

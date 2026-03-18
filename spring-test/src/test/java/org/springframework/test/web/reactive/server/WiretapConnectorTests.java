@@ -61,7 +61,7 @@ public class WiretapConnectorTests {
 	}
 
 	@Test
-	public void captureAndClaim() {
+	void captureAndClaim() {
 		ClientHttpRequest request = new MockClientHttpRequest(HttpMethod.GET, "/test");
 		ClientHttpResponse response = new MockClientHttpResponse(HttpStatus.OK);
 		ClientHttpConnector connector = createConnector(request, response);

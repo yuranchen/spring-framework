@@ -108,7 +108,7 @@ class ResourceUrlProviderJavaConfigTests {
 	static class WebConfig extends WebMvcConfigurationSupport {
 
 		@Override
-		public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		protected void addResourceHandlers(ResourceHandlerRegistry registry) {
 			registry.addResourceHandler("/resources/**")
 				.addResourceLocations("classpath:org/springframework/web/servlet/resource/test/")
 				.resourceChain(true).addResolver(new VersionResourceResolver().addContentVersionStrategy("/**"));

@@ -82,7 +82,7 @@ public class AsyncControllerJavaConfigTests {
 	// SPR-13615
 
 	@Test
-	public void callableInterceptor() throws Exception {
+	void callableInterceptor() throws Exception {
 		MvcResult mvcResult = this.mockMvc.perform(get("/callable").accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(request().asyncStarted())

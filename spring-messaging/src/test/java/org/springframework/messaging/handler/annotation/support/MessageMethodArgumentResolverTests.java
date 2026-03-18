@@ -219,7 +219,7 @@ class MessageMethodArgumentResolverTests {
 
 	@Test // SPR-16486
 	@SuppressWarnings("removal")
-	public void resolveWithJacksonConverter() throws Exception {
+	void resolveWithJacksonConverter() throws Exception {
 		Message<String> inMessage = MessageBuilder.withPayload("{\"foo\":\"bar\"}").build();
 		MethodParameter parameter = new MethodParameter(this.method, 5);
 

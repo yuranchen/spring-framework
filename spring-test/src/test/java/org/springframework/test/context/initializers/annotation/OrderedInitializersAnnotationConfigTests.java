@@ -61,7 +61,7 @@ public class OrderedInitializersAnnotationConfigTests {
 
 
 	@Test
-	public void activeBeans() {
+	void activeBeans() {
 		assertThat(foo).isEqualTo(PROFILE_GLOBAL);
 		assertThat(bar).isEqualTo(PROFILE_GLOBAL);
 		assertThat(baz).isEqualTo(PROFILE_TWO);
@@ -74,12 +74,12 @@ public class OrderedInitializersAnnotationConfigTests {
 	static class GlobalConfig {
 
 		@Bean
-		public String foo() {
+		String foo() {
 			return PROFILE_GLOBAL;
 		}
 
 		@Bean
-		public String bar() {
+		String bar() {
 			return PROFILE_GLOBAL;
 		}
 
