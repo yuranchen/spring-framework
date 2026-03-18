@@ -216,7 +216,7 @@ class ScriptUtilsTests {
 		~/* double " quotes */\n insert into colors(color_num) values(42);~                | ;      | true
 		~/* double \\" quotes */\n insert into colors(color_num) values(42);~              | ;      | true
 		""")
-	public void containsStatementSeparator(String script, String delimiter, boolean expected) {
+	void containsStatementSeparator(String script, String delimiter, boolean expected) {
 		boolean contains = ScriptUtils.containsStatementSeparator(null, script, delimiter,
 				DEFAULT_COMMENT_PREFIXES, DEFAULT_BLOCK_COMMENT_START_DELIMITER, DEFAULT_BLOCK_COMMENT_END_DELIMITER);
 

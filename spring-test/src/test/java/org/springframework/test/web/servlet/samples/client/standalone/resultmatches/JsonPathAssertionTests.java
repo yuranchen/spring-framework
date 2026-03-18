@@ -46,7 +46,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author Rossen Stoyanchev
  */
-public class JsonPathAssertionTests {
+class JsonPathAssertionTests {
 
 	private final WebTestClient client =
 			MockMvcWebTestClient.bindToController(new MusicController())

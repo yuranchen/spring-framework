@@ -32,7 +32,7 @@ import org.springframework.test.web.servlet.StubMvcResult;
  *
  * @author Rossen Stoyanchev
  */
-public class HeaderResultMatchersTests {
+class HeaderResultMatchersTests {
 
 	private final HeaderResultMatchers matchers = new HeaderResultMatchers();
 

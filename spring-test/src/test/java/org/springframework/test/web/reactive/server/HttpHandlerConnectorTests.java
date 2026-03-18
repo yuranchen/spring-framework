@@ -48,7 +48,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Rossen Stoyanchev
  */
-public class HttpHandlerConnectorTests {
+class HttpHandlerConnectorTests {
 
 	@Test
 	void adaptRequest() {

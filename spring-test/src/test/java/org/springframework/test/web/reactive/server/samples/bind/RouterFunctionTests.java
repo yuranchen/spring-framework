@@ -32,13 +32,13 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
  * @author Rossen Stoyanchev
  * @since 5.0
  */
-public class RouterFunctionTests {
+class RouterFunctionTests {
 
 	private WebTestClient testClient;
 
 
 	@BeforeEach
-	public void setUp() throws Exception {
+	void setUp() throws Exception {
 
 		RouterFunction<?> route = route(GET("/test"), request ->
 				ServerResponse.ok().bodyValue("It works!"));

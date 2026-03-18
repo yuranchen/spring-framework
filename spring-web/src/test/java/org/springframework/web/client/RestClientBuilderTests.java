@@ -47,7 +47,7 @@ import static org.assertj.core.api.Assertions.fail;
  * @author Sebastien Deleuze
  * @author Nicklas Wiegandt
  */
-public class RestClientBuilderTests {
+class RestClientBuilderTests {
 
 	@SuppressWarnings("unchecked")
 	@Test

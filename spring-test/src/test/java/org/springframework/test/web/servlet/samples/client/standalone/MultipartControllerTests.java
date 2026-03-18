@@ -52,7 +52,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Rossen Stoyanchev
  */
-public class MultipartControllerTests {
+class MultipartControllerTests {
 
 	private final WebTestClient testClient = MockMvcWebTestClient.bindToController(new MultipartController()).build();
 

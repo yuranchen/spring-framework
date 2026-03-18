@@ -37,7 +37,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Tests for {@link AbstractMockServerSpec}.
  * @author Rossen Stoyanchev
  */
-public class MockServerSpecTests {
+class MockServerSpecTests {
 
 	private final TestMockServerSpec serverSpec = new TestMockServerSpec();
 

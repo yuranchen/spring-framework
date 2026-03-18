@@ -41,7 +41,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Rossen Stoyanchev
  */
-public class DefaultControllerSpecTests {
+class DefaultControllerSpecTests {
 
 	@Test
 	void controller() {

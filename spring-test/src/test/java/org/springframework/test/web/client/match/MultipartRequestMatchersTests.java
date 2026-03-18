@@ -44,7 +44,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
  * @author Valentin Spac
  * @author Rossen Stoyanchev
  */
-public class MultipartRequestMatchersTests {
+class MultipartRequestMatchersTests {
 
 	private final MockClientHttpRequest request = new MockClientHttpRequest();
 
@@ -54,7 +54,7 @@ public class MultipartRequestMatchersTests {
 
 
 	@BeforeEach
-	public void setup() {
+	void setup() {
 		this.request.getHeaders().setContentType(MediaType.MULTIPART_FORM_DATA);
 	}
 

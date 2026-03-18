@@ -96,7 +96,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
  * @author Stephane Nicoll
  */
 @SpringJUnitWebConfig
-public class MockMvcTesterIntegrationTests {
+class MockMvcTesterIntegrationTests {
 
 	private static final MockMultipartFile file = new MockMultipartFile("file", "content.txt", null,
 			"value".getBytes(StandardCharsets.UTF_8));

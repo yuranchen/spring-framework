@@ -53,7 +53,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
  * @see ContentRequestMatchersIntegrationTests
  * @see XmlContentRequestMatchersIntegrationTests
  */
-public class XpathRequestMatchersIntegrationTests {
+class XpathRequestMatchersIntegrationTests {
 
 	private static final Map<String, String> NS =
 			Collections.singletonMap("ns", "https://example.org/music/people");
@@ -67,7 +67,7 @@ public class XpathRequestMatchersIntegrationTests {
 
 
 	@BeforeEach
-	public void setup() {
+	void setup() {
 		List<Person> composers = Arrays.asList(
 				new Person("Johann Sebastian Bach").setSomeDouble(21),
 				new Person("Johannes Brahms").setSomeDouble(.0025),

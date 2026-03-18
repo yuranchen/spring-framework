@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 /**
  * @author Craig Walls
  */
-public class FlashAttributeResultMatchersTests {
+class FlashAttributeResultMatchersTests {
 
 	@Test
 	void attributeExists() throws Exception {

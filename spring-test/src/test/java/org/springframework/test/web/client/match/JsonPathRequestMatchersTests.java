@@ -32,7 +32,7 @@ import static org.hamcrest.Matchers.equalTo;
  * @author Rossen Stoyanchev
  * @author Sam Brannen
  */
-public class JsonPathRequestMatchersTests {
+class JsonPathRequestMatchersTests {
 
 	private static final String REQUEST_CONTENT = "{" + //
 			"'str':         'foo',           " + //

@@ -38,7 +38,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @since 4.1
  */
 @SpringJUnitConfig(initializers = PropertySourcesInitializerTests.PropertySourceInitializer.class)
-public class PropertySourcesInitializerTests {
+class PropertySourcesInitializerTests {
 
 	@Configuration
 	static class Config {

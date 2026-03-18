@@ -35,7 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Rossen Stoyanchev
  */
-public class SseTests {
+class SseTests {
 
 	private final WebTestClient testClient =
 			MockMvcWebTestClient.bindToController(new SseController()).build();

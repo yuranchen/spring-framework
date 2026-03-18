@@ -41,7 +41,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
  * Tests demonstrating the use of API version.
  * @author Rossen Stoyanchev
  */
-public class ApiVersionTests {
+class ApiVersionTests {
 
 	@Test
 	void queryParameter() throws Exception {

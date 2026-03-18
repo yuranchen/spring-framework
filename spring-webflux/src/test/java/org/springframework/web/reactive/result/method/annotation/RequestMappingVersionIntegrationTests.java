@@ -43,7 +43,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  * {@code @RequestMapping} integration focusing on API versioning.
  * @author Rossen Stoyanchev
  */
-public class RequestMappingVersionIntegrationTests extends AbstractRequestMappingIntegrationTests {
+class RequestMappingVersionIntegrationTests extends AbstractRequestMappingIntegrationTests {
 
 	@Override
 	protected ApplicationContext initApplicationContext() {

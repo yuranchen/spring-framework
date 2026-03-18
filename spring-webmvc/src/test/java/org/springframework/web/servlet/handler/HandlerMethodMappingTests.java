@@ -56,7 +56,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
  * @author Rossen Stoyanchev
  */
 @SuppressWarnings("unused")
-public class HandlerMethodMappingTests {
+class HandlerMethodMappingTests {
 
 	private MyHandlerMethodMapping mapping;
 

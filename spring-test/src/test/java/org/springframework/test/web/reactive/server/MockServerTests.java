@@ -37,8 +37,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Test scenarios involving a mock server.
  * @author Rossen Stoyanchev
  */
-public class MockServerTests {
-
+class MockServerTests {
 
 	@Test // SPR-15674 (in comments)
 	void mutateDoesNotCreateNewSession() {

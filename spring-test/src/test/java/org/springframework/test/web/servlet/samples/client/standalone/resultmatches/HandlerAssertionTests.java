@@ -43,7 +43,7 @@ import static org.springframework.web.servlet.mvc.method.annotation.MvcUriCompon
  *
  * @author Rossen Stoyanchev
  */
-public class HandlerAssertionTests {
+class HandlerAssertionTests {
 
 	private final WebTestClient client =
 			MockMvcWebTestClient.bindToController(new SimpleController())

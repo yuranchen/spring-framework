@@ -72,7 +72,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @WebAppConfiguration
 @ContextConfiguration
 @DirtiesContext
-public class RequestContextHolderTests {
+class RequestContextHolderTests {
 
 	private static final String FROM_TCF_MOCK = "fromTestContextFrameworkMock";
 	private static final String FROM_MVC_TEST_DEFAULT = "fromSpringMvcTestDefault";
@@ -102,7 +102,7 @@ public class RequestContextHolderTests {
 
 
 	@BeforeEach
-	public void setup() {
+	void setup() {
 		this.mockRequest.setAttribute(FROM_TCF_MOCK, FROM_TCF_MOCK);
 
 		this.mockMvc = webAppContextSetup(this.wac)

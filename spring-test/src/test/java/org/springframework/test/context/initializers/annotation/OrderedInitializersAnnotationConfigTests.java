@@ -50,7 +50,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 // Note: the ordering of the initializers is intentionally: two, one.
 @SpringJUnitConfig(classes = { GlobalConfig.class, ConfigTwo.class, ConfigOne.class }, initializers = {
 	OrderedTwoInitializer.class, OrderedOneInitializer.class })
-public class OrderedInitializersAnnotationConfigTests {
+class OrderedInitializersAnnotationConfigTests {
 
 	private static final String PROFILE_GLOBAL = "global";
 	private static final String PROFILE_ONE = "one";

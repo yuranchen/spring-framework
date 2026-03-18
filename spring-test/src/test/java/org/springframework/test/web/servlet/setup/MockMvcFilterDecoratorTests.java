@@ -40,7 +40,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Rob Winch
  * @author Rossen Stoyanchev
  */
-public class MockMvcFilterDecoratorTests {
+class MockMvcFilterDecoratorTests {
 
 	private MockHttpServletRequest request;
 
@@ -54,7 +54,7 @@ public class MockMvcFilterDecoratorTests {
 
 
 	@BeforeEach
-	public void setup() {
+	void setup() {
 		request = new MockHttpServletRequest();
 		request.setContextPath("/context");
 		response = new MockHttpServletResponse();

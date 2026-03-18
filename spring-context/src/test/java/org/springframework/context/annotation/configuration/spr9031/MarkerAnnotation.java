@@ -14,30 +14,12 @@
  * limitations under the License.
  */
 
-package org.springframework.context.annotation.configuration.a;
+package org.springframework.context.annotation.configuration.spr9031;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.configuration.Bar;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
-public abstract class BaseConfig {
+@Retention(RetentionPolicy.RUNTIME)
+public @interface MarkerAnnotation {
 
-	// ---- reproduce ----
-	@Bean
-	Bar packagePrivateBar() {
-		return new Bar();
-	}
-
-	public Bar reproBar() {
-		return packagePrivateBar();
-	}
-
-	// ---- workaround ----
-	@Bean
-	protected Bar protectedBar() {
-		return new Bar();
-	}
-
-	public Bar workaroundBar() {
-		return protectedBar();
-	}
 }

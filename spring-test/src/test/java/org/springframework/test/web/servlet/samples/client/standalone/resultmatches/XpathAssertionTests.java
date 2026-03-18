@@ -53,7 +53,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.HEAD;
  *
  * @author Rossen Stoyanchev
  */
-public class XpathAssertionTests {
+class XpathAssertionTests {
 
 	private static final Map<String, String> musicNamespace =
 			Collections.singletonMap("ns", "https://example.org/music/people");

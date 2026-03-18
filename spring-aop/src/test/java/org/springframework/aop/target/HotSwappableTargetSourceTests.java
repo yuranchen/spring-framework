@@ -48,7 +48,7 @@ class HotSwappableTargetSourceTests {
 
 
 	@BeforeEach
-	public void setup() {
+	void setup() {
 		this.beanFactory = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(this.beanFactory).loadBeanDefinitions(
 				qualifiedResource(HotSwappableTargetSourceTests.class, "context.xml"));
@@ -58,7 +58,7 @@ class HotSwappableTargetSourceTests {
 	 * We must simulate container shutdown, which should clear threads.
 	 */
 	@AfterEach
-	public void close() {
+	void close() {
 		// Will call pool.close()
 		this.beanFactory.destroySingletons();
 	}

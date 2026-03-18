@@ -44,7 +44,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  *
  * @author Sebastien Deleuze
  */
-public class BeanRegistrarConfigurationTests {
+class BeanRegistrarConfigurationTests {
 
 	@Test
 	void beanRegistrar() {

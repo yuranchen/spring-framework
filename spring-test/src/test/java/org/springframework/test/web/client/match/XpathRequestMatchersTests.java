@@ -31,7 +31,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
  *
  * @author Rossen Stoyanchev
  */
-public class XpathRequestMatchersTests {
+class XpathRequestMatchersTests {
 
 	private static final String RESPONSE_CONTENT = "<foo><bar>111</bar><bar>true</bar></foo>";
 
@@ -39,7 +39,7 @@ public class XpathRequestMatchersTests {
 
 
 	@BeforeEach
-	public void setUp() throws IOException {
+	void setUp() throws IOException {
 		this.request = new MockClientHttpRequest();
 		this.request.getBody().write(RESPONSE_CONTENT.getBytes());
 	}

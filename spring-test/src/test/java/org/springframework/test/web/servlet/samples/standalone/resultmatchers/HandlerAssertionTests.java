@@ -42,7 +42,7 @@ import static org.springframework.web.servlet.mvc.method.annotation.MvcUriCompon
  * @author Rossen Stoyanchev
  * @author Sam Brannen
  */
-public class HandlerAssertionTests {
+class HandlerAssertionTests {
 
 	private final MockMvc mockMvc = standaloneSetup(new SimpleController()).alwaysExpect(status().isOk()).build();
 

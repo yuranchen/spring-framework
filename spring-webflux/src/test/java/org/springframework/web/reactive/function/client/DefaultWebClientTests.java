@@ -61,7 +61,7 @@ import static org.mockito.Mockito.when;
  * @author Brian Clozel
  */
 @MockitoSettings(strictness = Strictness.LENIENT)
-public class DefaultWebClientTests {
+class DefaultWebClientTests {
 
 	@Mock
 	private ExchangeFunction exchangeFunction;
