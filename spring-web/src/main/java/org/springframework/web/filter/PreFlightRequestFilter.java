@@ -31,7 +31,7 @@ import org.springframework.web.cors.PreFlightRequestHandler;
  * Servlet Filter that handles pre-flight requests through a
  * {@link PreFlightRequestHandler} and bypasses the rest of the chain.
  *
- * <p>The {@code @EnableWebMvc} config declares bean of type
+ * <p>The {@code @EnableWebMvc} config declares a bean of type
  * {@code PreFlightRequestHandler}.
  *
  * @author Rossen Stoyanchev
@@ -68,4 +68,5 @@ public class PreFlightRequestFilter extends OncePerRequestFilter {
 			throw new ServletException("Pre-flight request handling failed: " + ex, ex);
 		}
 	}
+
 }
