@@ -187,7 +187,7 @@ class CustomEditorTests {
 		BeanWrapper bw = new BeanWrapperImpl(tb);
 
 		bw.setPropertyValue("bool1", "true");
-		assertThat(Boolean.TRUE).as("Correct bool1 value").isEqualTo(bw.getPropertyValue("bool1"));
+		assertThat(bw.getPropertyValue("bool1")).as("Correct bool1 value").isEqualTo(Boolean.TRUE);
 		assertThat(tb.isBool1()).as("Correct bool1 value").isTrue();
 
 		bw.setPropertyValue("bool1", "false");
@@ -228,7 +228,7 @@ class CustomEditorTests {
 		BeanWrapper bw = new BeanWrapperImpl(tb);
 
 		bw.setPropertyValue("bool2", "true");
-		assertThat(Boolean.TRUE).as("Correct bool2 value").isEqualTo(bw.getPropertyValue("bool2"));
+		assertThat(bw.getPropertyValue("bool2")).as("Correct bool2 value").isEqualTo(Boolean.TRUE);
 		assertThat(tb.getBool2().booleanValue()).as("Correct bool2 value").isTrue();
 
 		bw.setPropertyValue("bool2", "false");
@@ -264,7 +264,7 @@ class CustomEditorTests {
 		bw.registerCustomEditor(Boolean.class, new CustomBooleanEditor(true));
 
 		bw.setPropertyValue("bool2", "true");
-		assertThat(Boolean.TRUE).as("Correct bool2 value").isEqualTo(bw.getPropertyValue("bool2"));
+		assertThat(bw.getPropertyValue("bool2")).as("Correct bool2 value").isEqualTo(Boolean.TRUE);
 		assertThat(tb.getBool2().booleanValue()).as("Correct bool2 value").isTrue();
 
 		bw.setPropertyValue("bool2", "false");
