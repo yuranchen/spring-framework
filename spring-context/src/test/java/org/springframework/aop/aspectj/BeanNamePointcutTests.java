@@ -101,12 +101,12 @@ class BeanNamePointcutTests {
 		assertThat(this.testFactoryBean1.get("myKey")).isEqualTo("myValue");
 		assertThat(this.counterAspect.getCount()).as("Advice not executed: must have been").isEqualTo(2);
 		FactoryBean<?> fb = (FactoryBean<?>) ctx.getBean("&testFactoryBean1");
-		assertThat((fb)).as("FactoryBean itself must *not* be advised").isNotInstanceOf(Advised.class);
+		assertThat(fb).as("FactoryBean itself must *not* be advised").isNotInstanceOf(Advised.class);
 	}
 
 	@Test
 	void matchingFactoryBeanItself() {
-		assertThat((this.testFactoryBean2)).as("Matching bean must *not* be advised (proxied)").isNotInstanceOf(Advised.class);
+		assertThat(this.testFactoryBean2).as("Matching bean must *not* be advised (proxied)").isNotInstanceOf(Advised.class);
 		FactoryBean<?> fb = (FactoryBean<?>) ctx.getBean("&testFactoryBean2");
 		assertThat(fb).as("FactoryBean itself must be advised").isInstanceOf(Advised.class);
 		assertThat(Map.class.isAssignableFrom(fb.getObjectType())).isTrue();

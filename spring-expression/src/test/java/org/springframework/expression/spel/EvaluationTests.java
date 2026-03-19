@@ -1439,22 +1439,22 @@ class EvaluationTests extends AbstractExpressionTests {
 
 			ctx.setVariable("wobble", 3);
 			e = parser.parseExpression("#wobble++");
-			assertThat(((Integer) ctx.lookupVariable("wobble"))).isEqualTo(3);
+			assertThat((Integer) ctx.lookupVariable("wobble")).isEqualTo(3);
 			int r = e.getValue(ctx, int.class);
 			assertThat(r).isEqualTo(3);
-			assertThat(((Integer) ctx.lookupVariable("wobble"))).isEqualTo(4);
+			assertThat((Integer) ctx.lookupVariable("wobble")).isEqualTo(4);
 
 			e = parser.parseExpression("--#wobble");
-			assertThat(((Integer) ctx.lookupVariable("wobble"))).isEqualTo(4);
+			assertThat((Integer) ctx.lookupVariable("wobble")).isEqualTo(4);
 			r = e.getValue(ctx, int.class);
 			assertThat(r).isEqualTo(3);
-			assertThat(((Integer) ctx.lookupVariable("wobble"))).isEqualTo(3);
+			assertThat((Integer) ctx.lookupVariable("wobble")).isEqualTo(3);
 
 			e = parser.parseExpression("#wobble=34");
-			assertThat(((Integer) ctx.lookupVariable("wobble"))).isEqualTo(3);
+			assertThat((Integer) ctx.lookupVariable("wobble")).isEqualTo(3);
 			r = e.getValue(ctx, int.class);
 			assertThat(r).isEqualTo(34);
-			assertThat(((Integer) ctx.lookupVariable("wobble"))).isEqualTo(34);
+			assertThat((Integer) ctx.lookupVariable("wobble")).isEqualTo(34);
 
 			// Projection
 			expectFailNotIncrementable(parser, ctx, "({1,2,3}.![#isEven(#this)])++");  // projection would be {false,true,false}

@@ -123,15 +123,15 @@ class DispatcherServletTests {
 
 	@Test
 	void configuredDispatcherServlets() {
-		assertThat((simpleDispatcherServlet.getNamespace())).as("Correct namespace")
+		assertThat(simpleDispatcherServlet.getNamespace()).as("Correct namespace")
 				.isEqualTo("simple" + FrameworkServlet.DEFAULT_NAMESPACE_SUFFIX);
-		assertThat((FrameworkServlet.SERVLET_CONTEXT_PREFIX + "simple")).as("Correct attribute")
+		assertThat(FrameworkServlet.SERVLET_CONTEXT_PREFIX + "simple").as("Correct attribute")
 				.isEqualTo(simpleDispatcherServlet.getServletContextAttributeName());
 		assertThat(simpleDispatcherServlet.getWebApplicationContext()).as("Context published")
 				.isSameAs(getServletContext().getAttribute(FrameworkServlet.SERVLET_CONTEXT_PREFIX + "simple"));
 
 		assertThat(complexDispatcherServlet.getNamespace()).as("Correct namespace").isEqualTo("test");
-		assertThat((FrameworkServlet.SERVLET_CONTEXT_PREFIX + "complex")).as("Correct attribute")
+		assertThat(FrameworkServlet.SERVLET_CONTEXT_PREFIX + "complex").as("Correct attribute")
 				.isEqualTo(complexDispatcherServlet.getServletContextAttributeName());
 		assertThat(getServletContext().getAttribute(FrameworkServlet.SERVLET_CONTEXT_PREFIX + "complex")).as("Context not published")
 				.isNull();

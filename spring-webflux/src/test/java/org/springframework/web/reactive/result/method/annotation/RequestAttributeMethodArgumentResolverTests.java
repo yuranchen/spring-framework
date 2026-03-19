@@ -120,7 +120,7 @@ class RequestAttributeMethodArgumentResolverTests {
 
 		assertThat(mono.block()).isNotNull();
 		assertThat(mono.block().getClass()).isEqualTo(Optional.class);
-		assertThat(((Optional<?>) mono.block())).isNotPresent();
+		assertThat((Optional<?>) mono.block()).isNotPresent();
 
 		ConfigurableWebBindingInitializer initializer = new ConfigurableWebBindingInitializer();
 		initializer.setConversionService(new DefaultFormattingConversionService());
