@@ -402,7 +402,7 @@ class XmlBeanCollectionTests {
 	@Test
 	void choiceBetweenSetAndMap() {
 		MapAndSet sam = (MapAndSet) this.beanFactory.getBean("setAndMap");
-		assertThat(sam.getObject() instanceof Map).as("Didn't choose constructor with Map argument").isTrue();
+		assertThat(sam.getObject()).as("Didn't choose constructor with Map argument").isInstanceOf(Map.class);
 		Map map = (Map) sam.getObject();
 		assertThat(map).containsOnly(entry("key1", "val1"), entry("key2", "val2"), entry("key3", "val3"));
 	}

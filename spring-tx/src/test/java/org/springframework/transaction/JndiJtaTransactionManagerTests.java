@@ -91,7 +91,7 @@ class JndiJtaTransactionManagerTests {
 			assertThat(ptm.getUserTransaction()).isEqualTo(ut);
 		}
 		else {
-			assertThat(ptm.getUserTransaction() instanceof UserTransactionAdapter).isTrue();
+			assertThat(ptm.getUserTransaction()).isInstanceOf(UserTransactionAdapter.class);
 			UserTransactionAdapter uta = (UserTransactionAdapter) ptm.getUserTransaction();
 			assertThat(uta.getTransactionManager()).isEqualTo(tm);
 		}

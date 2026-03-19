@@ -78,7 +78,7 @@ class EncodedResourceResolverTests {
 		assertThat(actual.getDescription()).isEqualTo(getResource(file + ".gz").getDescription());
 		assertThat(actual.getFilename()).isEqualTo(getResource(file).getFilename());
 
-		assertThat(actual instanceof HttpResource).isTrue();
+		assertThat(actual).isInstanceOf(HttpResource.class);
 		HttpHeaders headers = ((HttpResource) actual).getResponseHeaders();
 		assertThat(headers.getFirst(HttpHeaders.CONTENT_ENCODING)).isEqualTo("gzip");
 		assertThat(headers.getFirst(HttpHeaders.VARY)).isEqualTo("Accept-Encoding");
@@ -94,7 +94,7 @@ class EncodedResourceResolverTests {
 
 		assertThat(resolved.getDescription()).isEqualTo(getResource("foo.css.gz").getDescription());
 		assertThat(resolved.getFilename()).isEqualTo(getResource("foo.css").getFilename());
-		assertThat(resolved instanceof HttpResource).isTrue();
+		assertThat(resolved).isInstanceOf(HttpResource.class);
 	}
 
 	@Test
@@ -108,7 +108,7 @@ class EncodedResourceResolverTests {
 
 		assertThat(resolved.getDescription()).isEqualTo(getResource(file + ".gz").getDescription());
 		assertThat(resolved.getFilename()).isEqualTo(getResource(file).getFilename());
-		assertThat(resolved instanceof HttpResource).isTrue();
+		assertThat(resolved).isInstanceOf(HttpResource.class);
 
 		// 2. Resolve unencoded resource
 		request = new MockHttpServletRequest("GET", "/js/foo.js");

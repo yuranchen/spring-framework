@@ -210,7 +210,7 @@ class JndiObjectFactoryBeanTests {
 		jof.setJndiName("foo");
 		jof.setProxyInterface(ITestBean.class);
 		jof.afterPropertiesSet();
-		assertThat(jof.getObject() instanceof ITestBean).isTrue();
+		assertThat(jof.getObject()).isInstanceOf(ITestBean.class);
 		ITestBean proxy = (ITestBean) jof.getObject();
 		assertThat(tb.getAge()).isEqualTo(0);
 		proxy.setAge(99);
@@ -246,7 +246,7 @@ class JndiObjectFactoryBeanTests {
 		jof.setProxyInterface(ITestBean.class);
 		jof.setLookupOnStartup(false);
 		jof.afterPropertiesSet();
-		assertThat(jof.getObject() instanceof ITestBean).isTrue();
+		assertThat(jof.getObject()).isInstanceOf(ITestBean.class);
 		ITestBean proxy = (ITestBean) jof.getObject();
 		assertThat(tb.getName()).isNull();
 		assertThat(tb.getAge()).isEqualTo(0);
@@ -274,7 +274,7 @@ class JndiObjectFactoryBeanTests {
 		jof.setProxyInterface(ITestBean.class);
 		jof.setCache(false);
 		jof.afterPropertiesSet();
-		assertThat(jof.getObject() instanceof ITestBean).isTrue();
+		assertThat(jof.getObject()).isInstanceOf(ITestBean.class);
 		ITestBean proxy = (ITestBean) jof.getObject();
 		assertThat(tb.getName()).isEqualTo("tb");
 		assertThat(tb.getAge()).isEqualTo(1);
@@ -304,7 +304,7 @@ class JndiObjectFactoryBeanTests {
 		jof.setLookupOnStartup(false);
 		jof.setCache(false);
 		jof.afterPropertiesSet();
-		assertThat(jof.getObject() instanceof ITestBean).isTrue();
+		assertThat(jof.getObject()).isInstanceOf(ITestBean.class);
 		ITestBean proxy = (ITestBean) jof.getObject();
 		assertThat(tb.getName()).isNull();
 		assertThat(tb.getAge()).isEqualTo(0);
@@ -343,7 +343,7 @@ class JndiObjectFactoryBeanTests {
 		jof.setExpectedType(TestBean.class);
 		jof.setProxyInterface(ITestBean.class);
 		jof.afterPropertiesSet();
-		assertThat(jof.getObject() instanceof ITestBean).isTrue();
+		assertThat(jof.getObject()).isInstanceOf(ITestBean.class);
 		ITestBean proxy = (ITestBean) jof.getObject();
 		assertThat(tb.getAge()).isEqualTo(0);
 		proxy.setAge(99);
@@ -379,7 +379,7 @@ class JndiObjectFactoryBeanTests {
 		jof.setProxyInterface(ITestBean.class);
 		jof.setExposeAccessContext(true);
 		jof.afterPropertiesSet();
-		assertThat(jof.getObject() instanceof ITestBean).isTrue();
+		assertThat(jof.getObject()).isInstanceOf(ITestBean.class);
 		ITestBean proxy = (ITestBean) jof.getObject();
 		assertThat(tb.getAge()).isEqualTo(0);
 		proxy.setAge(99);

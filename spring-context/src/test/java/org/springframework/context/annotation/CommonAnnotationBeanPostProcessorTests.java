@@ -401,7 +401,7 @@ class CommonAnnotationBeanPostProcessorTests {
 			bf.getBean("annotatedBean2");
 		}
 		catch (BeanCreationException ex) {
-			assertThat(ex.getRootCause() instanceof NoSuchBeanDefinitionException).isTrue();
+			assertThat(ex.getRootCause()).isInstanceOf(NoSuchBeanDefinitionException.class);
 			NoSuchBeanDefinitionException innerEx = (NoSuchBeanDefinitionException) ex.getRootCause();
 			assertThat(innerEx.getBeanName()).isEqualTo("testBean9");
 		}

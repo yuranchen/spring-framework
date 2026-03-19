@@ -104,7 +104,7 @@ class RequestScopeTests {
 		String name = "requestScopedFactoryBean";
 		assertThat(request.getAttribute(name)).isNull();
 		TestBean bean = (TestBean) this.beanFactory.getBean(name);
-		assertThat(request.getAttribute(name) instanceof FactoryBean).isTrue();
+		assertThat(request.getAttribute(name)).isInstanceOf(FactoryBean.class);
 		assertThat(this.beanFactory.getBean(name)).isSameAs(bean);
 	}
 

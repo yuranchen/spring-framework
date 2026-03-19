@@ -63,7 +63,7 @@ class AopNamespaceHandlerScopeIntegrationTests {
 	@Test
 	void singletonScoping() throws Exception {
 		assertThat(AopUtils.isAopProxy(singletonScoped)).as("Should be AOP proxy").isTrue();
-		assertThat(singletonScoped instanceof TestBean).as("Should be target class proxy").isTrue();
+		assertThat(singletonScoped).as("Should be target class proxy").isInstanceOf(TestBean.class);
 		String rob = "Rob Harrop";
 		String bram = "Bram Smeets";
 		assertThat(singletonScoped.getName()).isEqualTo(rob);
@@ -81,7 +81,7 @@ class AopNamespaceHandlerScopeIntegrationTests {
 		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(oldRequest));
 
 		assertThat(AopUtils.isAopProxy(requestScoped)).as("Should be AOP proxy").isTrue();
-		assertThat(requestScoped instanceof TestBean).as("Should be target class proxy").isTrue();
+		assertThat(requestScoped).as("Should be target class proxy").isInstanceOf(TestBean.class);
 
 		assertThat(AopUtils.isAopProxy(testBean)).as("Should be AOP proxy").isTrue();
 		assertThat(testBean instanceof TestBean).as("Regular bean should be JDK proxy").isFalse();

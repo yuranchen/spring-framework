@@ -2644,7 +2644,7 @@ class ServletAnnotationControllerHandlerMethodTests extends AbstractServletHandl
 		public String myOtherHandle(TB tb, BindingResult errors, ExtendedModelMap model, MySpecialArg arg) {
 			TestBean tbReal = (TestBean) tb;
 			tbReal.setName("myName");
-			assertThat(model.get("ITestBean") instanceof DerivedTestBean).isTrue();
+			assertThat(model.get("ITestBean")).isInstanceOf(DerivedTestBean.class);
 			assertThat(arg).isNotNull();
 			return super.myHandle(tbReal, errors, model);
 		}

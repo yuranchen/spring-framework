@@ -202,7 +202,7 @@ class InterceptorRegistryTests {
 	private void verifyWebInterceptor(HandlerInterceptor interceptor,
 			TestWebRequestInterceptor webInterceptor) throws Exception {
 
-		assertThat(interceptor instanceof WebRequestHandlerInterceptorAdapter).isTrue();
+		assertThat(interceptor).isInstanceOf(WebRequestHandlerInterceptorAdapter.class);
 		interceptor.preHandle(this.request, this.response, null);
 		assertThat(webInterceptor.preHandleInvoked).isTrue();
 	}

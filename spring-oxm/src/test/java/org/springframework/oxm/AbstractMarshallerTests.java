@@ -96,7 +96,7 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 		DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
 		DOMResult domResult = new DOMResult();
 		marshaller.marshal(flights, domResult);
-		assertThat(domResult.getNode() instanceof Document).as("DOMResult does not contain a Document").isTrue();
+		assertThat(domResult.getNode()).as("DOMResult does not contain a Document").isInstanceOf(Document.class);
 		Document result = (Document) domResult.getNode();
 		Document expected = builder.newDocument();
 		Element flightsElement = expected.createElementNS("http://samples.springframework.org/flight", "tns:flights");

@@ -66,7 +66,7 @@ class WebHttpHandlerBuilderTests {
 		context.refresh();
 
 		HttpHandler httpHandler = WebHttpHandlerBuilder.applicationContext(context).build();
-		assertThat(httpHandler instanceof HttpWebHandlerAdapter).isTrue();
+		assertThat(httpHandler).isInstanceOf(HttpWebHandlerAdapter.class);
 		assertThat(((HttpWebHandlerAdapter) httpHandler).getApplicationContext()).isSameAs(context);
 
 		MockServerHttpRequest request = MockServerHttpRequest.get("/").build();

@@ -92,14 +92,14 @@ class LocaleContextHolderTests {
 		LocaleContextHolder.setTimeZone(TimeZone.getTimeZone("GMT+1"));
 		assertThat(LocaleContextHolder.getLocale()).isEqualTo(Locale.getDefault());
 		assertThat(LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getTimeZone("GMT+1"));
-		assertThat(LocaleContextHolder.getLocaleContext() instanceof TimeZoneAwareLocaleContext).isTrue();
+		assertThat(LocaleContextHolder.getLocaleContext()).isInstanceOf(TimeZoneAwareLocaleContext.class);
 		assertThat(LocaleContextHolder.getLocaleContext().getLocale()).isNull();
 		assertThat(((TimeZoneAwareLocaleContext) LocaleContextHolder.getLocaleContext()).getTimeZone()).isEqualTo(TimeZone.getTimeZone("GMT+1"));
 
 		LocaleContextHolder.setTimeZone(TimeZone.getTimeZone("GMT+2"));
 		assertThat(LocaleContextHolder.getLocale()).isEqualTo(Locale.getDefault());
 		assertThat(LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getTimeZone("GMT+2"));
-		assertThat(LocaleContextHolder.getLocaleContext() instanceof TimeZoneAwareLocaleContext).isTrue();
+		assertThat(LocaleContextHolder.getLocaleContext()).isInstanceOf(TimeZoneAwareLocaleContext.class);
 		assertThat(LocaleContextHolder.getLocaleContext().getLocale()).isNull();
 		assertThat(((TimeZoneAwareLocaleContext) LocaleContextHolder.getLocaleContext()).getTimeZone()).isEqualTo(TimeZone.getTimeZone("GMT+2"));
 
@@ -125,14 +125,14 @@ class LocaleContextHolderTests {
 		LocaleContextHolder.setTimeZone(TimeZone.getTimeZone("GMT+1"));
 		assertThat(LocaleContextHolder.getLocale()).isEqualTo(Locale.GERMANY);
 		assertThat(LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getTimeZone("GMT+1"));
-		assertThat(LocaleContextHolder.getLocaleContext() instanceof TimeZoneAwareLocaleContext).isTrue();
+		assertThat(LocaleContextHolder.getLocaleContext()).isInstanceOf(TimeZoneAwareLocaleContext.class);
 		assertThat(LocaleContextHolder.getLocaleContext().getLocale()).isEqualTo(Locale.GERMANY);
 		assertThat(((TimeZoneAwareLocaleContext) LocaleContextHolder.getLocaleContext()).getTimeZone()).isEqualTo(TimeZone.getTimeZone("GMT+1"));
 
 		LocaleContextHolder.setLocale(Locale.GERMAN);
 		assertThat(LocaleContextHolder.getLocale()).isEqualTo(Locale.GERMAN);
 		assertThat(LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getTimeZone("GMT+1"));
-		assertThat(LocaleContextHolder.getLocaleContext() instanceof TimeZoneAwareLocaleContext).isTrue();
+		assertThat(LocaleContextHolder.getLocaleContext()).isInstanceOf(TimeZoneAwareLocaleContext.class);
 		assertThat(LocaleContextHolder.getLocaleContext().getLocale()).isEqualTo(Locale.GERMAN);
 		assertThat(((TimeZoneAwareLocaleContext) LocaleContextHolder.getLocaleContext()).getTimeZone()).isEqualTo(TimeZone.getTimeZone("GMT+1"));
 
@@ -145,14 +145,14 @@ class LocaleContextHolderTests {
 		LocaleContextHolder.setTimeZone(TimeZone.getTimeZone("GMT+2"));
 		assertThat(LocaleContextHolder.getLocale()).isEqualTo(Locale.GERMAN);
 		assertThat(LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getTimeZone("GMT+2"));
-		assertThat(LocaleContextHolder.getLocaleContext() instanceof TimeZoneAwareLocaleContext).isTrue();
+		assertThat(LocaleContextHolder.getLocaleContext()).isInstanceOf(TimeZoneAwareLocaleContext.class);
 		assertThat(LocaleContextHolder.getLocaleContext().getLocale()).isEqualTo(Locale.GERMAN);
 		assertThat(((TimeZoneAwareLocaleContext) LocaleContextHolder.getLocaleContext()).getTimeZone()).isEqualTo(TimeZone.getTimeZone("GMT+2"));
 
 		LocaleContextHolder.setLocale(null);
 		assertThat(LocaleContextHolder.getLocale()).isEqualTo(Locale.getDefault());
 		assertThat(LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getTimeZone("GMT+2"));
-		assertThat(LocaleContextHolder.getLocaleContext() instanceof TimeZoneAwareLocaleContext).isTrue();
+		assertThat(LocaleContextHolder.getLocaleContext()).isInstanceOf(TimeZoneAwareLocaleContext.class);
 		assertThat(LocaleContextHolder.getLocaleContext().getLocale()).isNull();
 		assertThat(((TimeZoneAwareLocaleContext) LocaleContextHolder.getLocaleContext()).getTimeZone()).isEqualTo(TimeZone.getTimeZone("GMT+2"));
 

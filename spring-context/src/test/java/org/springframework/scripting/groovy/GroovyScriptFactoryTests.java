@@ -223,7 +223,7 @@ class GroovyScriptFactoryTests {
 		Messenger messenger = (Messenger) ctx.getBean("messenger");
 
 		assertThat(AopUtils.isAopProxy(messenger)).as("Should be a proxy for refreshable scripts").isTrue();
-		assertThat(messenger instanceof Refreshable).as("Should be an instance of Refreshable").isTrue();
+		assertThat(messenger).as("Should be an instance of Refreshable").isInstanceOf(Refreshable.class);
 
 		String desiredMessage = "Hello World!";
 		assertThat(messenger.getMessage()).as("Message is incorrect").isEqualTo(desiredMessage);
@@ -242,7 +242,7 @@ class GroovyScriptFactoryTests {
 		ConfigurableMessenger messenger2 = (ConfigurableMessenger) ctx.getBean("messengerPrototype");
 
 		assertThat(AopUtils.isAopProxy(messenger)).as("Should be a proxy for refreshable scripts").isTrue();
-		assertThat(messenger instanceof Refreshable).as("Should be an instance of Refreshable").isTrue();
+		assertThat(messenger).as("Should be an instance of Refreshable").isInstanceOf(Refreshable.class);
 
 		assertThat(messenger.getMessage()).isEqualTo("Hello World!");
 		assertThat(messenger2.getMessage()).isEqualTo("Hello World!");
@@ -399,7 +399,7 @@ class GroovyScriptFactoryTests {
 		CallCounter countingAspect = (CallCounter) ctx.getBean("getMessageAspect");
 
 		assertThat(AopUtils.isAopProxy(messenger)).isTrue();
-		assertThat(messenger instanceof Refreshable).isTrue();
+		assertThat(messenger).isInstanceOf(Refreshable.class);
 		assertThat(countingAspect.getCalls()).isEqualTo(0);
 		assertThat(messenger.getMessage()).isEqualTo("Hello World!");
 		assertThat(countingAspect.getCalls()).isEqualTo(1);
@@ -416,7 +416,7 @@ class GroovyScriptFactoryTests {
 		Messenger messenger = (Messenger) ctx.getBean("refreshableMessenger");
 
 		assertThat(AopUtils.isAopProxy(messenger)).isTrue();
-		assertThat(messenger instanceof Refreshable).isTrue();
+		assertThat(messenger).isInstanceOf(Refreshable.class);
 		assertThat(messenger.getMessage()).isEqualTo("Hello World!");
 
 		assertThat(ctx.getBeansOfType(ConcreteMessenger.class)).containsValue((ConcreteMessenger) messenger);
@@ -467,7 +467,7 @@ class GroovyScriptFactoryTests {
 		assertThat(Arrays.asList(ctx.getBeanNamesForType(Messenger.class))).contains("refreshableMessenger");
 		Messenger messenger = (Messenger) ctx.getBean("refreshableMessenger");
 		assertThat(AopUtils.isAopProxy(messenger)).isTrue();
-		assertThat(messenger instanceof Refreshable).isTrue();
+		assertThat(messenger).isInstanceOf(Refreshable.class);
 		assertThat(messenger.getMessage()).isEqualTo("Hello World!");
 	}
 
@@ -530,7 +530,7 @@ class GroovyScriptFactoryTests {
 	void factoryBean() {
 		ApplicationContext context = new ClassPathXmlApplicationContext("groovyContext.xml", getClass());
 		Object factory = context.getBean("&factory");
-		assertThat(factory instanceof FactoryBean).isTrue();
+		assertThat(factory).isInstanceOf(FactoryBean.class);
 		Object result = context.getBean("factory");
 		assertThat(result).isEqualTo("test");
 	}
@@ -539,7 +539,7 @@ class GroovyScriptFactoryTests {
 	void refreshableFactoryBean() {
 		ApplicationContext context = new ClassPathXmlApplicationContext("groovyContext.xml", getClass());
 		Object factory = context.getBean("&refreshableFactory");
-		assertThat(factory instanceof FactoryBean).isTrue();
+		assertThat(factory).isInstanceOf(FactoryBean.class);
 		Object result = context.getBean("refreshableFactory");
 		assertThat(result).isEqualTo("test");
 	}

@@ -479,7 +479,7 @@ class BindTagTests extends AbstractTagTests {
 		BindStatus status = (BindStatus) pc.getAttribute(BindTag.STATUS_VARIABLE_NAME, PageContext.REQUEST_SCOPE);
 		assertThat(status).as("Has status variable").isNotNull();
 		assertThat(status.getExpression()).as("Correct expression").isEqualTo("array[0]");
-		assertThat(status.getValue() instanceof TestBean).as("Value is TestBean").isTrue();
+		assertThat(status.getValue()).as("Value is TestBean").isInstanceOf(TestBean.class);
 		assertThat(((TestBean) status.getValue()).getName()).as("Correct value").isEqualTo("name0");
 		assertThat(status.isError()).as("Correct isError").isTrue();
 		assertThat(status.getErrorCodes()).as("Correct errorCodes").hasSize(2);
@@ -506,7 +506,7 @@ class BindTagTests extends AbstractTagTests {
 		BindStatus status = (BindStatus) pc.getAttribute(BindTag.STATUS_VARIABLE_NAME, PageContext.REQUEST_SCOPE);
 		assertThat(status).as("Has status variable").isNotNull();
 		assertThat(status.getExpression()).as("Correct expression").isEqualTo("map[key1]");
-		assertThat(status.getValue() instanceof TestBean).as("Value is TestBean").isTrue();
+		assertThat(status.getValue()).as("Value is TestBean").isInstanceOf(TestBean.class);
 		assertThat(((TestBean) status.getValue()).getName()).as("Correct value").isEqualTo("name4");
 		assertThat(status.isError()).as("Correct isError").isTrue();
 		assertThat(status.getErrorCodes()).as("Correct errorCodes").hasSize(2);
@@ -541,7 +541,7 @@ class BindTagTests extends AbstractTagTests {
 		assertThat(status).as("Has status variable").isNotNull();
 		assertThat(status.getExpression()).as("Correct expression").isEqualTo("array[0]");
 		// because of the custom editor getValue() should return a String
-		assertThat(status.getValue() instanceof String).as("Value is TestBean").isTrue();
+		assertThat(status.getValue()).as("Value is TestBean").isInstanceOf(String.class);
 		assertThat(status.getValue()).as("Correct value").isEqualTo("something");
 	}
 
@@ -559,7 +559,7 @@ class BindTagTests extends AbstractTagTests {
 		tag.doStartTag();
 		BindStatus status = (BindStatus) pc.getAttribute(BindTag.STATUS_VARIABLE_NAME, PageContext.REQUEST_SCOPE);
 		assertThat(status.getExpression()).isEqualTo("doctor");
-		assertThat(status.getValue() instanceof NestedTestBean).isTrue();
+		assertThat(status.getValue()).isInstanceOf(NestedTestBean.class);
 		assertThat(status.getDisplayValue()).contains("juergen&amp;eva");
 	}
 
@@ -574,7 +574,7 @@ class BindTagTests extends AbstractTagTests {
 		tag.doStartTag();
 		BindStatus status = (BindStatus) pc.getAttribute(BindTag.STATUS_VARIABLE_NAME, PageContext.REQUEST_SCOPE);
 		assertThat(status.getExpression()).isEqualTo("someSet");
-		assertThat(status.getValue() instanceof Set).isTrue();
+		assertThat(status.getValue()).isInstanceOf(Set.class);
 	}
 
 	@Test

@@ -61,7 +61,7 @@ class PropertyDependentAspectTests {
 	private void checkXmlAspect(String appContextFile) {
 		ApplicationContext context = new ClassPathXmlApplicationContext(appContextFile, getClass());
 		ICounter counter = (ICounter) context.getBean("counter");
-		assertThat(counter instanceof Advised).as("Proxy didn't get created").isTrue();
+		assertThat(counter).as("Proxy didn't get created").isInstanceOf(Advised.class);
 
 		counter.increment();
 		JoinPointMonitorAspect callCountingAspect = (JoinPointMonitorAspect)context.getBean("monitoringAspect");
@@ -72,7 +72,7 @@ class PropertyDependentAspectTests {
 	private void checkAtAspectJAspect(String appContextFile) {
 		ApplicationContext context = new ClassPathXmlApplicationContext(appContextFile, getClass());
 		ICounter counter = (ICounter) context.getBean("counter");
-		assertThat(counter instanceof Advised).as("Proxy didn't get created").isTrue();
+		assertThat(counter).as("Proxy didn't get created").isInstanceOf(Advised.class);
 
 		counter.increment();
 		JoinPointMonitorAtAspectJAspect callCountingAspect = (JoinPointMonitorAtAspectJAspect)context.getBean("monitoringAspect");

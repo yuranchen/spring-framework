@@ -98,7 +98,7 @@ class SessionAttributesHandlerTests {
 
 		assertThat(session.getAttributes().get("attr1")).isEqualTo("value1");
 		assertThat(session.getAttributes().get("attr2")).isEqualTo("value2");
-		assertThat(session.getAttributes().get("attr3") instanceof TestBean).isTrue();
+		assertThat(session.getAttributes().get("attr3")).isInstanceOf(TestBean.class);
 	}
 
 

@@ -82,7 +82,7 @@ class RequestParamMapMethodArgumentResolverTests {
 		MethodParameter param = this.testMethod.annot(requestParam().noName()).arg(Map.class, String.class, String.class);
 		Object result = resolver.resolveArgument(param, null, webRequest, null);
 
-		assertThat(result instanceof Map).isTrue();
+		assertThat(result).isInstanceOf(Map.class);
 		assertThat(result).as("Invalid result").isEqualTo(expected);
 	}
 
@@ -100,7 +100,7 @@ class RequestParamMapMethodArgumentResolverTests {
 		MethodParameter param = this.testMethod.annotPresent(RequestParam.class).arg(MultiValueMap.class, String.class, String.class);
 		Object result = resolver.resolveArgument(param, null, webRequest, null);
 
-		assertThat(result instanceof MultiValueMap).isTrue();
+		assertThat(result).isInstanceOf(MultiValueMap.class);
 		assertThat(result).as("Invalid result").isEqualTo(expected);
 	}
 
@@ -117,7 +117,7 @@ class RequestParamMapMethodArgumentResolverTests {
 		MethodParameter param = this.testMethod.annot(requestParam().noName()).arg(Map.class, String.class, MultipartFile.class);
 		Object result = resolver.resolveArgument(param, null, webRequest, null);
 
-		assertThat(result instanceof Map).isTrue();
+		assertThat(result).isInstanceOf(Map.class);
 		Map<String, MultipartFile> resultMap = (Map<String, MultipartFile>) result;
 		assertThat(resultMap).hasSize(2);
 		assertThat(resultMap.get("mfile")).isEqualTo(expected1);
@@ -139,7 +139,7 @@ class RequestParamMapMethodArgumentResolverTests {
 		MethodParameter param = this.testMethod.annot(requestParam().noName()).arg(MultiValueMap.class, String.class, MultipartFile.class);
 		Object result = resolver.resolveArgument(param, null, webRequest, null);
 
-		assertThat(result instanceof MultiValueMap).isTrue();
+		assertThat(result).isInstanceOf(MultiValueMap.class);
 		MultiValueMap<String, MultipartFile> resultMap = (MultiValueMap<String, MultipartFile>) result;
 		assertThat(resultMap).hasSize(2);
 		assertThat(resultMap.get("mfilelist")).containsExactly(expected1, expected2);
@@ -160,7 +160,7 @@ class RequestParamMapMethodArgumentResolverTests {
 		MethodParameter param = this.testMethod.annot(requestParam().noName()).arg(Map.class, String.class, Part.class);
 		Object result = resolver.resolveArgument(param, null, webRequest, null);
 
-		assertThat(result instanceof Map).isTrue();
+		assertThat(result).isInstanceOf(Map.class);
 		Map<String, Part> resultMap = (Map<String, Part>) result;
 		assertThat(resultMap).hasSize(2);
 		assertThat(resultMap.get("mfile")).isEqualTo(expected1);
@@ -183,7 +183,7 @@ class RequestParamMapMethodArgumentResolverTests {
 		MethodParameter param = this.testMethod.annot(requestParam().noName()).arg(MultiValueMap.class, String.class, Part.class);
 		Object result = resolver.resolveArgument(param, null, webRequest, null);
 
-		assertThat(result instanceof MultiValueMap).isTrue();
+		assertThat(result).isInstanceOf(MultiValueMap.class);
 		MultiValueMap<String, Part> resultMap = (MultiValueMap<String, Part>) result;
 		assertThat(resultMap).hasSize(2);
 		assertThat(resultMap.get("mfilelist")).containsExactly(expected1, expected2);

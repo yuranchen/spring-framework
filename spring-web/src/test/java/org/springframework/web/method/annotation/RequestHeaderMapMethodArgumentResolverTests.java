@@ -91,7 +91,7 @@ class RequestHeaderMapMethodArgumentResolverTests {
 
 		Object result = resolver.resolveArgument(paramMap, null, webRequest, null);
 
-		assertThat(result instanceof Map).isTrue();
+		assertThat(result).isInstanceOf(Map.class);
 		assertThat(result).as("Invalid result").isEqualTo(expected);
 	}
 
@@ -110,7 +110,7 @@ class RequestHeaderMapMethodArgumentResolverTests {
 
 		Object result = resolver.resolveArgument(paramMultiValueMap, null, webRequest, null);
 
-		assertThat(result instanceof MultiValueMap).isTrue();
+		assertThat(result).isInstanceOf(MultiValueMap.class);
 		assertThat(result).as("Invalid result").isEqualTo(expected);
 	}
 
@@ -129,7 +129,7 @@ class RequestHeaderMapMethodArgumentResolverTests {
 
 		Object result = resolver.resolveArgument(paramHttpHeaders, null, webRequest, null);
 
-		assertThat(result instanceof HttpHeaders).isTrue();
+		assertThat(result).isInstanceOf(HttpHeaders.class);
 		assertThat(result).as("Invalid result").isEqualTo(expected);
 	}
 

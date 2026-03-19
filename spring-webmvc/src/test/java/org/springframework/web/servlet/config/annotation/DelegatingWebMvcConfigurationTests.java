@@ -112,7 +112,7 @@ class DelegatingWebMvcConfigurationTests {
 
 		assertThat(initializer).isNotNull();
 		assertThat(initializer.getConversionService()).isSameAs(conversionService.getValue());
-		assertThat(initializer.getValidator() instanceof LocalValidatorFactoryBean).isTrue();
+		assertThat(initializer.getValidator()).isInstanceOf(LocalValidatorFactoryBean.class);
 		assertThat(resolvers.getValue()).isEmpty();
 		assertThat(handlers.getValue()).isEmpty();
 		assertThat(adapter.getMessageConverters()).isEqualTo(converters.getValue());
@@ -170,9 +170,9 @@ class DelegatingWebMvcConfigurationTests {
 		verify(webMvcConfigurer).configureHandlerExceptionResolvers(exceptionResolvers.capture());
 
 		assertThat(exceptionResolvers.getValue()).hasSize(3);
-		assertThat(exceptionResolvers.getValue().get(0) instanceof ExceptionHandlerExceptionResolver).isTrue();
-		assertThat(exceptionResolvers.getValue().get(1) instanceof ResponseStatusExceptionResolver).isTrue();
-		assertThat(exceptionResolvers.getValue().get(2) instanceof DefaultHandlerExceptionResolver).isTrue();
+		assertThat(exceptionResolvers.getValue().get(0)).isInstanceOf(ExceptionHandlerExceptionResolver.class);
+		assertThat(exceptionResolvers.getValue().get(1)).isInstanceOf(ResponseStatusExceptionResolver.class);
+		assertThat(exceptionResolvers.getValue().get(2)).isInstanceOf(DefaultHandlerExceptionResolver.class);
 		assertThat(converters.getValue()).isNotEmpty();
 	}
 

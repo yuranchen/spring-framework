@@ -114,7 +114,7 @@ class DelegatingWebFluxConfigurationTests {
 		verify(webFluxConfigurer).configureArgumentResolvers(any());
 
 		assertThat(initializer).isNotNull();
-		assertThat(initializer.getValidator() instanceof LocalValidatorFactoryBean).isTrue();
+		assertThat(initializer.getValidator()).isInstanceOf(LocalValidatorFactoryBean.class);
 		assertThat(initializer.getConversionService()).isSameAs(formatterRegistry.getValue());
 		assertThat(codecsConfigurer.getValue().getReaders()).hasSize(16);
 	}

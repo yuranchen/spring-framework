@@ -67,7 +67,7 @@ class DispatcherServletInitializerTests {
 		WebApplicationContext servletContext = servlet.getWebApplicationContext();
 
 		assertThat(servletContext.containsBean("bean")).isTrue();
-		assertThat(servletContext.getBean("bean") instanceof MyBean).isTrue();
+		assertThat(servletContext.getBean("bean")).isInstanceOf(MyBean.class);
 
 		assertThat(registrations).hasSize(1);
 		assertThat(registrations.get(SERVLET_NAME)).isNotNull();

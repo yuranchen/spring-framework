@@ -104,10 +104,10 @@ class TableMetaDataContextTests {
 		List<Object> values = context.matchInParameterValuesWithInsertColumns(map);
 
 		assertThat(values.size()).as("wrong number of parameters: ").isEqualTo(4);
-		assertThat(values.get(0) instanceof Number).as("id not wrapped with type info").isTrue();
-		assertThat(values.get(1) instanceof String).as("name not wrapped with type info").isTrue();
-		assertThat(values.get(2) instanceof SqlParameterValue).as("date wrapped with type info").isTrue();
-		assertThat(values.get(3) instanceof SqlParameterValue).as("version wrapped with type info").isTrue();
+		assertThat(values.get(0)).as("id not wrapped with type info").isInstanceOf(Number.class);
+		assertThat(values.get(1)).as("name not wrapped with type info").isInstanceOf(String.class);
+		assertThat(values.get(2)).as("date wrapped with type info").isInstanceOf(SqlParameterValue.class);
+		assertThat(values.get(3)).as("version wrapped with type info").isInstanceOf(SqlParameterValue.class);
 		verify(metaDataResultSet, atLeastOnce()).next();
 		verify(columnsResultSet, atLeastOnce()).next();
 		verify(metaDataResultSet).close();

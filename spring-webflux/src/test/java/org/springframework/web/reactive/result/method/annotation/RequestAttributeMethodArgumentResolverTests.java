@@ -154,7 +154,7 @@ class RequestAttributeMethodArgumentResolverTests {
 		this.exchange.getAttributes().put("fooMono", singleMono);
 		mono = this.resolver.resolveArgument(param, new BindingContext(), this.exchange);
 		Object value = mono.block(Duration.ZERO);
-		assertThat(value instanceof Mono).isTrue();
+		assertThat(value).isInstanceOf(Mono.class);
 		assertThat(((Mono<?>) value).block(Duration.ZERO)).isSameAs(foo);
 
 		// No attribute --> Mono.empty

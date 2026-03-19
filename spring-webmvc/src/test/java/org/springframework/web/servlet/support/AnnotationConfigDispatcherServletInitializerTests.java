@@ -92,7 +92,7 @@ class AnnotationConfigDispatcherServletInitializerTests {
 		((AnnotationConfigWebApplicationContext) wac).refresh();
 
 		assertThat(wac.containsBean("bean")).isTrue();
-		assertThat(wac.getBean("bean") instanceof MyBean).isTrue();
+		assertThat(wac.getBean("bean")).isInstanceOf(MyBean.class);
 
 		assertThat(servletRegistrations).hasSize(1);
 		assertThat(servletRegistrations.get(SERVLET_NAME)).isNotNull();
@@ -160,7 +160,7 @@ class AnnotationConfigDispatcherServletInitializerTests {
 		((AnnotationConfigWebApplicationContext) wac).refresh();
 
 		assertThat(wac.containsBean("bean")).isTrue();
-		assertThat(wac.getBean("bean") instanceof MyBean).isTrue();
+		assertThat(wac.getBean("bean")).isInstanceOf(MyBean.class);
 	}
 
 	@Test

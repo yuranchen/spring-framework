@@ -398,8 +398,8 @@ class ResponseEntityExceptionHandlerTests {
 			servlet.service(this.servletRequest, this.servletResponse);
 		}
 		catch (ServletException ex) {
-			assertThat(ex.getCause() instanceof IllegalStateException).isTrue();
-			assertThat(ex.getCause().getCause() instanceof ServletRequestBindingException).isTrue();
+			assertThat(ex.getCause()).isInstanceOf(IllegalStateException.class);
+			assertThat(ex.getCause().getCause()).isInstanceOf(ServletRequestBindingException.class);
 		}
 	}
 

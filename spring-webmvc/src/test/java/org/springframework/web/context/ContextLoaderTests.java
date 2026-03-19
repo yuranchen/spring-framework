@@ -70,7 +70,7 @@ class ContextLoaderTests {
 		listener.contextInitialized(event);
 		String contextAttr = WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE;
 		WebApplicationContext context = (WebApplicationContext) sc.getAttribute(contextAttr);
-		assertThat(context instanceof XmlWebApplicationContext).as("Correct WebApplicationContext exposed in ServletContext").isTrue();
+		assertThat(context).as("Correct WebApplicationContext exposed in ServletContext").isInstanceOf(XmlWebApplicationContext.class);
 		assertThat(WebApplicationContextUtils.getRequiredWebApplicationContext(sc)).isInstanceOf(
 				XmlWebApplicationContext.class);
 		LifecycleBean lb = (LifecycleBean) context.getBean("lifecycle");
@@ -239,7 +239,7 @@ class ContextLoaderTests {
 		listener.contextInitialized(event);
 		String contextAttr = WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE;
 		WebApplicationContext wc = (WebApplicationContext) sc.getAttribute(contextAttr);
-		assertThat(wc instanceof SimpleWebApplicationContext).as("Correct WebApplicationContext exposed in ServletContext").isTrue();
+		assertThat(wc).as("Correct WebApplicationContext exposed in ServletContext").isInstanceOf(SimpleWebApplicationContext.class);
 	}
 
 	@Test

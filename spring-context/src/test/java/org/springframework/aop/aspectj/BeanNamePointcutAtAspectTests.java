@@ -66,7 +66,7 @@ class BeanNamePointcutAtAspectTests {
 
 	@Test
 	void matchingBeanName() {
-		assertThat(testBean1 instanceof Advised).as("Expected a proxy").isTrue();
+		assertThat(testBean1).as("Expected a proxy").isInstanceOf(Advised.class);
 
 		// Call two methods to test for SPR-3953-like condition
 		testBean1.setAge(20);
@@ -94,7 +94,7 @@ class BeanNamePointcutAtAspectTests {
 
 		ITestBean proxyTestBean = factory.getProxy();
 
-		assertThat(proxyTestBean instanceof Advised).as("Expected a proxy").isTrue();
+		assertThat(proxyTestBean).as("Expected a proxy").isInstanceOf(Advised.class);
 		proxyTestBean.setAge(20);
 		assertThat(myCounterAspect.count).as("Programmatically created proxy shouldn't match bean()").isEqualTo(0);
 	}

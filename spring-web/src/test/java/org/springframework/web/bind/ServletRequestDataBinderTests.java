@@ -226,7 +226,7 @@ class ServletRequestDataBinderTests {
 
 		ServletRequestParameterPropertyValues pvs = new ServletRequestParameterPropertyValues(request);
 		assertThat(pvs.getPropertyValues().length).as("Found 1 parameter").isEqualTo(1);
-		assertThat(pvs.getPropertyValue("forname").getValue() instanceof String[]).as("Found array value").isTrue();
+		assertThat(pvs.getPropertyValue("forname").getValue()).as("Found array value").isInstanceOf(String[].class);
 		String[] values = (String[]) pvs.getPropertyValue("forname").getValue();
 		assertThat(Arrays.asList(original)).as("Correct values").isEqualTo(Arrays.asList(values));
 	}
@@ -249,7 +249,7 @@ class ServletRequestDataBinderTests {
 		for (PropertyValue element : ps) {
 			Object val = m.get(element.getName());
 			assertThat(val).as("Can't have unexpected value").isNotNull();
-			assertThat(val instanceof String).as("Val i string").isTrue();
+			assertThat(val).as("Val i string").isInstanceOf(String.class);
 			assertThat(val.equals(element.getValue())).as("val matches expected").isTrue();
 			m.remove(element.getName());
 		}

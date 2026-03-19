@@ -170,7 +170,7 @@ class MessageListenerAdapterTests {
 			@Override
 			protected void handleListenerException(Throwable ex) {
 				assertThat(ex).as("The Throwable passed to the handleListenerException(..) method must never be null.").isNotNull();
-				assertThat(ex instanceof ListenerExecutionFailedException).as("The Throwable passed to the handleListenerException(..) method must be of type [ListenerExecutionFailedException].").isTrue();
+				assertThat(ex).as("The Throwable passed to the handleListenerException(..) method must be of type [ListenerExecutionFailedException].").isInstanceOf(ListenerExecutionFailedException.class);
 				ListenerExecutionFailedException lefx = (ListenerExecutionFailedException) ex;
 				Throwable cause = lefx.getCause();
 				assertThat(cause).as("The cause of a ListenerExecutionFailedException must be preserved.").isNotNull();
@@ -186,7 +186,7 @@ class MessageListenerAdapterTests {
 	void thatTheDefaultMessageConverterisIndeedTheSimpleMessageConverter() {
 		MessageListenerAdapter adapter = new MessageListenerAdapter();
 		assertThat(adapter.getMessageConverter()).as("The default [MessageConverter] must never be null.").isNotNull();
-		assertThat(adapter.getMessageConverter() instanceof SimpleMessageConverter).as("The default [MessageConverter] must be of the type [SimpleMessageConverter]").isTrue();
+		assertThat(adapter.getMessageConverter()).as("The default [MessageConverter] must be of the type [SimpleMessageConverter]").isInstanceOf(SimpleMessageConverter.class);
 	}
 
 	@Test

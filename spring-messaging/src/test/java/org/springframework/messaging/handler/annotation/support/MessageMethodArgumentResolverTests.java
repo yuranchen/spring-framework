@@ -226,9 +226,9 @@ class MessageMethodArgumentResolverTests {
 		this.resolver = new MessageMethodArgumentResolver(new MappingJackson2MessageConverter());
 		Object actual = this.resolver.resolveArgument(parameter, inMessage);
 
-		assertThat(actual instanceof Message).isTrue();
+		assertThat(actual).isInstanceOf(Message.class);
 		Message<?> outMessage = (Message<?>) actual;
-		assertThat(outMessage.getPayload() instanceof Foo).isTrue();
+		assertThat(outMessage.getPayload()).isInstanceOf(Foo.class);
 		assertThat(((Foo) outMessage.getPayload()).getFoo()).isEqualTo("bar");
 	}
 

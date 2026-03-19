@@ -90,7 +90,7 @@ class RequestHeaderMapMethodArgumentResolverTests {
 		Mono<Object> mono = resolver.resolveArgument(paramMap, null, exchange);
 		Object result = mono.block();
 
-		assertThat(result instanceof Map).isTrue();
+		assertThat(result).isInstanceOf(Map.class);
 		assertThat(result).as("Invalid result").isEqualTo(expected);
 	}
 
@@ -129,7 +129,7 @@ class RequestHeaderMapMethodArgumentResolverTests {
 		Mono<Object> mono = resolver.resolveArgument(paramHttpHeaders, null, exchange);
 		Object result = mono.block();
 
-		assertThat(result instanceof HttpHeaders).isTrue();
+		assertThat(result).isInstanceOf(HttpHeaders.class);
 		assertThat(result).as("Invalid result").isEqualTo(expected);
 	}
 

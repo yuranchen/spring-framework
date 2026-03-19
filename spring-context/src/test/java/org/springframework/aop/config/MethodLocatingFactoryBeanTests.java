@@ -97,7 +97,7 @@ class MethodLocatingFactoryBeanTests {
 		factory.setBeanFactory(beanFactory);
 		Object result = factory.getObject();
 		assertThat(result).isNotNull();
-		assertThat(result instanceof Method).isTrue();
+		assertThat(result).isInstanceOf(Method.class);
 		Method method = (Method) result;
 		assertThat(method.invoke("Bingo")).isEqualTo("Bingo");
 	}

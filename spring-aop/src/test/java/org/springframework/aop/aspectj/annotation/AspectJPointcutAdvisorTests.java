@@ -63,7 +63,7 @@ class AspectJPointcutAdvisorTests {
 				1, "someBean");
 
 		assertThat(ajpa.getAspectMetadata().getPerClausePointcut()).isNotSameAs(Pointcut.TRUE);
-		assertThat(ajpa.getAspectMetadata().getPerClausePointcut() instanceof AspectJExpressionPointcut).isTrue();
+		assertThat(ajpa.getAspectMetadata().getPerClausePointcut()).isInstanceOf(AspectJExpressionPointcut.class);
 		assertThat(ajpa.isPerInstance()).isTrue();
 
 		assertThat(ajpa.getAspectMetadata().getPerClausePointcut().getClassFilter().matches(TestBean.class)).isTrue();

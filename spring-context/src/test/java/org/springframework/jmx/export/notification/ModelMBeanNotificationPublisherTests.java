@@ -86,7 +86,7 @@ class ModelMBeanNotificationPublisherTests {
 		publisher.sendNotification(notification);
 
 		assertThat(mbean.getActualNotification()).isNotNull();
-		assertThat(mbean.getActualNotification() instanceof AttributeChangeNotification).isTrue();
+		assertThat(mbean.getActualNotification()).isInstanceOf(AttributeChangeNotification.class);
 		assertThat(mbean.getActualNotification()).as("The exact same Notification is not being passed through from the publisher to the mbean.").isSameAs(notification);
 		assertThat(mbean.getActualNotification().getSource()).as("The 'source' property of the Notification is not being set to the ObjectName of the associated MBean.").isSameAs(objectName);
 	}
@@ -101,7 +101,7 @@ class ModelMBeanNotificationPublisherTests {
 		publisher.sendNotification(notification);
 
 		assertThat(mbean.getActualNotification()).isNotNull();
-		assertThat(mbean.getActualNotification() instanceof AttributeChangeNotification).isTrue();
+		assertThat(mbean.getActualNotification()).isInstanceOf(AttributeChangeNotification.class);
 		assertThat(mbean.getActualNotification()).as("The exact same Notification is not being passed through from the publisher to the mbean.").isSameAs(notification);
 		assertThat(mbean.getActualNotification().getSource()).as("The 'source' property of the Notification is *wrongly* being set to the ObjectName of the associated MBean.").isSameAs(this);
 	}

@@ -83,7 +83,7 @@ class HandlersBeanDefinitionParserTests {
 		assertThat(handlersMap).hasSize(2);
 
 		for (HandlerMapping hm : handlersMap.values()) {
-			assertThat(hm instanceof SimpleUrlHandlerMapping).isTrue();
+			assertThat(hm).isInstanceOf(SimpleUrlHandlerMapping.class);
 			SimpleUrlHandlerMapping shm = (SimpleUrlHandlerMapping) hm;
 
 			if (shm.getUrlMap().containsKey("/foo")) {
@@ -93,9 +93,9 @@ class HandlersBeanDefinitionParserTests {
 				unwrapAndCheckDecoratedHandlerType(handler.getWebSocketHandler(), FooWebSocketHandler.class);
 				HandshakeHandler handshakeHandler = handler.getHandshakeHandler();
 				assertThat(handshakeHandler).isNotNull();
-				assertThat(handshakeHandler instanceof DefaultHandshakeHandler).isTrue();
+				assertThat(handshakeHandler).isInstanceOf(DefaultHandshakeHandler.class);
 				assertThat(handler.getHandshakeInterceptors()).isNotEmpty();
-				assertThat(handler.getHandshakeInterceptors().get(0) instanceof OriginHandshakeInterceptor).isTrue();
+				assertThat(handler.getHandshakeInterceptors().get(0)).isInstanceOf(OriginHandshakeInterceptor.class);
 			}
 			else {
 				assertThat(shm.getUrlMap()).containsOnlyKeys("/test");
@@ -104,9 +104,9 @@ class HandlersBeanDefinitionParserTests {
 				unwrapAndCheckDecoratedHandlerType(handler.getWebSocketHandler(), TestWebSocketHandler.class);
 				HandshakeHandler handshakeHandler = handler.getHandshakeHandler();
 				assertThat(handshakeHandler).isNotNull();
-				assertThat(handshakeHandler instanceof DefaultHandshakeHandler).isTrue();
+				assertThat(handshakeHandler).isInstanceOf(DefaultHandshakeHandler.class);
 				assertThat(handler.getHandshakeInterceptors()).isNotEmpty();
-				assertThat(handler.getHandshakeInterceptors().get(0) instanceof OriginHandshakeInterceptor).isTrue();
+				assertThat(handler.getHandshakeInterceptors().get(0)).isInstanceOf(OriginHandshakeInterceptor.class);
 			}
 		}
 	}
@@ -117,7 +117,7 @@ class HandlersBeanDefinitionParserTests {
 
 		HandlerMapping handlerMapping = this.appContext.getBean(HandlerMapping.class);
 		assertThat(handlerMapping).isNotNull();
-		assertThat(handlerMapping instanceof SimpleUrlHandlerMapping).isTrue();
+		assertThat(handlerMapping).isInstanceOf(SimpleUrlHandlerMapping.class);
 
 		SimpleUrlHandlerMapping urlHandlerMapping = (SimpleUrlHandlerMapping) handlerMapping;
 		assertThat(urlHandlerMapping.getOrder()).isEqualTo(2);
@@ -127,7 +127,7 @@ class HandlersBeanDefinitionParserTests {
 		unwrapAndCheckDecoratedHandlerType(handler.getWebSocketHandler(), FooWebSocketHandler.class);
 		HandshakeHandler handshakeHandler = handler.getHandshakeHandler();
 		assertThat(handshakeHandler).isNotNull();
-		assertThat(handshakeHandler instanceof TestHandshakeHandler).isTrue();
+		assertThat(handshakeHandler).isInstanceOf(TestHandshakeHandler.class);
 		List<HandshakeInterceptor> interceptors = handler.getHandshakeInterceptors();
 		assertThat(interceptors).extracting("class")
 				.containsExactlyInAnyOrder(FooTestInterceptor.class, BarTestInterceptor.class, OriginHandshakeInterceptor.class);
@@ -137,7 +137,7 @@ class HandlersBeanDefinitionParserTests {
 		unwrapAndCheckDecoratedHandlerType(handler.getWebSocketHandler(), TestWebSocketHandler.class);
 		handshakeHandler = handler.getHandshakeHandler();
 		assertThat(handshakeHandler).isNotNull();
-		assertThat(handshakeHandler instanceof TestHandshakeHandler).isTrue();
+		assertThat(handshakeHandler).isInstanceOf(TestHandshakeHandler.class);
 		interceptors = handler.getHandshakeInterceptors();
 		assertThat(interceptors).extracting("class")
 				.containsExactlyInAnyOrder(FooTestInterceptor.class, BarTestInterceptor.class, OriginHandshakeInterceptor.class);

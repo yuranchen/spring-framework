@@ -55,7 +55,7 @@ class ContextLoaderInitializerTests {
 	void register() throws ServletException {
 		initializer.onStartup(servletContext);
 
-		assertThat(eventListener instanceof ContextLoaderListener).isTrue();
+		assertThat(eventListener).isInstanceOf(ContextLoaderListener.class);
 		ContextLoaderListener cll = (ContextLoaderListener) eventListener;
 		cll.contextInitialized(new ServletContextEvent(servletContext));
 
@@ -63,7 +63,7 @@ class ContextLoaderInitializerTests {
 				.getRequiredWebApplicationContext(servletContext);
 
 		assertThat(applicationContext.containsBean(BEAN_NAME)).isTrue();
-		assertThat(applicationContext.getBean(BEAN_NAME) instanceof MyBean).isTrue();
+		assertThat(applicationContext.getBean(BEAN_NAME)).isInstanceOf(MyBean.class);
 	}
 
 	private class MyMockServletContext extends MockServletContext {

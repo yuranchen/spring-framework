@@ -75,7 +75,7 @@ class BeanNamePointcutTests {
 
 	@Test
 	void matchingBeanName() {
-		assertThat(this.testBean1 instanceof Advised).as("Matching bean must be advised (proxied)").isTrue();
+		assertThat(this.testBean1).as("Matching bean must be advised (proxied)").isInstanceOf(Advised.class);
 		// Call two methods to test for SPR-3953-like condition
 		this.testBean1.setAge(20);
 		this.testBean1.setName("");
@@ -96,7 +96,7 @@ class BeanNamePointcutTests {
 
 	@Test
 	void matchingFactoryBeanObject() {
-		assertThat(this.testFactoryBean1 instanceof Advised).as("Matching bean must be advised (proxied)").isTrue();
+		assertThat(this.testFactoryBean1).as("Matching bean must be advised (proxied)").isInstanceOf(Advised.class);
 		assertThat(this.testFactoryBean1.get("myKey")).isEqualTo("myValue");
 		assertThat(this.testFactoryBean1.get("myKey")).isEqualTo("myValue");
 		assertThat(this.counterAspect.getCount()).as("Advice not executed: must have been").isEqualTo(2);
@@ -108,7 +108,7 @@ class BeanNamePointcutTests {
 	void matchingFactoryBeanItself() {
 		assertThat((this.testFactoryBean2 instanceof Advised)).as("Matching bean must *not* be advised (proxied)").isFalse();
 		FactoryBean<?> fb = (FactoryBean<?>) ctx.getBean("&testFactoryBean2");
-		assertThat(fb instanceof Advised).as("FactoryBean itself must be advised").isTrue();
+		assertThat(fb).as("FactoryBean itself must be advised").isInstanceOf(Advised.class);
 		assertThat(Map.class.isAssignableFrom(fb.getObjectType())).isTrue();
 		assertThat(Map.class.isAssignableFrom(fb.getObjectType())).isTrue();
 		assertThat(this.counterAspect.getCount()).as("Advice not executed: must have been").isEqualTo(2);
@@ -116,7 +116,7 @@ class BeanNamePointcutTests {
 
 	@Test
 	void pointcutAdvisorCombination() {
-		assertThat(this.interceptThis instanceof Advised).as("Matching bean must be advised (proxied)").isTrue();
+		assertThat(this.interceptThis).as("Matching bean must be advised (proxied)").isInstanceOf(Advised.class);
 		assertThat(this.dontInterceptThis instanceof Advised).as("Non-matching bean must *not* be advised (proxied)").isFalse();
 		interceptThis.setAge(20);
 		assertThat(testInterceptor.interceptionCount).isEqualTo(1);

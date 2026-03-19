@@ -107,7 +107,7 @@ class JmsListenerAnnotationBeanPostProcessorTests {
 			assertThat(endpoint.getClass()).as("Wrong endpoint type").isEqualTo(MethodJmsListenerEndpoint.class);
 			MethodJmsListenerEndpoint methodEndpoint = (MethodJmsListenerEndpoint) endpoint;
 			assertThat(AopUtils.isJdkDynamicProxy(methodEndpoint.getBean())).isTrue();
-			assertThat(methodEndpoint.getBean() instanceof SimpleService).isTrue();
+			assertThat(methodEndpoint.getBean()).isInstanceOf(SimpleService.class);
 			assertThat(methodEndpoint.getMethod()).isEqualTo(SimpleService.class.getMethod("handleIt", String.class, String.class));
 			assertThat(methodEndpoint.getMostSpecificMethod()).isEqualTo(InterfaceProxyTestBean.class.getMethod("handleIt", String.class, String.class));
 
@@ -128,7 +128,7 @@ class JmsListenerAnnotationBeanPostProcessorTests {
 			assertThat(endpoint.getClass()).as("Wrong endpoint type").isEqualTo(MethodJmsListenerEndpoint.class);
 			MethodJmsListenerEndpoint methodEndpoint = (MethodJmsListenerEndpoint) endpoint;
 			assertThat(AopUtils.isCglibProxy(methodEndpoint.getBean())).isTrue();
-			assertThat(methodEndpoint.getBean() instanceof ClassProxyTestBean).isTrue();
+			assertThat(methodEndpoint.getBean()).isInstanceOf(ClassProxyTestBean.class);
 			assertThat(methodEndpoint.getMethod()).isEqualTo(ClassProxyTestBean.class.getMethod("handleIt", String.class, String.class));
 			assertThat(methodEndpoint.getMostSpecificMethod()).isEqualTo(ClassProxyTestBean.class.getMethod("handleIt", String.class, String.class));
 

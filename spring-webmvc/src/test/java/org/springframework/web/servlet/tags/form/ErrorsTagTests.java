@@ -346,7 +346,7 @@ class ErrorsTagTests extends AbstractFormTagTests {
 		int result = this.tag.doStartTag();
 		assertThat(result).isEqualTo(BodyTag.EVAL_BODY_BUFFERED);
 		assertThat(getPageContext().getAttribute(ErrorsTag.MESSAGES_ATTRIBUTE)).isNotNull();
-		assertThat(getPageContext().getAttribute(ErrorsTag.MESSAGES_ATTRIBUTE) instanceof List).isTrue();
+		assertThat(getPageContext().getAttribute(ErrorsTag.MESSAGES_ATTRIBUTE)).isInstanceOf(List.class);
 		String bodyContent = "Foo";
 		this.tag.setBodyContent(new MockBodyContent(bodyContent, getWriter()));
 		this.tag.doEndTag();
@@ -366,7 +366,7 @@ class ErrorsTagTests extends AbstractFormTagTests {
 		int result = this.tag.doStartTag();
 		assertThat(result).isEqualTo(BodyTag.EVAL_BODY_BUFFERED);
 		assertThat(getPageContext().getAttribute(ErrorsTag.MESSAGES_ATTRIBUTE)).isNotNull();
-		assertThat(getPageContext().getAttribute(ErrorsTag.MESSAGES_ATTRIBUTE) instanceof List).isTrue();
+		assertThat(getPageContext().getAttribute(ErrorsTag.MESSAGES_ATTRIBUTE)).isInstanceOf(List.class);
 		String bodyContent = "Foo";
 		this.tag.setBodyContent(new MockBodyContent(bodyContent, getWriter()));
 		this.tag.doEndTag();

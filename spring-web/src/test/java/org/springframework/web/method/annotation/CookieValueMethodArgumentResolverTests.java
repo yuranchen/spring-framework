@@ -80,7 +80,7 @@ class CookieValueMethodArgumentResolverTests {
 	void resolveCookieDefaultValue() throws Exception {
 		Object result = resolver.resolveArgument(paramNamedDefaultValueString, null, webRequest, null);
 
-		assertThat(result instanceof String).isTrue();
+		assertThat(result).isInstanceOf(String.class);
 		assertThat(result).as("Invalid result").isEqualTo("bar");
 	}
 

@@ -160,7 +160,7 @@ class ScopingTests {
 	void scopedProxyConfiguration() {
 		TestBean singleton = (TestBean) ctx.getBean("singletonWithScopedInterfaceDep");
 		ITestBean spouse = singleton.getSpouse();
-		assertThat(spouse instanceof ScopedObject).as("scoped bean is not wrapped by the scoped-proxy").isTrue();
+		assertThat(spouse).as("scoped bean is not wrapped by the scoped-proxy").isInstanceOf(ScopedObject.class);
 
 		String beanName = "scopedProxyInterface";
 
@@ -192,7 +192,7 @@ class ScopingTests {
 	void scopedProxyConfigurationWithClasses() {
 		TestBean singleton = (TestBean) ctx.getBean("singletonWithScopedClassDep");
 		ITestBean spouse = singleton.getSpouse();
-		assertThat(spouse instanceof ScopedObject).as("scoped bean is not wrapped by the scoped-proxy").isTrue();
+		assertThat(spouse).as("scoped bean is not wrapped by the scoped-proxy").isInstanceOf(ScopedObject.class);
 
 		String beanName = "scopedProxyClass";
 
