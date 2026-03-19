@@ -603,7 +603,7 @@ abstract class AbstractPropertyAccessorTests {
 		assertThat(target.getBool2()).as("Correct bool2 value").isTrue();
 
 		accessor.setPropertyValue("bool2", "false");
-		assertThat(Boolean.FALSE).as("Correct bool2 value").isEqualTo(accessor.getPropertyValue("bool2"));
+		assertThat(accessor.getPropertyValue("bool2")).as("Correct bool2 value").isEqualTo(Boolean.FALSE);
 		assertThat(target.getBool2()).as("Correct bool2 value").isFalse();
 	}
 
