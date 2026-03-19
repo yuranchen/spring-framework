@@ -53,22 +53,19 @@ class JeeNamespaceHandlerEventTests {
 	@Test
 	void jndiLookupComponentEventReceived() {
 		ComponentDefinition component = this.eventListener.getComponentDefinition("simple");
-		boolean condition = component instanceof BeanComponentDefinition;
-		assertThat(condition).isTrue();
+		assertThat(component instanceof BeanComponentDefinition).isTrue();
 	}
 
 	@Test
 	void localSlsbComponentEventReceived() {
 		ComponentDefinition component = this.eventListener.getComponentDefinition("simpleLocalEjb");
-		boolean condition = component instanceof BeanComponentDefinition;
-		assertThat(condition).isTrue();
+		assertThat(component instanceof BeanComponentDefinition).isTrue();
 	}
 
 	@Test
 	void remoteSlsbComponentEventReceived() {
 		ComponentDefinition component = this.eventListener.getComponentDefinition("simpleRemoteEjb");
-		boolean condition = component instanceof BeanComponentDefinition;
-		assertThat(condition).isTrue();
+		assertThat(component instanceof BeanComponentDefinition).isTrue();
 	}
 
 }

@@ -79,8 +79,7 @@ class ClassPathFactoryBeanDefinitionScannerTests {
 
 		Object bean = context.getBean("requestScopedInstance"); //5
 		assertThat(AopUtils.isCglibProxy(bean)).isTrue();
-		boolean condition = bean instanceof ScopedObject;
-		assertThat(condition).isTrue();
+		assertThat(bean instanceof ScopedObject).isTrue();
 
 		QualifiedClientBean clientBean = context.getBean("clientBean", QualifiedClientBean.class);
 		assertThat(clientBean.testBean).isSameAs(context.getBean("publicInstance"));

@@ -226,11 +226,9 @@ class MessageMethodArgumentResolverTests {
 		this.resolver = new MessageMethodArgumentResolver(new MappingJackson2MessageConverter());
 		Object actual = this.resolver.resolveArgument(parameter, inMessage);
 
-		boolean condition1 = actual instanceof Message;
-		assertThat(condition1).isTrue();
+		assertThat(actual instanceof Message).isTrue();
 		Message<?> outMessage = (Message<?>) actual;
-		boolean condition = outMessage.getPayload() instanceof Foo;
-		assertThat(condition).isTrue();
+		assertThat(outMessage.getPayload() instanceof Foo).isTrue();
 		assertThat(((Foo) outMessage.getPayload()).getFoo()).isEqualTo("bar");
 	}
 

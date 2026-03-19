@@ -93,8 +93,7 @@ public abstract class AbstractApplicationContextTests extends AbstractListableBe
 		assertThat(aca.getApplicationContext()).as("has had context set").isSameAs(applicationContext);
 		Object aca2 = applicationContext.getBean("aca-prototype");
 		assertThat(aca).as("NOT Same instance").isNotSameAs(aca2);
-		boolean condition = !applicationContext.isSingleton("aca-prototype");
-		assertThat(condition).as("Says is prototype").isTrue();
+		assertThat(!applicationContext.isSingleton("aca-prototype")).as("Says is prototype").isTrue();
 	}
 
 	@Test
@@ -128,8 +127,7 @@ public abstract class AbstractApplicationContextTests extends AbstractListableBe
 	@Test
 	protected void closeTriggersDestroy() {
 		LifecycleBean lb = (LifecycleBean) applicationContext.getBean("lifecycle");
-		boolean condition = !lb.isDestroyed();
-		assertThat(condition).as("Not destroyed").isTrue();
+		assertThat(!lb.isDestroyed()).as("Not destroyed").isTrue();
 		applicationContext.close();
 		if (applicationContext.getParent() != null) {
 			((ConfigurableApplicationContext) applicationContext.getParent()).close();

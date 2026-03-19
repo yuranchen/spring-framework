@@ -44,8 +44,7 @@ class SimpleConfigTests {
 		assertThat(value).isEqualTo("bar");
 
 		Future<?> future = fooService.asyncFoo(1);
-		boolean condition = future instanceof FutureTask;
-		assertThat(condition).isTrue();
+		assertThat(future instanceof FutureTask).isTrue();
 		assertThat(future.get()).isEqualTo("bar");
 
 		assertThat(serviceInvocationCounter.getCount()).isEqualTo(2);

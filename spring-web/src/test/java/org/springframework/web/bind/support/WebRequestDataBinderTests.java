@@ -307,8 +307,7 @@ class WebRequestDataBinderTests {
 		request.addParameter("test_age", "" + 50);
 
 		ServletRequestParameterPropertyValues pvs = new ServletRequestParameterPropertyValues(request);
-		boolean condition = !pvs.contains("forname");
-		assertThat(condition).as("Didn't find normal when given prefix").isTrue();
+		assertThat(!pvs.contains("forname")).as("Didn't find normal when given prefix").isTrue();
 		assertThat(pvs.contains("test_forname")).as("Did treat prefix as normal when not given prefix").isTrue();
 
 		pvs = new ServletRequestParameterPropertyValues(request, "test");
@@ -323,8 +322,7 @@ class WebRequestDataBinderTests {
 		assertThat(pvs.contains("forname")).as("Contains forname").isTrue();
 		assertThat(pvs.contains("surname")).as("Contains surname").isTrue();
 		assertThat(pvs.contains("age")).as("Contains age").isTrue();
-		boolean condition1 = !pvs.contains("tory");
-		assertThat(condition1).as("Doesn't contain tory").isTrue();
+		assertThat(!pvs.contains("tory")).as("Doesn't contain tory").isTrue();
 
 		PropertyValue[] pvArray = pvs.getPropertyValues();
 		Map<String, String> m = new HashMap<>();
@@ -334,8 +332,7 @@ class WebRequestDataBinderTests {
 		for (PropertyValue pv : pvArray) {
 			Object val = m.get(pv.getName());
 			assertThat(val).as("Can't have unexpected value").isNotNull();
-			boolean condition = val instanceof String;
-			assertThat(condition).as("Val i string").isTrue();
+			assertThat(val instanceof String).as("Val i string").isTrue();
 			assertThat(val.equals(pv.getValue())).as("val matches expected").isTrue();
 			m.remove(pv.getName());
 		}
@@ -357,8 +354,7 @@ class WebRequestDataBinderTests {
 
 		ServletRequestParameterPropertyValues pvs = new ServletRequestParameterPropertyValues(request);
 		assertThat(pvs.getPropertyValues().length).as("Found 1 parameter").isEqualTo(1);
-		boolean condition = pvs.getPropertyValue("forname").getValue() instanceof String[];
-		assertThat(condition).as("Found array value").isTrue();
+		assertThat(pvs.getPropertyValue("forname").getValue() instanceof String[]).as("Found array value").isTrue();
 		String[] values = (String[]) pvs.getPropertyValue("forname").getValue();
 		assertThat(Arrays.asList(original)).as("Correct values").isEqualTo(Arrays.asList(values));
 	}

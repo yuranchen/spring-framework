@@ -54,8 +54,7 @@ class ExposeBeanNameAdvisorsTests {
 		pf.addAdvisor(ExposeBeanNameAdvisors.createAdvisorWithoutIntroduction(beanName));
 		ITestBean proxy = (ITestBean) pf.getProxy();
 
-		boolean condition = proxy instanceof NamedBean;
-		assertThat(condition).as("No introduction").isFalse();
+		assertThat(proxy instanceof NamedBean).as("No introduction").isFalse();
 		// Requires binding
 		proxy.getAge();
 	}
@@ -69,8 +68,7 @@ class ExposeBeanNameAdvisorsTests {
 		pf.addAdvisor(ExposeBeanNameAdvisors.createAdvisorIntroducingNamedBean(beanName));
 		ITestBean proxy = (ITestBean) pf.getProxy();
 
-		boolean condition = proxy instanceof NamedBean;
-		assertThat(condition).as("Introduction was made").isTrue();
+		assertThat(proxy instanceof NamedBean).as("Introduction was made").isTrue();
 		// Requires binding
 		proxy.getAge();
 

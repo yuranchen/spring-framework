@@ -198,13 +198,11 @@ class WebMvcConfigurationSupportTests {
 
 		ConversionService conversionService = initializer.getConversionService();
 		assertThat(conversionService).isNotNull();
-		boolean condition1 = conversionService instanceof FormattingConversionService;
-		assertThat(condition1).isTrue();
+		assertThat(conversionService instanceof FormattingConversionService).isTrue();
 
 		Validator validator = initializer.getValidator();
 		assertThat(validator).isNotNull();
-		boolean condition = validator instanceof LocalValidatorFactoryBean;
-		assertThat(condition).isTrue();
+		assertThat(validator instanceof LocalValidatorFactoryBean).isTrue();
 
 		DirectFieldAccessor fieldAccessor = new DirectFieldAccessor(adapter);
 		@SuppressWarnings("unchecked")

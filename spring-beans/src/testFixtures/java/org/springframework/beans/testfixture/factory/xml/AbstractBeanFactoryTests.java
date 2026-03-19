@@ -90,8 +90,7 @@ public abstract class AbstractBeanFactoryTests {
 		// The dummy business method will throw an exception if the
 		// necessary callbacks weren't invoked in the right order.
 		lb.businessMethod();
-		boolean condition = !lb.isDestroyed();
-		assertThat(condition).as("Not destroyed").isTrue();
+		assertThat(!lb.isDestroyed()).as("Not destroyed").isTrue();
 	}
 
 	@Test
@@ -161,8 +160,7 @@ public abstract class AbstractBeanFactoryTests {
 		tb2.setAge(2);
 		assertThat(tb1.getAge()).as("1 age independent = 1").isEqualTo(1);
 		assertThat(tb2.getAge()).as("2 age independent = 2").isEqualTo(2);
-		boolean condition = !tb1.equals(tb2);
-		assertThat(condition).as("object equal now false").isTrue();
+		assertThat(!tb1.equals(tb2)).as("object equal now false").isTrue();
 	}
 
 	@Test

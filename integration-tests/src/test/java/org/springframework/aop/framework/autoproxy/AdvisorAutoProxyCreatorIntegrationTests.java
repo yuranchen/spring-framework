@@ -168,8 +168,7 @@ class AdvisorAutoProxyCreatorIntegrationTests {
 		BeanFactory bf = getBeanFactory();
 
 		Object bean = bf.getBean(TXMANAGER_BEAN_NAME);
-		boolean condition = bean instanceof CallCountingTransactionManager;
-		assertThat(condition).isTrue();
+		assertThat(bean instanceof CallCountingTransactionManager).isTrue();
 		CallCountingTransactionManager txMan = (CallCountingTransactionManager) bf.getBean(TXMANAGER_BEAN_NAME);
 
 		Rollback rb = (Rollback) bf.getBean("rollback");

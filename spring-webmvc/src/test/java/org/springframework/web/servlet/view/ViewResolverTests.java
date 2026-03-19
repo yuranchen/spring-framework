@@ -176,8 +176,7 @@ class ViewResolverTests {
 		model.put("tb", tb);
 		view.render(model, this.request, this.response);
 		assertThat(tb.equals(this.request.getAttribute("tb"))).as("Correct tb attribute").isTrue();
-		boolean condition = this.request.getAttribute("rc") instanceof RequestContext;
-		assertThat(condition).as("Correct rc attribute").isTrue();
+		assertThat(this.request.getAttribute("rc") instanceof RequestContext).as("Correct rc attribute").isTrue();
 
 		view = vr.resolveViewName("redirect:myUrl", Locale.getDefault());
 		assertThat(view.getClass()).as("Correct view class").isEqualTo(RedirectView.class);

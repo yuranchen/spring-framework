@@ -121,13 +121,11 @@ class CommonsPool2TargetSourceTests {
 	void proxySerializableWithoutConfigMixin() throws Exception {
 		Person pooled = (Person) beanFactory.getBean("pooledPerson");
 
-		boolean condition1 = ((Advised) pooled).getTargetSource() instanceof CommonsPool2TargetSource;
-		assertThat(condition1).isTrue();
+		assertThat(((Advised) pooled).getTargetSource() instanceof CommonsPool2TargetSource).isTrue();
 
 		//((Advised) pooled).setTargetSource(new SingletonTargetSource(new SerializablePerson()));
 		Person serialized = SerializationTestUtils.serializeAndDeserialize(pooled);
-		boolean condition = ((Advised) serialized).getTargetSource() instanceof SingletonTargetSource;
-		assertThat(condition).isTrue();
+		assertThat(((Advised) serialized).getTargetSource() instanceof SingletonTargetSource).isTrue();
 		serialized.setAge(25);
 		assertThat(serialized.getAge()).isEqualTo(25);
 	}
@@ -206,10 +204,8 @@ class CommonsPool2TargetSourceTests {
 
 		Object first = targetSource.getTarget();
 		Object second = targetSource.getTarget();
-		boolean condition1 = first instanceof SerializablePerson;
-		assertThat(condition1).isTrue();
-		boolean condition = second instanceof SerializablePerson;
-		assertThat(condition).isTrue();
+		assertThat(first instanceof SerializablePerson).isTrue();
+		assertThat(second instanceof SerializablePerson).isTrue();
 		assertThat(second).isEqualTo(first);
 
 		targetSource.releaseTarget(first);

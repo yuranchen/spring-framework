@@ -63,8 +63,7 @@ class AopNamespaceHandlerScopeIntegrationTests {
 	@Test
 	void singletonScoping() throws Exception {
 		assertThat(AopUtils.isAopProxy(singletonScoped)).as("Should be AOP proxy").isTrue();
-		boolean condition = singletonScoped instanceof TestBean;
-		assertThat(condition).as("Should be target class proxy").isTrue();
+		assertThat(singletonScoped instanceof TestBean).as("Should be target class proxy").isTrue();
 		String rob = "Rob Harrop";
 		String bram = "Bram Smeets";
 		assertThat(singletonScoped.getName()).isEqualTo(rob);
@@ -82,12 +81,10 @@ class AopNamespaceHandlerScopeIntegrationTests {
 		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(oldRequest));
 
 		assertThat(AopUtils.isAopProxy(requestScoped)).as("Should be AOP proxy").isTrue();
-		boolean condition = requestScoped instanceof TestBean;
-		assertThat(condition).as("Should be target class proxy").isTrue();
+		assertThat(requestScoped instanceof TestBean).as("Should be target class proxy").isTrue();
 
 		assertThat(AopUtils.isAopProxy(testBean)).as("Should be AOP proxy").isTrue();
-		boolean condition1 = testBean instanceof TestBean;
-		assertThat(condition1).as("Regular bean should be JDK proxy").isFalse();
+		assertThat(testBean instanceof TestBean).as("Regular bean should be JDK proxy").isFalse();
 
 		String rob = "Rob Harrop";
 		String bram = "Bram Smeets";
@@ -112,14 +109,12 @@ class AopNamespaceHandlerScopeIntegrationTests {
 		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 
 		assertThat(AopUtils.isAopProxy(sessionScoped)).as("Should be AOP proxy").isTrue();
-		boolean condition1 = sessionScoped instanceof TestBean;
-		assertThat(condition1).as("Should not be target class proxy").isFalse();
+		assertThat(sessionScoped instanceof TestBean).as("Should not be target class proxy").isFalse();
 
 		assertThat(sessionScopedAlias).isSameAs(sessionScoped);
 
 		assertThat(AopUtils.isAopProxy(testBean)).as("Should be AOP proxy").isTrue();
-		boolean condition = testBean instanceof TestBean;
-		assertThat(condition).as("Regular bean should be JDK proxy").isFalse();
+		assertThat(testBean instanceof TestBean).as("Regular bean should be JDK proxy").isFalse();
 
 		String rob = "Rob Harrop";
 		String bram = "Bram Smeets";

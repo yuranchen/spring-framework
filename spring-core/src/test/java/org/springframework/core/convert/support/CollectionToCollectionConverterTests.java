@@ -184,8 +184,7 @@ class CollectionToCollectionConverterTests {
 	private void testCollectionConversionToArrayList(Collection<String> aSource) {
 		Object myConverted = (new CollectionToCollectionConverter(new GenericConversionService())).convert(
 				aSource, TypeDescriptor.forObject(aSource), TypeDescriptor.forObject(new ArrayList()));
-		boolean condition = myConverted instanceof ArrayList<?>;
-		assertThat(condition).isTrue();
+		assertThat(myConverted instanceof ArrayList<?>).isTrue();
 		assertThat(((ArrayList<?>) myConverted)).hasSameSizeAs(aSource);
 	}
 
