@@ -886,10 +886,10 @@ class EvaluationTests extends AbstractExpressionTests {
 
 			// BigDecimal
 			e = parser.parseExpression("bd++");
-			assertThat(new BigDecimal("2").equals(helper.bd)).isTrue();
+			assertThat(new BigDecimal("2")).isEqualTo(helper.bd);
 			BigDecimal return_bd = e.getValue(ctx, BigDecimal.class);
 			assertThat(new BigDecimal("2")).isEqualTo(return_bd);
-			assertThat(new BigDecimal("3").equals(helper.bd)).isTrue();
+			assertThat(new BigDecimal("3")).isEqualTo(helper.bd);
 
 			// double
 			e = parser.parseExpression("ddd++");
@@ -939,10 +939,10 @@ class EvaluationTests extends AbstractExpressionTests {
 
 			// BigDecimal
 			e = parser.parseExpression("++bd");
-			assertThat(new BigDecimal("2").equals(helper.bd)).isTrue();
+			assertThat(new BigDecimal("2")).isEqualTo(helper.bd);
 			BigDecimal return_bd = e.getValue(ctx, BigDecimal.class);
 			assertThat(new BigDecimal("3")).isEqualTo(return_bd);
-			assertThat(new BigDecimal("3").equals(helper.bd)).isTrue();
+			assertThat(new BigDecimal("3")).isEqualTo(helper.bd);
 
 			// double
 			e = parser.parseExpression("++ddd");
@@ -1036,10 +1036,10 @@ class EvaluationTests extends AbstractExpressionTests {
 
 			// BigDecimal
 			e = parser.parseExpression("bd--");
-			assertThat(new BigDecimal("2").equals(helper.bd)).isTrue();
+			assertThat(new BigDecimal("2")).isEqualTo(helper.bd);
 			BigDecimal return_bd = e.getValue(ctx,BigDecimal.class);
 			assertThat(new BigDecimal("2")).isEqualTo(return_bd);
-			assertThat(new BigDecimal("1").equals(helper.bd)).isTrue();
+			assertThat(new BigDecimal("1")).isEqualTo(helper.bd);
 
 			// double
 			e = parser.parseExpression("ddd--");
@@ -1089,10 +1089,10 @@ class EvaluationTests extends AbstractExpressionTests {
 
 			// BigDecimal
 			e = parser.parseExpression("--bd");
-			assertThat(new BigDecimal("2").equals(helper.bd)).isTrue();
+			assertThat(new BigDecimal("2")).isEqualTo(helper.bd);
 			BigDecimal return_bd = e.getValue(ctx,BigDecimal.class);
 			assertThat(new BigDecimal("1")).isEqualTo(return_bd);
-			assertThat(new BigDecimal("1").equals(helper.bd)).isTrue();
+			assertThat(new BigDecimal("1")).isEqualTo(helper.bd);
 
 			// double
 			e = parser.parseExpression("--ddd");

@@ -152,8 +152,8 @@ class XmlBeanFactoryTests {
 		assertThat(emmasJenks.getName()).as("Emmas jenks has right name").isEqualTo("Andrew");
 		assertThat(emmasJenks).as("Emmas doesn't equal new ref").isNotSameAs(xbf.getBean("jenks"));
 		assertThat(georgiasJenks.getName()).as("Georgias jenks has right name").isEqualTo("Andrew");
-		assertThat(emmasJenks.equals(georgiasJenks)).as("They are object equal").isTrue();
-		assertThat(emmasJenks.equals(xbf.getBean("jenks"))).as("They object equal direct ref").isTrue();
+		assertThat(emmasJenks).as("They are object equal").isEqualTo(georgiasJenks);
+		assertThat(emmasJenks).as("They object equal direct ref").isEqualTo(xbf.getBean("jenks"));
 	}
 
 	@Test

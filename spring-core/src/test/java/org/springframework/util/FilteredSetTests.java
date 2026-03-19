@@ -35,7 +35,7 @@ class FilteredSetTests {
 
 		Set<String> expected = Set.of("foo", "baz");
 
-		assertThat(filtered.equals(expected)).isTrue();
+		assertThat(filtered).isEqualTo(expected);
 		assertThat(filtered).isNotEqualTo(set);
 		assertThat(filtered).isNotEqualTo(Collections.emptySet());
 	}

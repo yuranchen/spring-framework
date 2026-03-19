@@ -38,7 +38,7 @@ class CompositeSetTests {
 		Set<String> all = new HashSet<>(first);
 		all.addAll(second);
 
-		assertThat(composite.equals(all)).isTrue();
+		assertThat(composite).isEqualTo(all);
 		assertThat(composite).isNotEqualTo(first);
 		assertThat(composite).isNotEqualTo(second);
 		assertThat(composite).isNotEqualTo(Collections.emptySet());

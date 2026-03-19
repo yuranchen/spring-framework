@@ -206,7 +206,7 @@ class DispatcherServletTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		complexDispatcherServlet.service(request, response);
 		assertThat(response.getForwardedUrl()).as("forwarded URL").isEqualTo("failed0.jsp");
-		assertThat(request.getAttribute("exception").getClass().equals(ServletException.class)).as("Exception exposed").isTrue();
+		assertThat(request.getAttribute("exception").getClass()).as("Exception exposed").isEqualTo(ServletException.class);
 	}
 
 	@Test
@@ -368,7 +368,7 @@ class DispatcherServletTests {
 		complexDispatcherServlet.service(request, response);
 		assertThat(response.getStatus()).isEqualTo(200);
 		assertThat(response.getForwardedUrl()).as("forwarded URL").isEqualTo("failed0.jsp");
-		assertThat(request.getAttribute("exception").getClass().equals(RuntimeException.class)).as("Exception exposed").isTrue();
+		assertThat(request.getAttribute("exception").getClass()).as("Exception exposed").isEqualTo(RuntimeException.class);
 	}
 
 	@Test
@@ -381,7 +381,7 @@ class DispatcherServletTests {
 		complexDispatcherServlet.service(request, response);
 		assertThat(response.getStatus()).isEqualTo(200);
 		assertThat(response.getForwardedUrl()).as("forwarded URL").isEqualTo("failed0.jsp");
-		assertThat(request.getAttribute("exception").getClass().equals(ServletException.class)).as("Exception exposed").isTrue();
+		assertThat(request.getAttribute("exception").getClass()).as("Exception exposed").isEqualTo(ServletException.class);
 	}
 
 	@Test

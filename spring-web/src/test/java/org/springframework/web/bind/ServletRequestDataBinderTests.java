@@ -250,7 +250,7 @@ class ServletRequestDataBinderTests {
 			Object val = m.get(element.getName());
 			assertThat(val).as("Can't have unexpected value").isNotNull();
 			assertThat(val).as("Val i string").isInstanceOf(String.class);
-			assertThat(val.equals(element.getValue())).as("val matches expected").isTrue();
+			assertThat(val).as("val matches expected").isEqualTo(element.getValue());
 			m.remove(element.getName());
 		}
 		assertThat(m.size()).as("Map size is 0").isEqualTo(0);

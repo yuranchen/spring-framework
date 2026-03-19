@@ -333,7 +333,7 @@ class WebRequestDataBinderTests {
 			Object val = m.get(pv.getName());
 			assertThat(val).as("Can't have unexpected value").isNotNull();
 			assertThat(val).as("Val i string").isInstanceOf(String.class);
-			assertThat(val.equals(pv.getValue())).as("val matches expected").isTrue();
+			assertThat(val).as("val matches expected").isEqualTo(pv.getValue());
 			m.remove(pv.getName());
 		}
 		assertThat(m.size()).as("Map size is 0").isEqualTo(0);

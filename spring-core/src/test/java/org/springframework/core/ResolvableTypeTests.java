@@ -1256,7 +1256,7 @@ class ResolvableTypeTests {
 		ResolvableType arg1 = ResolvableType.forMethodParameter(method, 1, ClassArguments.class);
 		ResolvableType arg2 = ResolvableType.forMethodParameter(method, 2, ClassArguments.class);
 
-		assertThat(returnType.getType().equals(arg0.as(Class.class).getGeneric(0).getType())).isTrue();
+		assertThat(returnType.getType()).isEqualTo(arg0.as(Class.class).getGeneric(0).getType());
 		assertThat(returnType.getType()).isNotEqualTo(arg1.as(Class.class).getGeneric(0).getType());
 		assertThat(returnType.getType()).isNotEqualTo(arg2.as(Class.class).getGeneric(0).getType());
 	}
