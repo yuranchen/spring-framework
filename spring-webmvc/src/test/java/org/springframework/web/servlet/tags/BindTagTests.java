@@ -65,7 +65,7 @@ class BindTagTests extends AbstractTagTests {
 		assertThat(status.getExpression()).as("Correct expression").isNull();
 		assertThat(status.getValue()).as("Correct value").isNull();
 		assertThat(status.getDisplayValue()).as("Correct displayValue").isEmpty();
-		assertThat(!status.isError()).as("Correct isError").isTrue();
+		assertThat(status.isError()).as("Correct isError").isFalse();
 		assertThat(status.getErrorCodes()).as("Correct errorCodes").isEmpty();
 		assertThat(status.getErrorMessages()).as("Correct errorMessages").isEmpty();
 		assertThat(status.getErrorCode()).as("Correct errorCode").isEmpty();

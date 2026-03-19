@@ -117,7 +117,7 @@ class JdbcTemplateTests {
 		assertThat(this.template.getDataSource()).as("datasource ok").isSameAs(this.dataSource);
 		assertThat(this.template.isIgnoreWarnings()).as("ignores warnings by default").isTrue();
 		this.template.setIgnoreWarnings(false);
-		assertThat(!this.template.isIgnoreWarnings()).as("can set NOT to ignore warnings").isTrue();
+		assertThat(this.template.isIgnoreWarnings()).as("can set NOT to ignore warnings").isFalse();
 	}
 
 	@Test
@@ -1125,7 +1125,7 @@ class JdbcTemplateTests {
 		given(this.callableStatement.getUpdateCount()).willReturn(-1);
 		given(this.callableStatement.getObject(1)).willReturn("X");
 
-		assertThat(!this.template.isResultsMapCaseInsensitive()).as("default should have been NOT case insensitive").isTrue();
+		assertThat(this.template.isResultsMapCaseInsensitive()).as("default should have been NOT case insensitive").isFalse();
 
 		this.template.setResultsMapCaseInsensitive(true);
 		assertThat(this.template.isResultsMapCaseInsensitive()).as("now it should have been set to case insensitive").isTrue();

@@ -77,7 +77,7 @@ class ContextLoaderTests {
 		assertThat(context.containsBean("father")).as("Has father").isTrue();
 		assertThat(context.containsBean("rod")).as("Has rod").isTrue();
 		assertThat(context.containsBean("kerry")).as("Has kerry").isTrue();
-		assertThat(!lb.isDestroyed()).as("Not destroyed").isTrue();
+		assertThat(lb.isDestroyed()).as("Not destroyed").isFalse();
 		assertThat(context.containsBean("beans1.bean1")).isFalse();
 		assertThat(context.containsBean("beans1.bean2")).isFalse();
 		listener.contextDestroyed(event);

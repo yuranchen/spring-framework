@@ -204,7 +204,7 @@ class ServletRequestDataBinderTests {
 		request.addParameter("test_age", "" + 50);
 
 		ServletRequestParameterPropertyValues pvs = new ServletRequestParameterPropertyValues(request);
-		assertThat(!pvs.contains("forname")).as("Didn't find normal when given prefix").isTrue();
+		assertThat(pvs.contains("forname")).as("Didn't find normal when given prefix").isFalse();
 		assertThat(pvs.contains("test_forname")).as("Did treat prefix as normal when not given prefix").isTrue();
 
 		pvs = new ServletRequestParameterPropertyValues(request, "test");
@@ -239,7 +239,7 @@ class ServletRequestDataBinderTests {
 		assertThat(pvs.contains("forname")).as("Contains forname").isTrue();
 		assertThat(pvs.contains("surname")).as("Contains surname").isTrue();
 		assertThat(pvs.contains("age")).as("Contains age").isTrue();
-		assertThat(!pvs.contains("tory")).as("Doesn't contain tory").isTrue();
+		assertThat(pvs.contains("tory")).as("Doesn't contain tory").isFalse();
 
 		PropertyValue[] ps = pvs.getPropertyValues();
 		Map<String, String> m = new HashMap<>();
