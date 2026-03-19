@@ -84,7 +84,7 @@ class AopNamespaceHandlerScopeIntegrationTests {
 		assertThat(requestScoped).as("Should be target class proxy").isInstanceOf(TestBean.class);
 
 		assertThat(AopUtils.isAopProxy(testBean)).as("Should be AOP proxy").isTrue();
-		assertThat(testBean instanceof TestBean).as("Regular bean should be JDK proxy").isFalse();
+		assertThat(testBean).as("Regular bean should be JDK proxy").isNotInstanceOf(TestBean.class);
 
 		String rob = "Rob Harrop";
 		String bram = "Bram Smeets";
@@ -109,12 +109,12 @@ class AopNamespaceHandlerScopeIntegrationTests {
 		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 
 		assertThat(AopUtils.isAopProxy(sessionScoped)).as("Should be AOP proxy").isTrue();
-		assertThat(sessionScoped instanceof TestBean).as("Should not be target class proxy").isFalse();
+		assertThat(sessionScoped).as("Should not be target class proxy").isNotInstanceOf(TestBean.class);
 
 		assertThat(sessionScopedAlias).isSameAs(sessionScoped);
 
 		assertThat(AopUtils.isAopProxy(testBean)).as("Should be AOP proxy").isTrue();
-		assertThat(testBean instanceof TestBean).as("Regular bean should be JDK proxy").isFalse();
+		assertThat(testBean).as("Regular bean should be JDK proxy").isNotInstanceOf(TestBean.class);
 
 		String rob = "Rob Harrop";
 		String bram = "Bram Smeets";

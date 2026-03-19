@@ -76,7 +76,7 @@ class BeanNamePointcutAtAspectTests {
 
 	@Test
 	void nonMatchingBeanName() {
-		assertThat(testBean3 instanceof Advised).as("Didn't expect a proxy").isFalse();
+		assertThat(testBean3).as("Didn't expect a proxy").isNotInstanceOf(Advised.class);
 
 		testBean3.setAge(20);
 		assertThat(counterAspect.count).isEqualTo(0);

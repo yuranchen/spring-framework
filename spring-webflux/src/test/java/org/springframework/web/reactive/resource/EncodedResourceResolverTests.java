@@ -128,7 +128,7 @@ class EncodedResourceResolverTests {
 
 		assertThat(resolved.getDescription()).isEqualTo(getResource(file).getDescription());
 		assertThat(resolved.getFilename()).isEqualTo(getResource(file).getFilename());
-		assertThat(resolved instanceof HttpResource).isFalse();
+		assertThat(resolved).isNotInstanceOf(HttpResource.class);
 	}
 
 	@Test  // SPR-13149

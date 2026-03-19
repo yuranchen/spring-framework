@@ -153,7 +153,7 @@ class ScopingTests {
 		// get hidden bean
 		Object bean = ctx.getBean("scopedTarget." + beanName);
 
-		assertThat(bean instanceof ScopedObject).isFalse();
+		assertThat(bean).isNotInstanceOf(ScopedObject.class);
 	}
 
 	@Test

@@ -54,7 +54,7 @@ class ExposeBeanNameAdvisorsTests {
 		pf.addAdvisor(ExposeBeanNameAdvisors.createAdvisorWithoutIntroduction(beanName));
 		ITestBean proxy = (ITestBean) pf.getProxy();
 
-		assertThat(proxy instanceof NamedBean).as("No introduction").isFalse();
+		assertThat(proxy).as("No introduction").isNotInstanceOf(NamedBean.class);
 		// Requires binding
 		proxy.getAge();
 	}

@@ -84,14 +84,14 @@ class BeanNamePointcutTests {
 
 	@Test
 	void nonMatchingBeanName() {
-		assertThat(this.testBean2 instanceof Advised).as("Non-matching bean must *not* be advised (proxied)").isFalse();
+		assertThat(this.testBean2).as("Non-matching bean must *not* be advised (proxied)").isNotInstanceOf(Advised.class);
 		this.testBean2.setAge(20);
 		assertThat(this.counterAspect.getCount()).as("Advice must *not* have been executed").isEqualTo(0);
 	}
 
 	@Test
 	void nonMatchingNestedBeanName() {
-		assertThat(this.testBeanContainingNestedBean.getDoctor() instanceof Advised).as("Non-matching bean must *not* be advised (proxied)").isFalse();
+		assertThat(this.testBeanContainingNestedBean.getDoctor()).as("Non-matching bean must *not* be advised (proxied)").isNotInstanceOf(Advised.class);
 	}
 
 	@Test
@@ -101,12 +101,12 @@ class BeanNamePointcutTests {
 		assertThat(this.testFactoryBean1.get("myKey")).isEqualTo("myValue");
 		assertThat(this.counterAspect.getCount()).as("Advice not executed: must have been").isEqualTo(2);
 		FactoryBean<?> fb = (FactoryBean<?>) ctx.getBean("&testFactoryBean1");
-		assertThat((fb instanceof Advised)).as("FactoryBean itself must *not* be advised").isFalse();
+		assertThat((fb)).as("FactoryBean itself must *not* be advised").isNotInstanceOf(Advised.class);
 	}
 
 	@Test
 	void matchingFactoryBeanItself() {
-		assertThat((this.testFactoryBean2 instanceof Advised)).as("Matching bean must *not* be advised (proxied)").isFalse();
+		assertThat((this.testFactoryBean2)).as("Matching bean must *not* be advised (proxied)").isNotInstanceOf(Advised.class);
 		FactoryBean<?> fb = (FactoryBean<?>) ctx.getBean("&testFactoryBean2");
 		assertThat(fb).as("FactoryBean itself must be advised").isInstanceOf(Advised.class);
 		assertThat(Map.class.isAssignableFrom(fb.getObjectType())).isTrue();
@@ -117,7 +117,7 @@ class BeanNamePointcutTests {
 	@Test
 	void pointcutAdvisorCombination() {
 		assertThat(this.interceptThis).as("Matching bean must be advised (proxied)").isInstanceOf(Advised.class);
-		assertThat(this.dontInterceptThis instanceof Advised).as("Non-matching bean must *not* be advised (proxied)").isFalse();
+		assertThat(this.dontInterceptThis).as("Non-matching bean must *not* be advised (proxied)").isNotInstanceOf(Advised.class);
 		interceptThis.setAge(20);
 		assertThat(testInterceptor.interceptionCount).isEqualTo(1);
 		dontInterceptThis.setAge(20);

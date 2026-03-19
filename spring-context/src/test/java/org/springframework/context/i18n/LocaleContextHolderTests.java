@@ -67,13 +67,13 @@ class LocaleContextHolderTests {
 		LocaleContextHolder.setLocale(Locale.GERMAN);
 		assertThat(LocaleContextHolder.getLocale()).isEqualTo(Locale.GERMAN);
 		assertThat(LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getDefault());
-		assertThat(LocaleContextHolder.getLocaleContext() instanceof TimeZoneAwareLocaleContext).isFalse();
+		assertThat(LocaleContextHolder.getLocaleContext()).isNotInstanceOf(TimeZoneAwareLocaleContext.class);
 		assertThat(LocaleContextHolder.getLocaleContext().getLocale()).isEqualTo(Locale.GERMAN);
 
 		LocaleContextHolder.setLocale(Locale.GERMANY);
 		assertThat(LocaleContextHolder.getLocale()).isEqualTo(Locale.GERMANY);
 		assertThat(LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getDefault());
-		assertThat(LocaleContextHolder.getLocaleContext() instanceof TimeZoneAwareLocaleContext).isFalse();
+		assertThat(LocaleContextHolder.getLocaleContext()).isNotInstanceOf(TimeZoneAwareLocaleContext.class);
 		assertThat(LocaleContextHolder.getLocaleContext().getLocale()).isEqualTo(Locale.GERMANY);
 
 		LocaleContextHolder.setLocale(null);
@@ -119,7 +119,7 @@ class LocaleContextHolderTests {
 		LocaleContextHolder.setLocale(Locale.GERMANY);
 		assertThat(LocaleContextHolder.getLocale()).isEqualTo(Locale.GERMANY);
 		assertThat(LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getDefault());
-		assertThat(LocaleContextHolder.getLocaleContext() instanceof TimeZoneAwareLocaleContext).isFalse();
+		assertThat(LocaleContextHolder.getLocaleContext()).isNotInstanceOf(TimeZoneAwareLocaleContext.class);
 		assertThat(LocaleContextHolder.getLocaleContext().getLocale()).isEqualTo(Locale.GERMANY);
 
 		LocaleContextHolder.setTimeZone(TimeZone.getTimeZone("GMT+1"));
@@ -139,7 +139,7 @@ class LocaleContextHolderTests {
 		LocaleContextHolder.setTimeZone(null);
 		assertThat(LocaleContextHolder.getLocale()).isEqualTo(Locale.GERMAN);
 		assertThat(LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getDefault());
-		assertThat(LocaleContextHolder.getLocaleContext() instanceof TimeZoneAwareLocaleContext).isFalse();
+		assertThat(LocaleContextHolder.getLocaleContext()).isNotInstanceOf(TimeZoneAwareLocaleContext.class);
 		assertThat(LocaleContextHolder.getLocaleContext().getLocale()).isEqualTo(Locale.GERMAN);
 
 		LocaleContextHolder.setTimeZone(TimeZone.getTimeZone("GMT+2"));
