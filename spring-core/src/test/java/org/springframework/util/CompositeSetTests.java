@@ -39,9 +39,9 @@ class CompositeSetTests {
 		all.addAll(second);
 
 		assertThat(composite.equals(all)).isTrue();
-		assertThat(composite.equals(first)).isFalse();
-		assertThat(composite.equals(second)).isFalse();
-		assertThat(composite.equals(Collections.emptySet())).isFalse();
+		assertThat(composite).isNotEqualTo(first);
+		assertThat(composite).isNotEqualTo(second);
+		assertThat(composite).isNotEqualTo(Collections.emptySet());
 	}
 
 }

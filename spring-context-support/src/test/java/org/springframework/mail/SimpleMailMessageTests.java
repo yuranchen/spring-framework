@@ -133,10 +133,10 @@ class SimpleMailMessageTests {
 		// Null object is not equal
 		message1 = new SimpleMailMessage();
 		message2 = null;
-		assertThat(message1.equals(message2)).isFalse();
+		assertThat(message1).isNotEqualTo(message2);
 
 		// Different class is not equal
-		assertThat(message1.equals(new Object())).isFalse();
+		assertThat(message1).isNotEqualTo(new Object());
 
 		// Equal values are equal
 		message1 = new SimpleMailMessage();

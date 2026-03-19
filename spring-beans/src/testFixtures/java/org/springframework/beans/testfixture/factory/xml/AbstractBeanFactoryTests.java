@@ -160,7 +160,7 @@ public abstract class AbstractBeanFactoryTests {
 		tb2.setAge(2);
 		assertThat(tb1.getAge()).as("1 age independent = 1").isEqualTo(1);
 		assertThat(tb2.getAge()).as("2 age independent = 2").isEqualTo(2);
-		assertThat(tb1.equals(tb2)).as("object equal now false").isFalse();
+		assertThat(tb1).as("object equal now false").isNotEqualTo(tb2);
 	}
 
 	@Test
