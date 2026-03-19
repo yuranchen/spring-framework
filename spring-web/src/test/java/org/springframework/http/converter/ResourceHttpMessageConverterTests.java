@@ -19,7 +19,6 @@ package org.springframework.http.converter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
 
@@ -144,7 +143,7 @@ class ResourceHttpMessageConverterTests {
 		Resource body = new ByteArrayResource(byteArray);
 		converter.write(body, null, outputMessage);
 
-		assertThat(Arrays.equals(byteArray, outputMessage.getBodyAsBytes())).isTrue();
+		assertThat(outputMessage.getBodyAsBytes()).isEqualTo(byteArray);
 	}
 
 	@Test  // SPR-12999

@@ -21,7 +21,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.function.Consumer;
@@ -180,7 +179,7 @@ class BeanOverrideHandlerTests {
 		Field field2 = field(ConfigB.class, "qualifiedDummyBean");
 
 		// Prerequisite
-		assertThat(Arrays.equals(field1.getAnnotations(), field2.getAnnotations())).isFalse();
+		assertThat(field1.getAnnotations()).isNotEqualTo(field2.getAnnotations());
 
 		BeanOverrideHandler handler1 = createBeanOverrideHandler(field1);
 		BeanOverrideHandler handler2 = createBeanOverrideHandler(field2);
