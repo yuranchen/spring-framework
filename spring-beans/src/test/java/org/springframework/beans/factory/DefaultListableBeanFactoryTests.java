@@ -516,11 +516,11 @@ class DefaultListableBeanFactoryTests {
 		String[] names = lbf.getBeanDefinitionNames();
 		assertThat(names != lbf.getBeanDefinitionNames()).isTrue();
 		assertThat(names.length == 1).as("Array length == 1").isTrue();
-		assertThat(names[0].equals("test")).as("0th element == test").isTrue();
+		assertThat(names[0]).as("0th element == test").isEqualTo("test");
 
 		TestBean tb = (TestBean) lbf.getBean("test");
 		assertThat(tb != null).as("Test is non null").isTrue();
-		assertThat("Tony".equals(tb.getName())).as("Test bean name is Tony").isTrue();
+		assertThat("Tony").as("Test bean name is Tony").isEqualTo(tb.getName());
 		assertThat(tb.getAge() == 48).as("Test bean age is 48").isTrue();
 	}
 

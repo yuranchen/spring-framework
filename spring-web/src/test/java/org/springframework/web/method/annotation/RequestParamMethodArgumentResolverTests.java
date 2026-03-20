@@ -538,7 +538,7 @@ class RequestParamMethodArgumentResolverTests {
 		request.addParameter("name", "123");
 		result = resolver.resolveArgument(param, null, webRequest, binderFactory);
 		assertThat(result.getClass()).isEqualTo(Optional.class);
-		assertThat(((Optional) result)).contains(123);
+		assertThat((Optional) result).contains(123);
 	}
 
 	@Test
@@ -554,7 +554,7 @@ class RequestParamMethodArgumentResolverTests {
 
 		result = resolver.resolveArgument(param, null, webRequest, binderFactory);
 		assertThat(result.getClass()).isEqualTo(Optional.class);
-		assertThat(((Optional) result)).isNotPresent();
+		assertThat((Optional) result).isNotPresent();
 	}
 
 	@Test
@@ -587,7 +587,7 @@ class RequestParamMethodArgumentResolverTests {
 
 		result = resolver.resolveArgument(param, null, webRequest, binderFactory);
 		assertThat(result.getClass()).isEqualTo(Optional.class);
-		assertThat(((Optional) result)).isNotPresent();
+		assertThat((Optional) result).isNotPresent();
 	}
 
 	@Test
@@ -604,7 +604,7 @@ class RequestParamMethodArgumentResolverTests {
 		request.addParameter("name", "123", "456");
 		result = resolver.resolveArgument(param, null, webRequest, binderFactory);
 		assertThat(result.getClass()).isEqualTo(Optional.class);
-		assertThat(((Optional) result)).contains(Arrays.asList("123", "456"));
+		assertThat((Optional) result).contains(Arrays.asList("123", "456"));
 	}
 
 	@Test
@@ -620,7 +620,7 @@ class RequestParamMethodArgumentResolverTests {
 
 		result = resolver.resolveArgument(param, null, webRequest, binderFactory);
 		assertThat(result.getClass()).isEqualTo(Optional.class);
-		assertThat(((Optional) result)).isNotPresent();
+		assertThat((Optional) result).isNotPresent();
 	}
 
 	@Test

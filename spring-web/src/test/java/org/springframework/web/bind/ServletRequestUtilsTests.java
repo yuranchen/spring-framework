@@ -205,7 +205,7 @@ class ServletRequestUtilsTests {
 		request.addParameter("param5", "1");
 		request.addParameter("paramEmpty", "");
 
-		assertThat(ServletRequestUtils.getBooleanParameter(request, "param1").equals(Boolean.TRUE)).isTrue();
+		assertThat(ServletRequestUtils.getBooleanParameter(request, "param1")).isEqualTo(Boolean.TRUE);
 		assertThat(ServletRequestUtils.getBooleanParameter(request, "param1", false)).isTrue();
 		assertThat(ServletRequestUtils.getRequiredBooleanParameter(request, "param1")).isTrue();
 

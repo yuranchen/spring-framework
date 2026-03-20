@@ -401,8 +401,8 @@ class ServletAnnotationControllerHandlerMethodTests extends AbstractServletHandl
 		assertThat(session).isNotNull();
 		assertThat(session.getAttribute("object1")).isNotNull();
 		assertThat(session.getAttribute("object2")).isNotNull();
-		assertThat(((Map) session.getAttribute("model"))).containsKey("object1");
-		assertThat(((Map) session.getAttribute("model"))).containsKey("object2");
+		assertThat((Map) session.getAttribute("model")).containsKey("object1");
+		assertThat((Map) session.getAttribute("model")).containsKey("object2");
 
 		request = new MockHttpServletRequest("POST", "/myPage");
 		request.setSession(session);
@@ -411,8 +411,8 @@ class ServletAnnotationControllerHandlerMethodTests extends AbstractServletHandl
 		assertThat(request.getAttribute("viewName")).isEqualTo("page2");
 		assertThat(session.getAttribute("object1")).isNotNull();
 		assertThat(session.getAttribute("object2")).isNotNull();
-		assertThat(((Map) session.getAttribute("model"))).containsKey("object1");
-		assertThat(((Map) session.getAttribute("model"))).containsKey("object2");
+		assertThat((Map) session.getAttribute("model")).containsKey("object1");
+		assertThat((Map) session.getAttribute("model")).containsKey("object2");
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -434,8 +434,8 @@ class ServletAnnotationControllerHandlerMethodTests extends AbstractServletHandl
 		assertThat(session).isNotNull();
 		assertThat(session.getAttribute("object1")).isNotNull();
 		assertThat(session.getAttribute("object2")).isNotNull();
-		assertThat(((Map) session.getAttribute("model"))).containsKey("object1");
-		assertThat(((Map) session.getAttribute("model"))).containsKey("object2");
+		assertThat((Map) session.getAttribute("model")).containsKey("object1");
+		assertThat((Map) session.getAttribute("model")).containsKey("object2");
 
 		request = new MockHttpServletRequest("POST", "/myPage");
 		request.setSession(session);
@@ -444,8 +444,8 @@ class ServletAnnotationControllerHandlerMethodTests extends AbstractServletHandl
 		assertThat(request.getAttribute("viewName")).isEqualTo("page2");
 		assertThat(session.getAttribute("object1")).isNotNull();
 		assertThat(session.getAttribute("object2")).isNotNull();
-		assertThat(((Map) session.getAttribute("model"))).containsKey("object1");
-		assertThat(((Map) session.getAttribute("model"))).containsKey("object2");
+		assertThat((Map) session.getAttribute("model")).containsKey("object1");
+		assertThat((Map) session.getAttribute("model")).containsKey("object2");
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -464,9 +464,9 @@ class ServletAnnotationControllerHandlerMethodTests extends AbstractServletHandl
 		assertThat(session).isNotNull();
 		assertThat(session.getAttribute("object1")).isNotNull();
 		assertThat(session.getAttribute("object2")).isNotNull();
-		assertThat(((Map) session.getAttribute("model"))).containsKey("object1");
-		assertThat(((Map) session.getAttribute("model"))).containsKey("object2");
-		assertThat(((Map) session.getAttribute("model"))).containsKey("testBeanList");
+		assertThat((Map) session.getAttribute("model")).containsKey("object1");
+		assertThat((Map) session.getAttribute("model")).containsKey("object2");
+		assertThat((Map) session.getAttribute("model")).containsKey("testBeanList");
 
 		request = new MockHttpServletRequest("POST", "/myPage");
 		request.setSession(session);
@@ -475,9 +475,9 @@ class ServletAnnotationControllerHandlerMethodTests extends AbstractServletHandl
 		assertThat(request.getAttribute("viewName")).isEqualTo("page2");
 		assertThat(session.getAttribute("object1")).isNotNull();
 		assertThat(session.getAttribute("object2")).isNotNull();
-		assertThat(((Map) session.getAttribute("model"))).containsKey("object1");
-		assertThat(((Map) session.getAttribute("model"))).containsKey("object2");
-		assertThat(((Map) session.getAttribute("model"))).containsKey("testBeanList");
+		assertThat((Map) session.getAttribute("model")).containsKey("object1");
+		assertThat((Map) session.getAttribute("model")).containsKey("object2");
+		assertThat((Map) session.getAttribute("model")).containsKey("testBeanList");
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -496,9 +496,9 @@ class ServletAnnotationControllerHandlerMethodTests extends AbstractServletHandl
 		assertThat(session).isNotNull();
 		assertThat(session.getAttribute("object1")).isNotNull();
 		assertThat(session.getAttribute("object2")).isNotNull();
-		assertThat(((Map) session.getAttribute("model"))).containsKey("object1");
-		assertThat(((Map) session.getAttribute("model"))).containsKey("object2");
-		assertThat(((Map) session.getAttribute("model"))).containsKey("testBeanList");
+		assertThat((Map) session.getAttribute("model")).containsKey("object1");
+		assertThat((Map) session.getAttribute("model")).containsKey("object2");
+		assertThat((Map) session.getAttribute("model")).containsKey("testBeanList");
 
 		request = new MockHttpServletRequest("POST", "/myPage");
 		request.setSession(session);
@@ -507,9 +507,9 @@ class ServletAnnotationControllerHandlerMethodTests extends AbstractServletHandl
 		assertThat(request.getAttribute("viewName")).isEqualTo("page2");
 		assertThat(session.getAttribute("object1")).isNotNull();
 		assertThat(session.getAttribute("object2")).isNotNull();
-		assertThat(((Map) session.getAttribute("model"))).containsKey("object1");
-		assertThat(((Map) session.getAttribute("model"))).containsKey("object2");
-		assertThat(((Map) session.getAttribute("model"))).containsKey("testBeanList");
+		assertThat((Map) session.getAttribute("model")).containsKey("object1");
+		assertThat((Map) session.getAttribute("model")).containsKey("object2");
+		assertThat((Map) session.getAttribute("model")).containsKey("testBeanList");
 	}
 
 	@PathPatternsParameterizedTest
@@ -2799,8 +2799,7 @@ class ServletAnnotationControllerHandlerMethodTests extends AbstractServletHandl
 		public String myOtherHandle(TB tb, BindingResult errors, ExtendedModelMap model, MySpecialArg arg) {
 			TestBean tbReal = (TestBean) tb;
 			tbReal.setName("myName");
-			boolean condition = model.get("ITestBean") instanceof DerivedTestBean;
-			assertThat(condition).isTrue();
+			assertThat(model.get("ITestBean")).isInstanceOf(DerivedTestBean.class);
 			assertThat(arg).isNotNull();
 			return super.myHandle(tbReal, errors, model);
 		}

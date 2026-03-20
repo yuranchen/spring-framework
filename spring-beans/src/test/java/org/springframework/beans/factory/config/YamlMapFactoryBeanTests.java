@@ -71,7 +71,7 @@ class YamlMapFactoryBeanTests {
 				new ByteArrayResource("foo:\n  spam: bar".getBytes()));
 
 		assertThat(this.factory.getObject()).hasSize(1);
-		assertThat(((Map<String, Object>) this.factory.getObject().get("foo"))).hasSize(2);
+		assertThat((Map<String, Object>) this.factory.getObject().get("foo")).hasSize(2);
 	}
 
 	@Test

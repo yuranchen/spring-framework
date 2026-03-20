@@ -83,7 +83,7 @@ class CollectionsWithDefaultTypesTests {
 		MixedCollectionBean jumble = (MixedCollectionBean) this.beanFactory.getBean("jumble");
 		assertThat(jumble.getJumble()).as("Expected 3 elements, not " + jumble.getJumble().size()).hasSize(3);
 		List l = (List) jumble.getJumble();
-		assertThat(l.get(0).equals("literal")).isTrue();
+		assertThat(l.get(0)).isEqualTo("literal");
 		Integer[] array1 = (Integer[]) l.get(1);
 		assertThat(array1[0]).isEqualTo(2);
 		assertThat(array1[1]).isEqualTo(4);

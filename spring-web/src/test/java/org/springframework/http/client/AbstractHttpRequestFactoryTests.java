@@ -102,7 +102,7 @@ abstract class AbstractHttpRequestFactoryTests extends AbstractMockWebServerTest
 			assertThat(response.getHeaders()).as("Header value not found")
 					.containsEntry(headerName, Arrays.asList(headerValue1, headerValue2));
 			byte[] result = FileCopyUtils.copyToByteArray(response.getBody());
-			assertThat(Arrays.equals(body, result)).as("Invalid body").isTrue();
+			assertThat(result).as("Invalid body").isEqualTo(body);
 		}
 	}
 

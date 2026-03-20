@@ -17,7 +17,6 @@
 package org.springframework.aop.aspectj;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.aspectj.lang.JoinPoint;
@@ -106,9 +105,9 @@ class MethodInvocationProceedingJoinPointTests {
 			assertThat(AbstractAspectJAdvice.currentJoinPoint().getSignature()).as("Return same MethodSignature repeatedly").isSameAs(msig);
 			assertThat(AbstractAspectJAdvice.currentJoinPoint()).as("Return same JoinPoint repeatedly").isSameAs(AbstractAspectJAdvice.currentJoinPoint());
 			assertThat(msig.getDeclaringType()).isEqualTo(method.getDeclaringClass());
-			assertThat(Arrays.equals(method.getParameterTypes(), msig.getParameterTypes())).isTrue();
+			assertThat(method.getParameterTypes()).isEqualTo(msig.getParameterTypes());
 			assertThat(msig.getReturnType()).isEqualTo(method.getReturnType());
-			assertThat(Arrays.equals(method.getExceptionTypes(), msig.getExceptionTypes())).isTrue();
+			assertThat(method.getExceptionTypes()).isEqualTo(msig.getExceptionTypes());
 			msig.toLongString();
 			msig.toShortString();
 		});

@@ -98,7 +98,7 @@ class MethodInvokingFactoryBeanTests {
 		mcfb.setTargetObject(tc1);
 		mcfb.setTargetMethod("method1");
 		mcfb.afterPropertiesSet();
-		assertThat(int.class.equals(mcfb.getObjectType())).isTrue();
+		assertThat(int.class).isEqualTo(mcfb.getObjectType());
 
 		mcfb = new MethodInvokingFactoryBean();
 		mcfb.setTargetClass(TestClass1.class);

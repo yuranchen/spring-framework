@@ -944,11 +944,11 @@ class ClassUtilsTests {
 	}
 
 	private static void assertNotPublic(Member member) {
-		assertThat(!isPublic(member)).as("%s must be not be public", member).isTrue();
+		assertThat(isPublic(member)).as("%s must be not be public", member).isFalse();
 	}
 
 	private static void assertNotPublic(Class<?> clazz) {
-		assertThat(!isPublic(clazz)).as("%s must be not be public", clazz).isTrue();
+		assertThat(isPublic(clazz)).as("%s must be not be public", clazz).isFalse();
 	}
 
 	private static boolean isPublic(Class<?> clazz) {

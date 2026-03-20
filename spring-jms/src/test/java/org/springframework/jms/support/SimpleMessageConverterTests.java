@@ -78,7 +78,7 @@ class SimpleMessageConverterTests {
 
 		SimpleMessageConverter converter = new SimpleMessageConverter();
 		Message msg = converter.toMessage(content, session);
-		assertThat(((byte[]) converter.fromMessage(msg))).hasSize(content.length);
+		assertThat((byte[]) converter.fromMessage(msg)).hasSize(content.length);
 
 		verify(message).writeBytes(content);
 	}

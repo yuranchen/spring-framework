@@ -307,19 +307,19 @@ class BeanFactoryUtilsTests {
 	@Test
 	void bDependencies() {
 		String[] deps = this.dependentBeansFactory.getDependentBeans("b");
-		assertThat(Arrays.equals(new String[] { "c" }, deps)).isTrue();
+		assertThat(deps).containsExactly("c");
 	}
 
 	@Test
 	void cDependencies() {
 		String[] deps = this.dependentBeansFactory.getDependentBeans("c");
-		assertThat(Arrays.equals(new String[] { "int", "long" }, deps)).isTrue();
+		assertThat(deps).containsExactly("int", "long");
 	}
 
 	@Test
 	void intDependencies() {
 		String[] deps = this.dependentBeansFactory.getDependentBeans("int");
-		assertThat(Arrays.equals(new String[] { "buffer" }, deps)).isTrue();
+		assertThat(deps).containsExactly("buffer");
 	}
 
 	@Test

@@ -472,7 +472,7 @@ class ClassPathBeanDefinitionScannerTests {
 		int initialBeanCount = context.getBeanDefinitionCount();
 		int scannedBeanCount = scanner.scan(BASE_PACKAGE);
 		assertThat(scannedBeanCount).isGreaterThanOrEqualTo(12);
-		assertThat((context.getBeanDefinitionCount() - initialBeanCount)).isEqualTo(scannedBeanCount);
+		assertThat(context.getBeanDefinitionCount() - initialBeanCount).isEqualTo(scannedBeanCount);
 		int addedBeanCount = scanner.scan("org.springframework.aop.aspectj.annotation");
 		assertThat(context.getBeanDefinitionCount()).isEqualTo((initialBeanCount + scannedBeanCount + addedBeanCount));
 	}
