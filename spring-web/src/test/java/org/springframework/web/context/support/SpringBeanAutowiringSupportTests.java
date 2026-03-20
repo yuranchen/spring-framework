@@ -50,8 +50,7 @@ class SpringBeanAutowiringSupportTests {
 
 		InjectionTarget target = new InjectionTarget();
 		SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(target, sc);
-		boolean condition = target.testBean instanceof TestBean;
-		assertThat(condition).isTrue();
+		assertThat(target.testBean).isInstanceOf(TestBean.class);
 		assertThat(target.name).isEqualTo("tb");
 	}
 

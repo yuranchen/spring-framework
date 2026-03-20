@@ -120,7 +120,7 @@ class RequestAttributeMethodArgumentResolverTests {
 
 		assertThat(mono.block()).isNotNull();
 		assertThat(mono.block().getClass()).isEqualTo(Optional.class);
-		assertThat(((Optional<?>) mono.block())).isNotPresent();
+		assertThat((Optional<?>) mono.block()).isNotPresent();
 
 		ConfigurableWebBindingInitializer initializer = new ConfigurableWebBindingInitializer();
 		initializer.setConversionService(new DefaultFormattingConversionService());
@@ -154,8 +154,7 @@ class RequestAttributeMethodArgumentResolverTests {
 		this.exchange.getAttributes().put("fooMono", singleMono);
 		mono = this.resolver.resolveArgument(param, new BindingContext(), this.exchange);
 		Object value = mono.block(Duration.ZERO);
-		boolean condition = value instanceof Mono;
-		assertThat(condition).isTrue();
+		assertThat(value).isInstanceOf(Mono.class);
 		assertThat(((Mono<?>) value).block(Duration.ZERO)).isSameAs(foo);
 
 		// No attribute --> Mono.empty
