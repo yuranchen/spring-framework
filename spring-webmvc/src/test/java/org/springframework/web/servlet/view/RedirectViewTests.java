@@ -364,7 +364,7 @@ class RedirectViewTests {
 		 */
 		@Override
 		protected Map<String, Object> queryProperties(Map<String, Object> model) {
-			assertThat(this.expectedModel.equals(model)).as("Map and model must be equal.").isTrue();
+			assertThat(this.expectedModel).as("Map and model must be equal.").isEqualTo(model);
 			this.queryPropertiesCalled = true;
 			return super.queryProperties(model);
 		}

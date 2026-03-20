@@ -113,7 +113,7 @@ class DataBinderTests {
 		Map<?, ?> map = binder.getBindingResult().getModel();
 		assertThat(map).as("There is one element in map").hasSize(2);
 		TestBean tb = (TestBean) map.get("person");
-		assertThat(tb.equals(rod)).as("Same object").isTrue();
+		assertThat(tb).as("Same object").isEqualTo(rod);
 
 		BindingResult other = new DataBinder(rod, "person").getBindingResult();
 		assertThat(binder.getBindingResult()).isEqualTo(other);
@@ -793,7 +793,7 @@ class DataBinderTests {
 		Map<?,?> m = binder.getBindingResult().getModel();
 		assertThat(m).as("There is one element in map").hasSize(2);
 		TestBean tb = (TestBean) m.get("person");
-		assertThat(tb.equals(rod)).as("Same object").isTrue();
+		assertThat(tb).as("Same object").isEqualTo(rod);
 	}
 
 	@Test

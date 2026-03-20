@@ -854,8 +854,7 @@ abstract class AbstractAopProxyTests {
 		assertThat(proxied.getAge()).isEqualTo(10);
 		assertThat(mba.getCalls()).isEqualTo(1);
 
-		boolean condition = proxied instanceof Advised;
-		assertThat(condition).as("Cannot be cast to Advised").isFalse();
+		assertThat(proxied).as("Cannot be cast to Advised").isNotInstanceOf(Advised.class);
 	}
 
 	@Test
