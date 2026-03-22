@@ -32,11 +32,10 @@ class with `@SpringExtensionConfig(useTestClassScopedExtensionContext = true)`.
 
 Alternatively, you can change the global default by setting the
 `spring.test.extension.context.scope` property to `test_class`. The property is resolved
-first via the
-{spring-framework-api}/org/springframework/core/SpringProperties.html[`SpringProperties`]
-mechanism (in a `spring.properties` file on the classpath or via JVM system properties,
-for example `-Dspring.test.extension.context.scope=test_class`). If the Spring property
-has not been set, the `SpringExtension` will attempt to resolve the property as a
+first via the xref:appendix.adoc#appendix-spring-properties[`SpringProperties`] mechanism
+which also supports JVM system properties — for example,
+`-Dspring.test.extension.context.scope=test_class`. If the Spring property has not been
+set, the `SpringExtension` will attempt to resolve the property as a
 https://docs.junit.org/current/running-tests/configuration-parameters.html[JUnit Platform configuration parameter]
 as a fallback mechanism. If the property has not been set via either of those mechanisms,
 the `SpringExtension` will use a test-method scoped extension context by default. Note,
