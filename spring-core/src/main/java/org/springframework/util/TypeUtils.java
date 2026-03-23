@@ -38,9 +38,10 @@ import org.springframework.lang.Contract;
  */
 public abstract class TypeUtils {
 
-	private static final Type[] IMPLICIT_LOWER_BOUNDS = { null };
+	private static final @Nullable Type[] IMPLICIT_LOWER_BOUNDS = { null };
 
 	private static final Type[] IMPLICIT_UPPER_BOUNDS = { Object.class };
+
 
 	/**
 	 * Check if the right-hand side type may be assigned to the left-hand side
@@ -141,17 +142,14 @@ public abstract class TypeUtils {
 	}
 
 	private static boolean isAssignable(WildcardType lhsType, Type rhsType) {
-		Type[] lUpperBounds = getUpperBounds(lhsType);
-
-		Type[] lLowerBounds = getLowerBounds(lhsType);
+		@Nullable Type[] lUpperBounds = getUpperBounds(lhsType);
+		@Nullable Type[] lLowerBounds = getLowerBounds(lhsType);
 
 		if (rhsType instanceof WildcardType rhsWcType) {
-			// both the upper and lower bounds of the right-hand side must be
-			// completely enclosed in the upper and lower bounds of the left-
-			// hand side.
-			Type[] rUpperBounds = getUpperBounds(rhsWcType);
-
-			Type[] rLowerBounds = getLowerBounds(rhsWcType);
+			// Both the upper and lower bounds of the right-hand side must be
+			// completely enclosed in the upper and lower bounds of the left-hand side.
+			@Nullable Type[] rUpperBounds = getUpperBounds(rhsWcType);
+			@Nullable Type[] rLowerBounds = getLowerBounds(rhsWcType);
 
 			for (Type lBound : lUpperBounds) {
 				for (Type rBound : rUpperBounds) {
@@ -198,7 +196,7 @@ public abstract class TypeUtils {
 		return true;
 	}
 
-	private static Type[] getLowerBounds(WildcardType wildcardType) {
+	private static @Nullable Type[] getLowerBounds(WildcardType wildcardType) {
 		Type[] lowerBounds = wildcardType.getLowerBounds();
 
 		// supply the implicit lower bound if none are specified
