@@ -64,6 +64,11 @@ class MockitoBeansByNameIntegrationTests {
 
 	@BeforeEach
 	void configureMocks() {
+		assertIsMock(s1, "s1");
+		assertIsMock(s2, "s2");
+		assertIsMock(service3, "service3");
+		assertIsNotMock(service4, "service4");
+
 		given(s1.greeting()).willReturn("mock 1");
 		given(s2.greeting()).willReturn("mock 2");
 		given(service3.greeting()).willReturn("mock 3");
@@ -71,11 +76,6 @@ class MockitoBeansByNameIntegrationTests {
 
 	@Test
 	void checkMocksAndStandardBean() {
-		assertIsMock(s1, "s1");
-		assertIsMock(s2, "s2");
-		assertIsMock(service3, "service3");
-		assertIsNotMock(service4, "service4");
-
 		assertThat(s1.greeting()).isEqualTo("mock 1");
 		assertThat(s2.greeting()).isEqualTo("mock 2");
 		assertThat(service3.greeting()).isEqualTo("mock 3");
