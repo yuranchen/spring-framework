@@ -76,39 +76,39 @@ class DefaultHttpMessageConverters implements HttpMessageConverters {
 
 	abstract static class DefaultBuilder {
 
-		private static final boolean JACKSON_PRESENT;
+		static final boolean JACKSON_PRESENT;
 
-		private static final boolean JACKSON_2_PRESENT;
+		static final boolean JACKSON_2_PRESENT;
 
-		private static final boolean GSON_PRESENT;
+		static final boolean GSON_PRESENT;
 
-		private static final boolean JSONB_PRESENT;
+		static final boolean JSONB_PRESENT;
 
-		private static final boolean KOTLIN_SERIALIZATION_JSON_PRESENT;
+		static final boolean KOTLIN_SERIALIZATION_JSON_PRESENT;
 
-		private static final boolean JACKSON_XML_PRESENT;
+		static final boolean JACKSON_XML_PRESENT;
 
-		private static final boolean JACKSON_2_XML_PRESENT;
+		static final boolean JACKSON_2_XML_PRESENT;
 
-		private static final boolean JAXB_2_PRESENT;
+		static final boolean JAXB_2_PRESENT;
 
-		private static final boolean JACKSON_SMILE_PRESENT;
+		static final boolean JACKSON_SMILE_PRESENT;
 
-		private static final boolean JACKSON_2_SMILE_PRESENT;
+		static final boolean JACKSON_2_SMILE_PRESENT;
 
-		private static final boolean JACKSON_CBOR_PRESENT;
+		static final boolean JACKSON_CBOR_PRESENT;
 
-		private static final boolean JACKSON_2_CBOR_PRESENT;
+		static final boolean JACKSON_2_CBOR_PRESENT;
 
-		private static final boolean KOTLIN_SERIALIZATION_CBOR_PRESENT;
+		static final boolean KOTLIN_SERIALIZATION_CBOR_PRESENT;
 
-		private static final boolean JACKSON_YAML_PRESENT;
+		static final boolean JACKSON_YAML_PRESENT;
 
-		private static final boolean JACKSON_2_YAML_PRESENT;
+		static final boolean JACKSON_2_YAML_PRESENT;
 
-		private static final boolean KOTLIN_SERIALIZATION_PROTOBUF_PRESENT;
+		static final boolean KOTLIN_SERIALIZATION_PROTOBUF_PRESENT;
 
-		private static final boolean ROME_PRESENT;
+		static final boolean ROME_PRESENT;
 
 		boolean registerDefaults;
 
@@ -462,6 +462,23 @@ class DefaultHttpMessageConverters implements HttpMessageConverters {
 		}
 
 		@Override
+		void detectMessageConverters() {
+			super.detectMessageConverters();
+			// client-specific detection behavior
+			if (this.xmlConverter == null) {
+				if (JACKSON_XML_PRESENT) {
+					this.xmlConverter = new JacksonXmlHttpMessageConverter();
+				}
+				else if (JACKSON_2_XML_PRESENT) {
+					this.xmlConverter = new MappingJackson2XmlHttpMessageConverter();
+				}
+				else if (JAXB_2_PRESENT) {
+					this.xmlConverter = new Jaxb2RootElementHttpMessageConverter();
+				}
+			}
+		}
+
+		@Override
 		public HttpMessageConverters build() {
 			if (this.registerDefaults) {
 				this.resourceConverter = new ResourceHttpMessageConverter(false);
@@ -571,6 +588,20 @@ class DefaultHttpMessageConverters implements HttpMessageConverters {
 		public ServerBuilder configureMessageConvertersList(Consumer<List<HttpMessageConverter<?>>> configurer) {
 			addMessageConvertersListConfigurer(configurer);
 			return this;
+		}
+
+		@Override
+		void detectMessageConverters() {
+			super.detectMessageConverters();
+			// server-specific detection behavior
+			if (this.xmlConverter == null) {
+				if (JACKSON_XML_PRESENT) {
+					this.xmlConverter = new JacksonXmlHttpMessageConverter();
+				}
+				else if (JACKSON_2_XML_PRESENT) {
+					this.xmlConverter = new MappingJackson2XmlHttpMessageConverter();
+				}
+			}
 		}
 
 		@Override

@@ -28,6 +28,7 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.test.web.Person;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -58,6 +59,7 @@ class XmlContentAssertionTests {
 
 	private final WebTestClient testClient =
 			MockMvcWebTestClient.bindToController(new MusicController())
+					.messageConverters(new Jaxb2RootElementHttpMessageConverter())
 					.alwaysExpect(status().isOk())
 					.alwaysExpect(content().contentType(MediaType.parseMediaType("application/xml;charset=UTF-8")))
 					.configureClient()
