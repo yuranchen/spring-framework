@@ -21,7 +21,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
@@ -308,14 +307,21 @@ public class LazyConnectionDataSourceProxy extends DelegatingDataSource {
 		private String password;
 
 		@Nullable
-		private Boolean autoCommit;
+		private String catalog;
+
+		@Nullable
+		private String schema;
+
+		@Nullable
+		private Integer holdability;
+
+		private boolean readOnly = false;
 
 		@Nullable
 		private Integer transactionIsolation;
 
-		private boolean readOnly = false;
-
-		private int holdability = ResultSet.CLOSE_CURSORS_AT_COMMIT;
+		@Nullable
+		private Boolean autoCommit;
 
 		private boolean closed = false;
 
@@ -375,15 +381,41 @@ public class LazyConnectionDataSourceProxy extends DelegatingDataSource {
 					case "toString" -> {
 						return "Lazy Connection proxy for target DataSource [" + getTargetDataSource() + "]";
 					}
-					case "getAutoCommit" -> {
-						if (this.autoCommit != null) {
-							return this.autoCommit;
+					case "getCatalog" -> {
+						if (this.catalog != null) {
+							return this.catalog;
 						}
-						// Else fetch actual Connection and check there,
-						// because we didn't have a default specified.
+						// Else fetch actual Connection and check there.
 					}
-					case "setAutoCommit" -> {
-						this.autoCommit = (Boolean) args[0];
+					case "setCatalog" -> {
+						this.catalog = (String) args[0];
+						return null;
+					}
+					case "getSchema" -> {
+						if (this.schema != null) {
+							return this.schema;
+						}
+						// Else fetch actual Connection and check there.
+					}
+					case "setSchema" -> {
+						this.schema = (String) args[0];
+						return null;
+					}
+					case "getHoldability" -> {
+						if (this.holdability != null) {
+							return this.holdability;
+						}
+						// Else fetch actual Connection and check there.
+					}
+					case "setHoldability" -> {
+						this.holdability = (Integer) args[0];
+						return null;
+					}
+					case "isReadOnly" -> {
+						return (this.readOnly || getTargetDataSource() == readOnlyDataSource);
+					}
+					case "setReadOnly" -> {
+						this.readOnly = (Boolean) args[0];
 						return null;
 					}
 					case "getTransactionIsolation" -> {
@@ -397,18 +429,15 @@ public class LazyConnectionDataSourceProxy extends DelegatingDataSource {
 						this.transactionIsolation = (Integer) args[0];
 						return null;
 					}
-					case "isReadOnly" -> {
-						return (this.readOnly || getTargetDataSource() == readOnlyDataSource);
+					case "getAutoCommit" -> {
+						if (this.autoCommit != null) {
+							return this.autoCommit;
+						}
+						// Else fetch actual Connection and check there,
+						// because we didn't have a default specified.
 					}
-					case "setReadOnly" -> {
-						this.readOnly = (Boolean) args[0];
-						return null;
-					}
-					case "getHoldability" -> {
-						return this.holdability;
-					}
-					case "setHoldability" -> {
-						this.holdability = (Integer) args[0];
+					case "setAutoCommit" -> {
+						this.autoCommit = (Boolean) args[0];
 						return null;
 					}
 					case "commit", "rollback" -> {
@@ -496,6 +525,15 @@ public class LazyConnectionDataSourceProxy extends DelegatingDataSource {
 
 			// Apply kept transaction settings, if any.
 			try {
+				if (this.catalog != null) {
+					target.setCatalog(this.catalog);
+				}
+				if (this.schema != null) {
+					target.setSchema(this.schema);
+				}
+				if (this.holdability != null) {
+					target.setHoldability(this.holdability);
+				}
 				if (this.readOnly && readOnlyDataSource == null) {
 					DataSourceUtils.setReadOnlyIfPossible(target);
 				}
