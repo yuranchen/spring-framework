@@ -69,6 +69,14 @@ class MockitoBeansByTypeIntegrationTests implements MockTestInterface01 {
 
 	@BeforeEach
 	void configureMocks() {
+		assertIsMock(service01, "service01");
+		assertIsMock(service02, "service02");
+		assertIsMock(service03, "service03");
+		assertIsMock(service04, "service04");
+		assertIsMock(service05, "service05");
+		assertIsMock(service06, "service06");
+		assertIsMock(service07, "service07");
+
 		given(service01.greeting()).willReturn("mock 01");
 		given(service02.greeting()).willReturn("mock 02");
 		given(service03.greeting()).willReturn("mock 03");
@@ -80,14 +88,6 @@ class MockitoBeansByTypeIntegrationTests implements MockTestInterface01 {
 
 	@Test
 	void checkMocks() {
-		assertIsMock(service01, "service01");
-		assertIsMock(service02, "service02");
-		assertIsMock(service03, "service03");
-		assertIsMock(service04, "service04");
-		assertIsMock(service05, "service05");
-		assertIsMock(service06, "service06");
-		assertIsMock(service07, "service07");
-
 		assertThat(service01.greeting()).isEqualTo("mock 01");
 		assertThat(service02.greeting()).isEqualTo("mock 02");
 		assertThat(service03.greeting()).isEqualTo("mock 03");
@@ -127,16 +127,6 @@ class MockitoBeansByTypeIntegrationTests implements MockTestInterface01 {
 
 		@BeforeEach
 		void configureMocks() {
-			given(service08.greeting()).willReturn("mock 08");
-			given(service09.greeting()).willReturn("mock 09");
-			given(service10.greeting()).willReturn("mock 10");
-			given(service11.greeting()).willReturn("mock 11");
-			given(service12.greeting()).willReturn("mock 12");
-			given(service13.greeting()).willReturn("mock 13");
-		}
-
-		@Test
-		void checkMocks() {
 			assertIsMock(service01, "service01");
 			assertIsMock(service02, "service02");
 			assertIsMock(service03, "service03");
@@ -151,6 +141,16 @@ class MockitoBeansByTypeIntegrationTests implements MockTestInterface01 {
 			assertIsMock(service12, "service12");
 			assertIsMock(service13, "service13");
 
+			given(service08.greeting()).willReturn("mock 08");
+			given(service09.greeting()).willReturn("mock 09");
+			given(service10.greeting()).willReturn("mock 10");
+			given(service11.greeting()).willReturn("mock 11");
+			given(service12.greeting()).willReturn("mock 12");
+			given(service13.greeting()).willReturn("mock 13");
+		}
+
+		@Test
+		void checkMocks() {
 			assertThat(service01.greeting()).isEqualTo("mock 01");
 			assertThat(service02.greeting()).isEqualTo("mock 02");
 			assertThat(service03.greeting()).isEqualTo("mock 03");
