@@ -19,6 +19,7 @@ package org.springframework.jdbc.datasource;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.sql.Statement;
@@ -828,14 +829,32 @@ public class DataSourceTransactionManagerTests {
 		dsProxy.setDefaultAutoCommit(true);
 		dsProxy.setDefaultTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 		dsProxy.afterPropertiesSet();
-		tm = createTransactionManager(dsProxy);
 
-		try (Connection con = dsProxy.getConnection()) {
+		DelegatingDataSource dsAdapter = new DelegatingDataSource(dsProxy) {
+			@Override
+			public Connection getConnection() throws SQLException {
+				Connection con = super.getConnection();
+				con.setCatalog("myCatalog");
+				con.setSchema("mySchema");
+				con.setHoldability(ResultSet.HOLD_CURSORS_OVER_COMMIT);
+				return con;
+			}
+		};
+
+		tm = createTransactionManager(dsAdapter);
+
+		try (Connection con = dsAdapter.getConnection()) {
 			assertThat(con.isReadOnly()).isFalse();
+			assertThat(con.getCatalog()).isEqualTo("myCatalog");
+			assertThat(con.getSchema()).isEqualTo("mySchema");
+			assertThat(con.getHoldability()).isEqualTo(ResultSet.HOLD_CURSORS_OVER_COMMIT);
 		}
 		assertTransactionReadOnly(TransactionDefinition.ISOLATION_SERIALIZABLE, true);
 
 		InOrder ordered = inOrder(con);
+		ordered.verify(con).setCatalog("myCatalog");
+		ordered.verify(con).setSchema("mySchema");
+		ordered.verify(con).setHoldability(ResultSet.HOLD_CURSORS_OVER_COMMIT);
 		ordered.verify(con).setReadOnly(true);
 		ordered.verify(con).setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 		ordered.verify(con).setAutoCommit(false);
