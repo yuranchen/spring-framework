@@ -130,7 +130,7 @@ class WebClientAdapterTests {
 		assertThat(attributes).containsEntry("myAttribute", "myAttributeValue");
 	}
 
-	@Test
+	@Test // gh-36514
 	void greetingWithDefaultApiVersion() throws InterruptedException {
 		prepareResponse(builder -> builder.setHeader("Content-Type", "text/plain").body("Hello Spring 2!"));
 
