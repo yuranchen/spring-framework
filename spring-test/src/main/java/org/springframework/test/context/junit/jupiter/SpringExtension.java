@@ -400,7 +400,7 @@ public class SpringExtension implements BeforeAllCallback, AfterAllCallback, Tes
 				ParameterResolutionDelegate.isAutowirable(parameter, parameterContext.getIndex()));
 	}
 
-	private boolean supportsApplicationEvents(Class<?> parameterType, Executable executable) {
+	private static boolean supportsApplicationEvents(Class<?> parameterType, Executable executable) {
 		if (ApplicationEvents.class.isAssignableFrom(parameterType)) {
 			Assert.isTrue(executable instanceof Method,
 					"ApplicationEvents can only be injected into test and lifecycle methods");
