@@ -17,33 +17,20 @@
 package org.springframework.test.context.bean.override;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.BiConsumer;
 
 import org.jspecify.annotations.Nullable;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.SingletonBeanRegistry;
 import org.springframework.core.ResolvableType;
-import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.core.style.ToStringCreator;
-import org.springframework.test.context.TestContextAnnotationUtils;
-import org.springframework.util.Assert;
-import org.springframework.util.ReflectionUtils;
-
-import static org.springframework.core.annotation.MergedAnnotations.SearchStrategy.DIRECT;
 
 /**
  * Handler for Bean Override injection points that is responsible for creating
@@ -89,10 +76,6 @@ import static org.springframework.core.annotation.MergedAnnotations.SearchStrate
  * @see BeanOverrideStrategy
  */
 public abstract class BeanOverrideHandler {
-
-	private static final Comparator<MergedAnnotation<? extends Annotation>> reversedMetaDistance =
-			Comparator.<MergedAnnotation<? extends Annotation>> comparingInt(MergedAnnotation::getDistance).reversed();
-
 
 	private final @Nullable Field field;
 
@@ -153,6 +136,7 @@ public abstract class BeanOverrideHandler {
 		this.contextName = contextName;
 	}
 
+
 	/**
 	 * Process the given {@code testClass} and build the corresponding
 	 * {@code BeanOverrideHandler} list derived from {@link BeanOverride @BeanOverride}
@@ -161,111 +145,13 @@ public abstract class BeanOverrideHandler {
 	 * search for {@code @BeanOverride} declarations on classes or interfaces.
 	 * @param testClass the test class to process
 	 * @return a list of bean override handlers
-	 * @see #findAllHandlers(Class)
+	 * @see BeanOverrideUtils
+	 * @deprecated As of Spring Framework 7.1, in favor of
+	 * {@link BeanOverrideUtils#findHandlersForFields(Class)}
 	 */
+	@Deprecated(since = "7.1", forRemoval = true)
 	public static List<BeanOverrideHandler> forTestClass(Class<?> testClass) {
-		return findHandlers(testClass, true);
-	}
-
-	/**
-	 * Process the given {@code testClass} and build the corresponding
-	 * {@code BeanOverrideHandler} list derived from {@link BeanOverride @BeanOverride}
-	 * fields in the test class and in its type hierarchy as well as from
-	 * {@code @BeanOverride} declarations on classes and interfaces.
-	 * <p>This method additionally searches for {@code @BeanOverride} declarations
-	 * in the enclosing class hierarchy based on
-	 * {@link TestContextAnnotationUtils#searchEnclosingClass(Class)} semantics.
-	 * @param testClass the test class to process
-	 * @return a list of bean override handlers
-	 * @since 6.2.2
-	 */
-	static List<BeanOverrideHandler> findAllHandlers(Class<?> testClass) {
-		return findHandlers(testClass, false);
-	}
-
-	private static List<BeanOverrideHandler> findHandlers(Class<?> testClass, boolean localFieldsOnly) {
-		List<BeanOverrideHandler> handlers = new ArrayList<>();
-		findHandlers(testClass, testClass, handlers, localFieldsOnly, new HashSet<>());
-		return handlers;
-	}
-
-	/**
-	 * Find handlers using tail recursion to ensure that "locally declared" bean overrides
-	 * take precedence over inherited bean overrides.
-	 * <p>Note: the search algorithm is effectively the inverse of the algorithm used in
-	 * {@link org.springframework.test.context.TestContextAnnotationUtils#findAnnotationDescriptor(Class, Class)},
-	 * but with tail recursion the semantics should be the same.
-	 * @param clazz the class in/on which to search
-	 * @param testClass the original test class
-	 * @param handlers the list of handlers found
-	 * @param localFieldsOnly whether to search only on local fields within the type hierarchy
-	 * @param visitedTypes the set of types already visited
-	 * @since 6.2.2
-	 */
-	private static void findHandlers(Class<?> clazz, Class<?> testClass, List<BeanOverrideHandler> handlers,
-			boolean localFieldsOnly, Set<Class<?>> visitedTypes) {
-
-		// 0) Ensure that we do not process the same class or interface multiple times.
-		if (!visitedTypes.add(clazz)) {
-			return;
-		}
-
-		// 1) Search enclosing class hierarchy.
-		if (!localFieldsOnly && TestContextAnnotationUtils.searchEnclosingClass(clazz)) {
-			findHandlers(clazz.getEnclosingClass(), testClass, handlers, localFieldsOnly, visitedTypes);
-		}
-
-		// 2) Search class hierarchy.
-		Class<?> superclass = clazz.getSuperclass();
-		if (superclass != null && superclass != Object.class) {
-			findHandlers(superclass, testClass, handlers, localFieldsOnly, visitedTypes);
-		}
-
-		if (!localFieldsOnly) {
-			// 3) Search interfaces.
-			for (Class<?> ifc : clazz.getInterfaces()) {
-				findHandlers(ifc, testClass, handlers, localFieldsOnly, visitedTypes);
-			}
-
-			// 4) Process current class.
-			processClass(clazz, testClass, handlers);
-		}
-
-		// 5) Process fields in current class.
-		ReflectionUtils.doWithLocalFields(clazz, field -> processField(field, testClass, handlers));
-	}
-
-	private static void processClass(Class<?> clazz, Class<?> testClass, List<BeanOverrideHandler> handlers) {
-		processElement(clazz, testClass, (processor, composedAnnotation) ->
-				processor.createHandlers(composedAnnotation, testClass).forEach(handlers::add));
-	}
-
-	private static void processField(Field field, Class<?> testClass, List<BeanOverrideHandler> handlers) {
-		AtomicBoolean overrideAnnotationFound = new AtomicBoolean();
-		processElement(field, testClass, (processor, composedAnnotation) -> {
-			Assert.state(!Modifier.isStatic(field.getModifiers()),
-					() -> "@BeanOverride field must not be static: " + field);
-			Assert.state(overrideAnnotationFound.compareAndSet(false, true),
-					() -> "Multiple @BeanOverride annotations found on field: " + field);
-			handlers.add(processor.createHandler(composedAnnotation, testClass, field));
-		});
-	}
-
-	private static void processElement(AnnotatedElement element, Class<?> testClass,
-			BiConsumer<BeanOverrideProcessor, Annotation> consumer) {
-
-		MergedAnnotations.from(element, DIRECT)
-				.stream(BeanOverride.class)
-				.sorted(reversedMetaDistance)
-				.forEach(mergedAnnotation -> {
-					MergedAnnotation<?> metaSource = mergedAnnotation.getMetaSource();
-					Assert.state(metaSource != null, "@BeanOverride annotation must be meta-present");
-
-					BeanOverride beanOverride = mergedAnnotation.synthesize();
-					BeanOverrideProcessor processor = BeanUtils.instantiateClass(beanOverride.value());
-					Annotation composedAnnotation = metaSource.synthesize();
-					consumer.accept(processor, composedAnnotation);
-				});
+		return BeanOverrideUtils.findHandlersForFields(testClass);
 	}
 
 
