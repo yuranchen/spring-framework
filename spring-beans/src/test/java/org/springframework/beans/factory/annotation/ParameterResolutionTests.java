@@ -134,7 +134,62 @@ class ParameterResolutionTests {
 					parameter, parameterIndex, AutowirableClass.class, beanFactory);
 			assertThat(intermediateDependencyDescriptor.getAnnotatedElement()).isEqualTo(constructor);
 			assertThat(intermediateDependencyDescriptor.getMethodParameter().getParameter()).isEqualTo(parameter);
+			assertThat(intermediateDependencyDescriptor.usesStandardBeanLookup()).isTrue();
 		}
+	}
+
+	@Test
+	void resolveDependencyWithCustomParameterNamePreconditionsForParameter() {
+		assertThatIllegalArgumentException()
+				.isThrownBy(() -> ParameterResolutionDelegate.resolveDependency(null, 0, "customName", getClass(), mock()))
+				.withMessageContaining("Parameter must not be null");
+	}
+
+	@Test
+	void resolveDependencyWithCustomParameterNamePreconditionsForContainingClass() {
+		assertThatIllegalArgumentException()
+				.isThrownBy(() -> ParameterResolutionDelegate.resolveDependency(getParameter(), 0, "customName", null, mock()))
+				.withMessageContaining("Containing class must not be null");
+	}
+
+	@Test
+	void resolveDependencyWithCustomParameterNamePreconditionsForBeanFactory() {
+		assertThatIllegalArgumentException()
+				.isThrownBy(() -> ParameterResolutionDelegate.resolveDependency(getParameter(), 0, "customName", getClass(), null))
+				.withMessageContaining("AutowireCapableBeanFactory must not be null");
+	}
+
+	@Test
+	void resolveDependencyWithNullCustomParameterNameFallsBackToDefaultParameterNameDiscovery() throws Exception {
+		Constructor<?> constructor = AutowirableClass.class.getConstructor(String.class, String.class, String.class, String.class);
+		AutowireCapableBeanFactory beanFactory = mock();
+		given(beanFactory.resolveDependency(any(), isNull())).willAnswer(invocation -> invocation.getArgument(0));
+
+		Parameter[] parameters = constructor.getParameters();
+		for (int parameterIndex = 0; parameterIndex < parameters.length; parameterIndex++) {
+			Parameter parameter = parameters[parameterIndex];
+			DependencyDescriptor via4ArgMethod = (DependencyDescriptor) ParameterResolutionDelegate.resolveDependency(
+					parameter, parameterIndex, AutowirableClass.class, beanFactory);
+			DependencyDescriptor via5ArgMethod = (DependencyDescriptor) ParameterResolutionDelegate.resolveDependency(
+					parameter, parameterIndex, null, AutowirableClass.class, beanFactory);
+			assertThat(via5ArgMethod.getDependencyName()).isEqualTo(via4ArgMethod.getDependencyName());
+		}
+	}
+
+	@Test
+	void resolveDependencyWithCustomParameterName() throws Exception {
+		Constructor<?> constructor = AutowirableClass.class.getConstructor(String.class, String.class, String.class, String.class);
+		AutowireCapableBeanFactory beanFactory = mock();
+		given(beanFactory.resolveDependency(any(), isNull())).willAnswer(invocation -> invocation.getArgument(0));
+
+		Parameter parameter = constructor.getParameters()[0];
+		DependencyDescriptor descriptor = (DependencyDescriptor) ParameterResolutionDelegate.resolveDependency(
+				parameter, 0, "customBeanName", AutowirableClass.class, beanFactory);
+
+		assertThat(descriptor.getAnnotatedElement()).isEqualTo(constructor);
+		assertThat(descriptor.getMethodParameter().getParameter()).isEqualTo(parameter);
+		assertThat(descriptor.getDependencyName()).isEqualTo("customBeanName");
+		assertThat(descriptor.usesStandardBeanLookup()).isTrue();
 	}
 
 
