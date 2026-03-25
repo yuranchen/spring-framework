@@ -17,7 +17,6 @@
 package org.springframework.web.servlet.function;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Collections;
@@ -137,9 +136,8 @@ final class SseServerResponse extends AbstractServerResponse {
 		public void send() throws IOException {
 			this.builder.append('\n');
 			try {
-				OutputStream body = this.outputMessage.getBody();
-				body.write(builderBytes());
-				body.flush();
+				this.outputMessage.getBody().write(builderBytes());
+				this.outputMessage.flush();
 			}
 			catch (IOException ex) {
 				this.sendFailed = true;
