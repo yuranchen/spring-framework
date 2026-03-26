@@ -130,6 +130,21 @@ Java::
 	}
 ----
 <1> Replace the bean with type `CustomService` with a Mockito mock.
+
+Kotlin::
++
+[source,kotlin,indent=0,subs="verbatim,quotes"]
+----
+	@SpringJUnitConfig(TestConfig::class)
+	class BeanOverrideTests {
+
+		@MockitoBean // <1>
+		lateinit var customService: CustomService
+
+		// tests...
+	}
+----
+<1> Replace the bean with type `CustomService` with a Mockito mock.
 ======
 
 In the example above, we are creating a mock for `CustomService`. If more than one bean
@@ -158,6 +173,22 @@ Java::
 	}
 ----
 <1> Replace the bean named `service` with a Mockito mock.
+
+Kotlin::
++
+[source,kotlin,indent=0,subs="verbatim,quotes"]
+----
+	@SpringJUnitConfig(TestConfig::class)
+	class BeanOverrideTests {
+
+		@MockitoBean("service") // <1>
+		lateinit var customService: CustomService
+
+		// tests...
+
+	}
+----
+<1> Replace the bean named `service` with a Mockito mock.
 ======
 
 The following `@SharedMocks` annotation registers two mocks by-type and one mock by-name.
@@ -174,6 +205,19 @@ Java::
 	@MockitoBean(name = "ps1", types = PrintingService.class) // <2>
 	public @interface SharedMocks {
 	}
+----
+<1> Register `OrderService` and `UserService` mocks by-type.
+<2> Register `PrintingService` mock by-name.
+
+Kotlin::
++
+[source,kotlin,indent=0,subs="verbatim,quotes"]
+----
+	@Target(AnnotationTarget.CLASS)
+	@Retention(AnnotationRetention.RUNTIME)
+	@MockitoBean(types = [OrderService::class, UserService::class]) // <1>
+	@MockitoBean(name = "ps1", types = [PrintingService::class]) // <2>
+	annotation class SharedMocks
 ----
 <1> Register `OrderService` and `UserService` mocks by-type.
 <2> Register `PrintingService` mock by-name.
@@ -201,6 +245,34 @@ Java::
 
 		@Test
 		void testThatDependsOnMocks() {
+			// ...
+		}
+	}
+----
+<1> Register common mocks via the custom `@SharedMocks` annotation.
+<2> Optionally inject mocks to _stub_ or _verify_ them.
+
+Kotlin::
++
+[source,kotlin,indent=0,subs="verbatim,quotes"]
+----
+	@SpringJUnitConfig(TestConfig::class)
+	@SharedMocks // <1>
+	class BeanOverrideTests {
+
+		@Autowired
+		lateinit var orderService: OrderService // <2>
+
+		@Autowired
+		lateinit var userService: UserService // <2>
+
+		@Autowired
+		lateinit var ps1: PrintingService // <2>
+
+		// Inject other components that rely on the mocks.
+
+		@Test
+		fun testThatDependsOnMocks() {
 			// ...
 		}
 	}
@@ -236,6 +308,21 @@ Java::
 	}
 ----
 <1> Wrap the bean with type `CustomService` with a Mockito spy.
+
+Kotlin::
++
+[source,kotlin,indent=0,subs="verbatim,quotes"]
+----
+	@SpringJUnitConfig(TestConfig::class)
+	class BeanOverrideTests {
+
+		@MockitoSpyBean // <1>
+		lateinit var customService: CustomService
+
+		// tests...
+	}
+----
+<1> Wrap the bean with type `CustomService` with a Mockito spy.
 ======
 
 In the example above, we are wrapping the bean with type `CustomService`. If more than
@@ -261,6 +348,21 @@ Java::
 	}
 ----
 <1> Wrap the bean named `service` with a Mockito spy.
+
+Kotlin::
++
+[source,kotlin,indent=0,subs="verbatim,quotes"]
+----
+	@SpringJUnitConfig(TestConfig::class)
+	class BeanOverrideTests {
+
+		@MockitoSpyBean("service") // <1>
+		lateinit var customService: CustomService
+
+		// tests...
+	}
+----
+<1> Wrap the bean named `service` with a Mockito spy.
 ======
 
 The following `@SharedSpies` annotation registers two spies by-type and one spy by-name.
@@ -277,6 +379,19 @@ Java::
 	@MockitoSpyBean(name = "ps1", types = PrintingService.class) // <2>
 	public @interface SharedSpies {
 	}
+----
+<1> Register `OrderService` and `UserService` spies by-type.
+<2> Register `PrintingService` spy by-name.
+
+Kotlin::
++
+[source,kotlin,indent=0,subs="verbatim,quotes"]
+----
+	@Target(AnnotationTarget.CLASS)
+	@Retention(AnnotationRetention.RUNTIME)
+	@MockitoSpyBean(types = [OrderService::class, UserService::class]) // <1>
+	@MockitoSpyBean(name = "ps1", types = [PrintingService::class]) // <2>
+	annotation class SharedSpies
 ----
 <1> Register `OrderService` and `UserService` spies by-type.
 <2> Register `PrintingService` spy by-name.
@@ -304,6 +419,34 @@ Java::
 
 		@Test
 		void testThatDependsOnMocks() {
+			// ...
+		}
+	}
+----
+<1> Register common spies via the custom `@SharedSpies` annotation.
+<2> Optionally inject spies to _stub_ or _verify_ them.
+
+Kotlin::
++
+[source,kotlin,indent=0,subs="verbatim,quotes"]
+----
+	@SpringJUnitConfig(TestConfig::class)
+	@SharedSpies // <1>
+	class BeanOverrideTests {
+
+		@Autowired
+		lateinit var orderService: OrderService // <2>
+
+		@Autowired
+		lateinit var userService: UserService // <2>
+
+		@Autowired
+		lateinit var ps1: PrintingService // <2>
+
+		// Inject other components that rely on the spies.
+
+		@Test
+		fun testThatDependsOnMocks() {
 			// ...
 		}
 	}
