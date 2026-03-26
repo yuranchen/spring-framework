@@ -94,6 +94,7 @@ public class FormContentFilter extends OncePerRequestFilter {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private @Nullable MultiValueMap<String, String> parseIfNecessary(HttpServletRequest request) throws IOException {
 		if (!shouldParse(request)) {
 			return null;
@@ -105,7 +106,7 @@ public class FormContentFilter extends OncePerRequestFilter {
 				return request.getInputStream();
 			}
 		};
-		return this.formConverter.read(ResolvableType.forClassWithGenerics(MultiValueMap.class, String.class, String.class), inputMessage, null);
+		return (MultiValueMap<String, String>) this.formConverter.read(ResolvableType.forClassWithGenerics(MultiValueMap.class, String.class, String.class), inputMessage, null);
 	}
 
 	private boolean shouldParse(HttpServletRequest request) {

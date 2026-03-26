@@ -18,7 +18,9 @@ package org.springframework.http.converter;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
@@ -44,6 +46,7 @@ import static org.springframework.http.MediaType.MULTIPART_RELATED;
  * @author Rossen Stoyanchev
  * @author Sam Brannen
  * @author Sebastien Deleuze
+ * @author Brian Clozel
  */
 class FormHttpMessageConverterTests {
 
@@ -53,35 +56,57 @@ class FormHttpMessageConverterTests {
 	private static final ResolvableType MULTI_VALUE_MAP =
 			ResolvableType.forClassWithGenerics(MultiValueMap.class, String.class, String.class);
 
+	private static final ResolvableType MAP =
+			ResolvableType.forClassWithGenerics(Map.class, String.class, String.class);
+
 	private final FormHttpMessageConverter converter = new FormHttpMessageConverter();
 
-
+	@Test
+	void cannotReadToMapsWhenMediaTypeMissing() {
+		assertCannotRead(MAP, null);
+		assertCannotRead(MULTI_VALUE_MAP, null);
+		assertCannotRead(LINKED_MULTI_VALUE_MAP, null);
+		// without generics
+		assertCannotRead(ResolvableType.forClass(Map.class), null);
+		assertCannotRead(ResolvableType.forClass(MultiValueMap.class), null);
+		assertCannotRead(ResolvableType.forClass(LinkedMultiValueMap.class), null);
+	}
 
 	@Test
-	void canRead() {
-		assertCanRead(APPLICATION_FORM_URLENCODED);
+	void canReadToMapTypes() {
+		assertCanRead(MAP, APPLICATION_FORM_URLENCODED);
+		assertCanRead(MULTI_VALUE_MAP, APPLICATION_FORM_URLENCODED);
 		assertCanRead(LINKED_MULTI_VALUE_MAP, APPLICATION_FORM_URLENCODED);
+		// without generics
+		assertCanRead(ResolvableType.forClass(Map.class), APPLICATION_FORM_URLENCODED);
+		assertCanRead(ResolvableType.forClass(MultiValueMap.class), APPLICATION_FORM_URLENCODED);
 		assertCanRead(ResolvableType.forClass(LinkedMultiValueMap.class), APPLICATION_FORM_URLENCODED);
-
-		ResolvableType mapStringObject = ResolvableType.forClassWithGenerics(MultiValueMap.class, String.class, Object.class);
-		assertCannotRead(mapStringObject, null);
-		assertCannotRead(mapStringObject, APPLICATION_FORM_URLENCODED);
 	}
 
 	@Test
 	void cannotReadMultipart() {
 		// Without custom multipart types supported
-		asssertCannotReadMultipart();
+		assertCannotReadMultipart();
 
 		// Should still be the case with custom multipart types supported
-		asssertCannotReadMultipart();
+		assertCannotReadMultipart();
 	}
 
 	@Test
 	void canWrite() {
 		assertCanWrite(APPLICATION_FORM_URLENCODED);
-		assertCanWrite(MediaType.ALL);
+		assertCannotWrite(MediaType.ALL);
+	}
+
+
+	@Test
+	void canWriteMapTypes() {
+		assertCanWrite(MAP, APPLICATION_FORM_URLENCODED);
+		assertCanWrite(MULTI_VALUE_MAP, APPLICATION_FORM_URLENCODED);
 		assertCanWrite(LINKED_MULTI_VALUE_MAP, APPLICATION_FORM_URLENCODED);
+		// without generics
+		assertCanWrite(ResolvableType.forClass(Map.class), APPLICATION_FORM_URLENCODED);
+		assertCanWrite(ResolvableType.forClass(MultiValueMap.class), APPLICATION_FORM_URLENCODED);
 		assertCanWrite(ResolvableType.forClass(LinkedMultiValueMap.class), APPLICATION_FORM_URLENCODED);
 	}
 
@@ -95,18 +120,38 @@ class FormHttpMessageConverterTests {
 	}
 
 	@Test
-	void readForm() throws Exception {
+	@SuppressWarnings("unchecked")
+	void readFormAsMultiValueMap() throws Exception {
 		String body = "name+1=value+1&name+2=value+2%2B1&name+2=value+2%2B2&name+3";
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(body.getBytes(StandardCharsets.ISO_8859_1));
 		inputMessage.getHeaders().setContentType(
 				new MediaType("application", "x-www-form-urlencoded", StandardCharsets.ISO_8859_1));
-		MultiValueMap<String, String> result = this.converter.read(null, inputMessage);
+		Object result = this.converter.read(ResolvableType.forClass(MultiValueMap.class), inputMessage, null);
 
-		assertThat(result).as("Invalid result").hasSize(3);
-		assertThat(result.getFirst("name 1")).as("Invalid result").isEqualTo("value 1");
-		List<String> values = result.get("name 2");
+		assertThat(result).isInstanceOf(MultiValueMap.class);
+		MultiValueMap<String, String> form = (MultiValueMap<String, String>) result;
+		assertThat(form).as("Invalid result").hasSize(3);
+		assertThat(form.getFirst("name 1")).as("Invalid result").isEqualTo("value 1");
+		List<String> values = form.get("name 2");
 		assertThat(values).as("Invalid result").containsExactly("value 2+1", "value 2+2");
-		assertThat(result.getFirst("name 3")).as("Invalid result").isNull();
+		assertThat(form.getFirst("name 3")).as("Invalid result").isNull();
+	}
+
+	@Test
+	@SuppressWarnings("unchecked")
+	void readFormAsMap() throws Exception {
+		String body = "name+1=value+1&name+2=value+2&name+3";
+		MockHttpInputMessage inputMessage = new MockHttpInputMessage(body.getBytes(StandardCharsets.ISO_8859_1));
+		inputMessage.getHeaders().setContentType(
+				new MediaType("application", "x-www-form-urlencoded", StandardCharsets.ISO_8859_1));
+		Object result = this.converter.read(ResolvableType.forClass(Map.class), inputMessage, null);
+
+		assertThat(result).isInstanceOf(Map.class);
+		Map<String, String> form = (Map<String, String>) result;
+		assertThat(form).as("Invalid result").hasSize(3);
+		assertThat(form.get("name 1")).as("Invalid result").isEqualTo("value 1");
+		assertThat(form.get("name 2")).as("Invalid result").isEqualTo("value 2");
+		assertThat(form.get("name 3")).as("Invalid result").isNull();
 	}
 
 	@Test
@@ -131,7 +176,7 @@ class FormHttpMessageConverterTests {
 	}
 
 	@Test
-	void writeForm() throws IOException {
+	void writeFormFromMultiValueMap() throws IOException {
 		MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
 		body.set("name 1", "value 1");
 		body.add("name 2", "value 2+1");
@@ -148,6 +193,22 @@ class FormHttpMessageConverterTests {
 				.as("Invalid content-length").isEqualTo(outputMessage.getBodyAsBytes().length);
 	}
 
+	@Test
+	void writeFormFromMap() throws IOException {
+		Map<String, String> body = new HashMap<>();
+		body.put("name 1", "value 1");
+		body.put("name 2", "value 2");
+		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
+		this.converter.write(body, APPLICATION_FORM_URLENCODED, outputMessage);
+
+		assertThat(outputMessage.getBodyAsString(UTF_8))
+				.as("Invalid result").isEqualTo("name+2=value+2&name+1=value+1");
+		assertThat(outputMessage.getHeaders().getContentType())
+				.as("Invalid content-type").isEqualTo(APPLICATION_FORM_URLENCODED);
+		assertThat(outputMessage.getHeaders().getContentLength())
+				.as("Invalid content-length").isEqualTo(outputMessage.getBodyAsBytes().length);
+	}
+
 	private void assertCanRead(MediaType mediaType) {
 		assertCanRead(MULTI_VALUE_MAP, mediaType);
 	}
@@ -156,7 +217,7 @@ class FormHttpMessageConverterTests {
 		assertThat(this.converter.canRead(type, mediaType)).as(type.toClass().getSimpleName() + " : " + mediaType).isTrue();
 	}
 
-	private void asssertCannotReadMultipart() {
+	private void assertCannotReadMultipart() {
 		assertCannotRead(new MediaType("multipart", "*"));
 		assertCannotRead(MULTIPART_FORM_DATA);
 		assertCannotRead(MULTIPART_MIXED);

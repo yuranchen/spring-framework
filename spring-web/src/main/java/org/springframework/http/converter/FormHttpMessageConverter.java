@@ -35,6 +35,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 
@@ -76,10 +77,16 @@ import org.springframework.util.StringUtils;
  * @since 3.0
  * @see org.springframework.util.MultiValueMap
  */
-public class FormHttpMessageConverter implements SmartHttpMessageConverter<MultiValueMap<String, String>> {
+public class FormHttpMessageConverter implements SmartHttpMessageConverter<Object> {
 
 	/** The default charset used by the converter. */
 	public static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
+
+	private static final ResolvableType MULTIVALUE_TYPE =
+			ResolvableType.forClassWithGenerics(MultiValueMap.class, String.class, String.class);
+
+	private static final ResolvableType MAP_TYPE =
+			ResolvableType.forClassWithGenerics(Map.class, String.class, String.class);
 
 	private Charset charset = DEFAULT_CHARSET;
 
@@ -106,9 +113,16 @@ public class FormHttpMessageConverter implements SmartHttpMessageConverter<Multi
 
 	@Override
 	public boolean canRead(ResolvableType type, @Nullable MediaType mediaType) {
-		if (!MultiValueMap.class.isAssignableFrom(type.toClass()) ||
-				(!type.hasUnresolvableGenerics() &&
-				!String.class.isAssignableFrom(type.getGeneric(1).toClass()))) {
+		return canConvert(type, mediaType);
+	}
+
+	@Override
+	public boolean canWrite(ResolvableType targetType, Class<?> valueClass, @Nullable MediaType mediaType) {
+		return canConvert(targetType, mediaType);
+	}
+
+	private boolean canConvert(ResolvableType targetType, @Nullable MediaType mediaType) {
+		if (!Map.class.isAssignableFrom(targetType.toClass())) {
 			return false;
 		}
 		for (MediaType supportedMediaType : getSupportedMediaTypes()) {
@@ -120,22 +134,7 @@ public class FormHttpMessageConverter implements SmartHttpMessageConverter<Multi
 	}
 
 	@Override
-	public boolean canWrite(ResolvableType targetType, Class<?> valueClass, @Nullable MediaType mediaType) {
-		if (!MultiValueMap.class.isAssignableFrom(targetType.toClass()) ||
-				(!targetType.hasUnresolvableGenerics() &&
-				!String.class.isAssignableFrom(targetType.getGeneric(1).toClass()))) {
-			return false;
-		}
-		for (MediaType supportedMediaType : getSupportedMediaTypes()) {
-			if (supportedMediaType.isCompatibleWith(mediaType)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public MultiValueMap<String, String> read(ResolvableType type, HttpInputMessage inputMessage, @Nullable Map<String, Object> hints)
+	public Object read(ResolvableType type, HttpInputMessage inputMessage, @Nullable Map<String, Object> hints)
 			throws IOException, HttpMessageNotReadableException {
 
 		MediaType contentType = inputMessage.getHeaders().getContentType();
@@ -161,20 +160,31 @@ public class FormHttpMessageConverter implements SmartHttpMessageConverter<Multi
 		catch (IllegalArgumentException ex) {
 			throw new HttpMessageNotReadableException("Could not decode HTTP form payload", ex, inputMessage);
 		}
+		if (!MultiValueMap.class.isAssignableFrom(type.toClass())) {
+			return result.asSingleValueMap();
+		}
 		return result;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public void write(MultiValueMap<String, String> formData, ResolvableType type, @Nullable MediaType contentType,
+	public void write(Object data, ResolvableType type, @Nullable MediaType contentType,
 					HttpOutputMessage outputMessage, @Nullable Map<String, Object> hints) throws IOException, HttpMessageNotWritableException {
+
+		Assert.isInstanceOf(Map.class, data, "data must be of type Map or MultiValueMap");
 
 		contentType = getFormContentType(contentType);
 		outputMessage.getHeaders().setContentType(contentType);
-
 		Charset charset = (contentType.getCharset() != null ? contentType.getCharset() : this.charset);
 
-		byte[] bytes = serializeForm(formData, charset).getBytes(charset);
+		String serializedForm = "";
+		if (data instanceof MultiValueMap<?,?> formData) {
+			serializedForm = serializeForm((MultiValueMap<String, String>) formData, charset);
+		}
+		else if (data instanceof Map<?,?> formData) {
+			serializedForm = serializeForm((Map<String, String>) formData, charset);
+		}
+		byte[] bytes = serializedForm.getBytes(charset);
 		outputMessage.getHeaders().setContentLength(bytes.length);
 
 		if (outputMessage instanceof StreamingHttpOutputMessage streamingOutputMessage) {
@@ -204,6 +214,18 @@ public class FormHttpMessageConverter implements SmartHttpMessageConverter<Multi
 		return contentType;
 	}
 
+	protected String serializeForm(Map<String, String> formData, Charset charset) {
+		StringBuilder builder = new StringBuilder();
+		formData.forEach((name, value) -> {
+			if (name == null) {
+				Assert.isTrue(ObjectUtils.isEmpty(value), () -> "Null name in form data: " + formData);
+				return;
+			}
+			serializeValue(builder, name, value, charset);
+		});
+		return builder.toString();
+	}
+
 	protected String serializeForm(MultiValueMap<String, String> formData, Charset charset) {
 		StringBuilder builder = new StringBuilder();
 		formData.forEach((name, values) -> {
@@ -211,19 +233,20 @@ public class FormHttpMessageConverter implements SmartHttpMessageConverter<Multi
 					Assert.isTrue(CollectionUtils.isEmpty(values), () -> "Null name in form data: " + formData);
 					return;
 				}
-				values.forEach(value -> {
-					if (builder.length() != 0) {
-						builder.append('&');
-					}
-					builder.append(URLEncoder.encode(name, charset));
-					if (value != null) {
-						builder.append('=');
-						builder.append(URLEncoder.encode(value, charset));
-					}
-				});
+				values.forEach(value -> serializeValue(builder, name, value, charset));
 		});
-
 		return builder.toString();
+	}
+
+	private void serializeValue(StringBuilder builder, String name, String value, Charset charset) {
+		if (builder.length() != 0) {
+			builder.append('&');
+		}
+		builder.append(URLEncoder.encode(name, charset));
+		if (value != null) {
+			builder.append('=');
+			builder.append(URLEncoder.encode(value, charset));
+		}
 	}
 
 }

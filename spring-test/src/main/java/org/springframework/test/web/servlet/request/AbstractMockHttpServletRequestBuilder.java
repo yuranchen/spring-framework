@@ -1022,6 +1022,7 @@ public abstract class AbstractMockHttpServletRequestBuilder<B extends AbstractMo
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private MultiValueMap<String, String> parseFormData(MediaType mediaType) {
 		HttpInputMessage message = new HttpInputMessage() {
 			@Override
@@ -1038,7 +1039,7 @@ public abstract class AbstractMockHttpServletRequestBuilder<B extends AbstractMo
 		};
 
 		try {
-			return new FormHttpMessageConverter()
+			return (MultiValueMap<String, String>) new FormHttpMessageConverter()
 					.read(ResolvableType.forClassWithGenerics(MultiValueMap.class, String.class, String.class), message, null);
 		}
 		catch (IOException ex) {
