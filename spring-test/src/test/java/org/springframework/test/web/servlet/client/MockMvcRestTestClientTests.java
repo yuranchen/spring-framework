@@ -22,11 +22,22 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Test;
 
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.multipart.FilePart;
+import org.springframework.http.converter.multipart.FormFieldPart;
+import org.springframework.http.converter.multipart.Part;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Tests that use a {@link RestTestClient} configured with a {@link MockMvc} instance
@@ -34,7 +45,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author Rob Worsnop
  * @author Sam Brannen
- * @since 7.0
+ * @author Brian Clozel
  */
 class MockMvcRestTestClientTests {
 
@@ -75,6 +86,26 @@ class MockMvcRestTestClientTests {
 				.isEqualTo("some really bad request");
 	}
 
+	@Test
+	void retrieveMultipart() {
+		client.get()
+				.uri("/multipart")
+				.accept(MediaType.MULTIPART_FORM_DATA)
+				.exchange()
+				.expectStatus().isOk()
+				.expectBody(new ParameterizedTypeReference<MultiValueMap<String, Part>>() {})
+				.value(result -> {
+					assertThat(result).hasSize(3);
+					assertThat(result).containsKeys("text1", "text2", "file1");
+					assertThat(result.getFirst("text1")).isInstanceOfSatisfying(FormFieldPart.class,
+							part -> assertThat(part.value()).isEqualTo("a"));
+					assertThat(result.getFirst("text2")).isInstanceOfSatisfying(FormFieldPart.class,
+							part -> assertThat(part.value()).isEqualTo("b"));
+					assertThat(result.getFirst("file1")).isInstanceOfSatisfying(FilePart.class,
+							part -> assertThat(part.filename()).isEqualTo("file1.txt"));
+				});
+	}
+
 	@RestController
 	static class TestController {
 
@@ -93,6 +124,21 @@ class MockMvcRestTestClientTests {
 		void handleErrorWithBody(HttpServletResponse response) throws Exception {
 			response.sendError(400);
 			response.getWriter().write("some really bad request");
+		}
+
+		@GetMapping(value = "/multipart", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+		MultiValueMap<String, Object> multipart() {
+			MultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
+			parts.add("text1", "a");
+			parts.add("text2", "b");
+			Resource resource = new ByteArrayResource("Lorem ipsum dolor sit amet".getBytes()) {
+				@Override
+				public String getFilename() {
+					return "file1.txt";
+				}
+			};
+			parts.add("file1", resource);
+			return parts;
 		}
 	}
 

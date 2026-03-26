@@ -451,10 +451,58 @@ In most cases, you do not have to specify the `Content-Type` for each part.
 The content type is determined automatically based on the `HttpMessageConverter` chosen to serialize it or, in the case of a `Resource`, based on the file extension.
 If necessary, you can explicitly provide the `MediaType` with an `HttpEntity` wrapper.
 
-The `Content-Type` is set to `multipart/form-data` by the `MultiPartHttpMessageConverter`.
+The `Content-Type` is set to `multipart/form-data` by the `MultipartHttpMessageConverter`.
 As seen in the previous section, `MultiValueMap` types can also be used for URL encoded forms.
 It is preferable to explicitly set the media type in the `Content-Type` or `Accept` HTTP request headers to ensure that the expected
 message converter is used.
+
+`RestClient` can also receive multipart responses.
+To decode a multipart response body, use a `ParameterizedTypeReference<MultiValueMap<String, Part>>`.
+The decoded map contains `Part` instances where `FormFieldPart` represents form field values
+and `FilePart` represents file parts with a `filename()` and a `transferTo()` method.
+
+[tabs]
+======
+Java::
++
+[source,java,indent=0,subs="verbatim"]
+----
+	MultiValueMap<String, Part> result = this.restClient.get()
+			.uri("https://example.com/upload")
+			.accept(MediaType.MULTIPART_FORM_DATA)
+			.retrieve()
+			.body(new ParameterizedTypeReference<>() {});
+
+	Part field = result.getFirst("fieldPart");
+	if (field instanceof FormFieldPart formField) {
+		String fieldValue = formField.value();
+	}
+	Part file = result.getFirst("filePart");
+	if (file instanceof FilePart filePart) {
+		filePart.transferTo(Path.of("/tmp/" + filePart.filename()));
+	}
+----
+
+Kotlin::
++
+[source,kotlin,indent=0,subs="verbatim"]
+----
+	val result = this.restClient.get()
+			.uri("https://example.com/upload")
+			.accept(MediaType.MULTIPART_FORM_DATA)
+			.retrieve()
+			.body(object : ParameterizedTypeReference<MultiValueMap<String, Part>>() {})
+
+	val field = result?.getFirst("fieldPart")
+	if (field is FormFieldPart) {
+		val fieldValue = field.value()
+	}
+	val file = result?.getFirst("filePart")
+	if (file is FilePart) {
+		file.transferTo(Path.of("/tmp/" + file.filename()))
+	}
+----
+======
 
 
 [[rest-request-factories]]
