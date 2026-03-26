@@ -128,7 +128,7 @@ import org.springframework.util.MultiValueMap;
  * 				.uri("https://example.com/parts/42")
  * 				.accept(MediaType.MULTIPART_FORM_DATA)
  * 				.retrieve()
- * 				.body(new ParameterizedTypeReference<>() {});</pre>
+ * 				.body(new ParameterizedTypeReference&lt;&gt;() {});</pre>
  *
  * @author Brian Clozel
  * @author Arjen Poutsma
