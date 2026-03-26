@@ -412,7 +412,7 @@ public class SpringExtension implements BeforeAllCallback, AfterAllCallback, Tes
 	/**
 	 * Resolve a value for the {@link Parameter} in the supplied {@link ParameterContext} by
 	 * retrieving the corresponding dependency from the test's {@link ApplicationContext}.
-	 * <p>Delegates to {@link ParameterResolutionDelegate#resolveDependency}.
+	 * <p>Delegates to {@link ParameterResolutionDelegate}.
 	 * @see #supportsParameter
 	 * @see ParameterResolutionDelegate#resolveDependency
 	 */

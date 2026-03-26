@@ -134,13 +134,13 @@ public abstract class BeanOverrideUtils {
 	}
 
 	private static void processClass(Class<?> clazz, Class<?> testClass, List<BeanOverrideHandler> handlers) {
-		processElement(clazz, testClass, (processor, composedAnnotation) ->
+		processElement(clazz, (processor, composedAnnotation) ->
 				processor.createHandlers(composedAnnotation, testClass).forEach(handlers::add));
 	}
 
 	private static void processField(Field field, Class<?> testClass, List<BeanOverrideHandler> handlers) {
 		AtomicBoolean overrideAnnotationFound = new AtomicBoolean();
-		processElement(field, testClass, (processor, composedAnnotation) -> {
+		processElement(field, (processor, composedAnnotation) -> {
 			Assert.state(!Modifier.isStatic(field.getModifiers()),
 					() -> "@BeanOverride field must not be static: " + field);
 			Assert.state(overrideAnnotationFound.compareAndSet(false, true),
@@ -149,9 +149,7 @@ public abstract class BeanOverrideUtils {
 		});
 	}
 
-	private static void processElement(AnnotatedElement element, Class<?> testClass,
-			BiConsumer<BeanOverrideProcessor, Annotation> consumer) {
-
+	private static void processElement(AnnotatedElement element, BiConsumer<BeanOverrideProcessor, Annotation> consumer) {
 		MergedAnnotations.from(element, DIRECT)
 				.stream(BeanOverride.class)
 				.sorted(reversedMetaDistance)

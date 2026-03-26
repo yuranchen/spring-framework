@@ -32,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 /**
- * Tests for {@link MockitoSpyBean @MockitoSpyBean}.
+ * Tests for {@link MockitoSpyBean @MockitoSpyBean} error scenarios.
  *
  * @author Stephane Nicoll
  * @author Sam Brannen
@@ -118,7 +118,6 @@ class MockitoSpyBeanConfigurationErrorTests {
 
 		@MockitoSpyBean
 		String example;
-
 	}
 
 	static class ByNameSingleLookup {
@@ -132,14 +131,12 @@ class MockitoSpyBeanConfigurationErrorTests {
 
 		@MockitoSpyBean
 		MyScopedProxy myScopedProxy;
-
 	}
 
 	static class SelfInjectionScopedProxyTestCase {
 
 		@MockitoSpyBean
 		MySelfInjectionScopedProxy mySelfInjectionScopedProxy;
-
 	}
 
 	@Component("myScopedProxy")

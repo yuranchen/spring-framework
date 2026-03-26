@@ -52,17 +52,17 @@ class MockitoBeanOverrideProcessorTests {
 		@Test
 		void mockAnnotationCreatesMockitoBeanOverrideHandler() {
 			MockitoBean annotation = AnnotationUtils.synthesizeAnnotation(MockitoBean.class);
-			BeanOverrideHandler object = processor.createHandler(annotation, TestCase.class, field);
+			BeanOverrideHandler handler = processor.createHandler(annotation, TestCase.class, field);
 
-			assertThat(object).isExactlyInstanceOf(MockitoBeanOverrideHandler.class);
+			assertThat(handler).isExactlyInstanceOf(MockitoBeanOverrideHandler.class);
 		}
 
 		@Test
 		void spyAnnotationCreatesMockitoSpyBeanOverrideHandler() {
 			MockitoSpyBean annotation = AnnotationUtils.synthesizeAnnotation(MockitoSpyBean.class);
-			BeanOverrideHandler object = processor.createHandler(annotation, TestCase.class, field);
+			BeanOverrideHandler handler = processor.createHandler(annotation, TestCase.class, field);
 
-			assertThat(object).isExactlyInstanceOf(MockitoSpyBeanOverrideHandler.class);
+			assertThat(handler).isExactlyInstanceOf(MockitoSpyBeanOverrideHandler.class);
 		}
 
 		@Test

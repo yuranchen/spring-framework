@@ -26,7 +26,7 @@ import org.springframework.test.context.bean.override.BeanOverrideContextCustomi
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 /**
- * Tests for {@link MockitoBean @MockitoBean}.
+ * Tests for {@link MockitoBean @MockitoBean} error scenarios.
  *
  * @author Stephane Nicoll
  * @author Sam Brannen
@@ -93,7 +93,6 @@ class MockitoBeanConfigurationErrorTests {
 
 		@MockitoBean(enforceOverride = true)
 		String example;
-
 	}
 
 	static class FailureByNameLookup {
