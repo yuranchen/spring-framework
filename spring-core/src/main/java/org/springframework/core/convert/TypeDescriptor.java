@@ -631,7 +631,7 @@ public class TypeDescriptor implements Serializable {
 	 * Create a new type descriptor as an array of the specified type.
 	 * <p>For example to create a {@code Map<String,String>[]} use:
 	 * <pre class="code">
-	 * TypeDescriptor.array(TypeDescriptor.map(Map.class, TypeDescriptor.value(String.class), TypeDescriptor.value(String.class)));
+	 * TypeDescriptor.array(TypeDescriptor.map(Map.class, TypeDescriptor.valueOf(String.class), TypeDescriptor.valueOf(String.class)));
 	 * </pre>
 	 * @param elementTypeDescriptor the {@link TypeDescriptor} of the array element or {@code null}
 	 * @return an array {@link TypeDescriptor} or {@code null} if {@code elementTypeDescriptor} is {@code null}
