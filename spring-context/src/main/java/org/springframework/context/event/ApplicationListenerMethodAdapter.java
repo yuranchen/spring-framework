@@ -129,10 +129,10 @@ public class ApplicationListenerMethodAdapter implements GenericApplicationListe
 	}
 
 	private static List<ResolvableType> resolveDeclaredEventTypes(Method method, @Nullable EventListener ann) {
-		int count = (KotlinDetector.isSuspendingFunction(method) ? method.getParameterCount() - 1 : method.getParameterCount());
+		int count = (KotlinDetector.isSuspendingFunction(method) ? method.getParameterCount() - 1 :
+				method.getParameterCount());
 		if (count > 1) {
-			throw new IllegalStateException(
-					"Maximum one parameter is allowed for event listener method: " + method);
+			throw new IllegalStateException("Maximum one parameter is allowed for event listener method: " + method);
 		}
 
 		if (ann != null) {
@@ -311,7 +311,7 @@ public class ApplicationListenerMethodAdapter implements GenericApplicationListe
 		return new Object[] {event};
 	}
 
-	@SuppressWarnings({"removal", "unchecked", "deprecation"})
+	@SuppressWarnings({"removal", "unchecked"})
 	protected void handleResult(Object result) {
 		if (reactiveStreamsPresent && new ReactiveResultHandler().subscribeToPublisher(result)) {
 			if (logger.isTraceEnabled()) {
@@ -436,7 +436,7 @@ public class ApplicationListenerMethodAdapter implements GenericApplicationListe
 	 */
 	protected String getDetailedErrorMessage(Object bean, @Nullable String message) {
 		StringBuilder sb = (StringUtils.hasLength(message) ? new StringBuilder(message).append('\n') : new StringBuilder());
-		sb.append("HandlerMethod details: \n");
+		sb.append("ApplicationListenerMethodAdapter details: \n");
 		sb.append("Bean [").append(bean.getClass().getName()).append("]\n");
 		sb.append("Method [").append(this.method.toGenericString()).append("]\n");
 		return sb.toString();
