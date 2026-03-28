@@ -202,7 +202,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	/**
 	 * Set the {@link ProblemReporter} to use.
 	 * <p>Used to register any problems detected with {@link Configuration} or {@link Bean}
-	 * declarations. For instance, an @Bean method marked as {@code final} is illegal
+	 * declarations. For instance, a @Bean method marked as {@code final} is illegal
 	 * and would be reported as a problem. Defaults to {@link FailFastProblemReporter}.
 	 */
 	public void setProblemReporter(@Nullable ProblemReporter problemReporter) {
@@ -312,8 +312,8 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		beanFactory.addBeanPostProcessor(new ImportAwareBeanPostProcessor(beanFactory));
 	}
 
-	@Nullable
 	@Override
+	@Nullable
 	public BeanRegistrationAotContribution processAheadOfTime(RegisteredBean registeredBean) {
 		Object configClassAttr = registeredBean.getMergedBeanDefinition()
 				.getAttribute(ConfigurationClassUtils.CONFIGURATION_CLASS_ATTRIBUTE);
