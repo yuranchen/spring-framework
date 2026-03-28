@@ -45,6 +45,7 @@ import org.springframework.beans.factory.support.BeanNameGenerator;
 import org.springframework.beans.factory.support.BeanRegistryAdapter;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
+import org.springframework.context.DeferredBeanRegistrar;
 import org.springframework.context.annotation.ConfigurationCondition.ConfigurationPhase;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.env.Environment;
@@ -423,12 +424,16 @@ class ConfigurationClassBeanDefinitionReader {
 	}
 
 	private void loadBeanDefinitionsFromBeanRegistrars(MultiValueMap<String, BeanRegistrar> registrars) {
-		if (!(this.registry instanceof ListableBeanFactory beanFactory)) {
-			throw new IllegalStateException("Cannot support bean registrars since " +
-					this.registry.getClass().getName() + " does not implement ListableBeanFactory");
-		}
-		registrars.values().forEach(registrarList -> registrarList.forEach(registrar -> registrar.register(new BeanRegistryAdapter(
-				this.registry, beanFactory, this.environment, registrar.getClass()), this.environment)));
+		registrars.values().forEach(registrarList -> registrarList.forEach(registrar -> {
+			if (!(registrar instanceof DeferredBeanRegistrar)) {
+				if (!(this.registry instanceof ListableBeanFactory beanFactory)) {
+					throw new IllegalStateException("Cannot support bean registrars since " +
+							this.registry.getClass().getName() + " does not implement ListableBeanFactory");
+				}
+				registrar.register(new BeanRegistryAdapter(
+						this.registry, beanFactory, this.environment, registrar.getClass()), this.environment);
+			}
+		}));
 	}
 
 

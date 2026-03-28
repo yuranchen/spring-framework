@@ -94,11 +94,13 @@ import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.beans.factory.support.RegisteredBean.InstantiationDescriptor;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.ApplicationStartupAware;
+import org.springframework.context.DeferredBeanRegistrar;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.context.annotation.ConfigurationClassEnhancer.EnhancedConfiguration;
 import org.springframework.core.Ordered;
 import org.springframework.core.PriorityOrdered;
+import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.StandardEnvironment;
@@ -208,7 +210,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 
 	@Override
 	public int getOrder() {
-		return Ordered.LOWEST_PRECEDENCE;  // within PriorityOrdered
+		return Ordered.LOWEST_PRECEDENCE - 1;  // within PriorityOrdered, 1 before DeferredRegistryPostProcessor
 	}
 
 	/**
@@ -222,7 +224,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	/**
 	 * Set the {@link ProblemReporter} to use.
 	 * <p>Used to register any problems detected with {@link Configuration} or {@link Bean}
-	 * declarations. For instance, an @Bean method marked as {@code final} is illegal
+	 * declarations. For instance, a @Bean method marked as {@code final} is illegal
 	 * and would be reported as a problem. Defaults to {@link FailFastProblemReporter}.
 	 */
 	public void setProblemReporter(@Nullable ProblemReporter problemReporter) {
@@ -489,6 +491,25 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			}
 		}
 		while (!candidates.isEmpty());
+
+		// Process DeferredBeanRegistrars, if any.
+		List<DeferredBeanRegistrar> deferredBeanRegistrars = new ArrayList<>();
+		for (List<BeanRegistrar> registrars : this.beanRegistrars.values()) {
+			for (BeanRegistrar registrar : registrars) {
+				if (registrar instanceof DeferredBeanRegistrar deferredRegistrar) {
+					deferredBeanRegistrars.add(deferredRegistrar);
+				}
+			}
+		}
+		AnnotationAwareOrderComparator.sort(deferredBeanRegistrars);
+		for (DeferredBeanRegistrar registrar : deferredBeanRegistrars) {
+			if (!(registry instanceof ListableBeanFactory beanFactory)) {
+				throw new IllegalStateException("Cannot support bean registrars since " +
+						registry.getClass().getName() + " does not implement ListableBeanFactory");
+			}
+			registrar.register(new BeanRegistryAdapter(
+					registry, beanFactory, this.environment, registrar.getClass()), this.environment);
+		}
 
 		// Register the ImportRegistry as a bean in order to support ImportAware @Configuration classes
 		if (singletonRegistry != null && !singletonRegistry.containsSingleton(IMPORT_REGISTRY_BEAN_NAME)) {
