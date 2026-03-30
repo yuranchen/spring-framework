@@ -46,8 +46,6 @@ import org.springframework.test.context.TestContextAnnotationUtils;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 
-import static org.springframework.core.annotation.MergedAnnotations.SearchStrategy.DIRECT;
-
 /**
  * Utility methods for working with bean overrides.
  *
@@ -206,7 +204,7 @@ public abstract class BeanOverrideUtils {
 	}
 
 	private static void processElement(AnnotatedElement element, BiConsumer<BeanOverrideProcessor, Annotation> consumer) {
-		MergedAnnotations.from(element, DIRECT)
+		MergedAnnotations.from(element)
 				.stream(BeanOverride.class)
 				.sorted(reversedMetaDistance)
 				.forEach(mergedAnnotation -> {
@@ -227,7 +225,6 @@ public abstract class BeanOverrideUtils {
 	 * @param testClass the test class to process
 	 * @return the candidate constructor, or {@code null} if no suitable candidate
 	 * was found
-	 * @since 7.1
 	 */
 	private static @Nullable Constructor<?> findConstructorWithParameters(Class<?> testClass) {
 		List<Constructor<?>> constructors = Arrays.stream(testClass.getDeclaredConstructors())
@@ -239,7 +236,6 @@ public abstract class BeanOverrideUtils {
 
 	/**
 	 * Inner class to avoid a hard dependency on Kotlin at runtime.
-	 * @since 7.1
 	 */
 	private static class KotlinDelegate {
 
