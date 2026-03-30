@@ -455,7 +455,8 @@ public interface MergedAnnotation<A extends Annotation> {
 	 * <p>The {@linkplain Adapt adaptations} may be used to change the way that
 	 * values are added.
 	 * @param adaptations the adaptations that should be applied to the annotation values
-	 * @return an immutable map containing the attributes and values
+	 * @return a mutable {@code AnnotationAttributes} instance containing the attributes
+	 * and values
 	 */
 	AnnotationAttributes asAnnotationAttributes(Adapt... adaptations);
 
