@@ -76,8 +76,9 @@ public abstract class BeanOverrideUtils {
 		AtomicReference<BeanOverrideHandler> handlerReference = new AtomicReference<>();
 		AtomicBoolean overrideAnnotationFound = new AtomicBoolean();
 		processElement(parameter, (processor, composedAnnotation) -> {
-			Assert.state(overrideAnnotationFound.compareAndSet(false, true),
+			Assert.state(!overrideAnnotationFound.getPlain(),
 					() -> "Multiple @BeanOverride annotations found on parameter: " + parameter);
+			overrideAnnotationFound.setPlain(true);
 			BeanOverrideHandler handler = processor.createHandler(composedAnnotation, testClass, parameter);
 			Assert.state(handler != null,
 					() -> "BeanOverrideProcessor [%s] returned null BeanOverrideHandler for parameter [%s]"
@@ -216,8 +217,9 @@ public abstract class BeanOverrideUtils {
 		processElement(field, (processor, composedAnnotation) -> {
 			Assert.state(!Modifier.isStatic(field.getModifiers()),
 					() -> "@BeanOverride field must not be static: " + field);
-			Assert.state(overrideAnnotationFound.compareAndSet(false, true),
+			Assert.state(!overrideAnnotationFound.getPlain(),
 					() -> "Multiple @BeanOverride annotations found on field: " + field);
+			overrideAnnotationFound.setPlain(true);
 			handlers.add(processor.createHandler(composedAnnotation, testClass, field));
 		});
 	}
