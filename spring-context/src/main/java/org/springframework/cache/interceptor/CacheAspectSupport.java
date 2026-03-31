@@ -305,7 +305,9 @@ public abstract class CacheAspectSupport extends AbstractCacheInvoker
 	 * @param targetClass class the method is on
 	 * @return log message identifying this method
 	 * @see org.springframework.util.ClassUtils#getQualifiedMethodName
+	 * @deprecated since 6.2.18 with no replacement, for removal in 7.1
 	 */
+	@Deprecated(since = "6.2.18", forRemoval = true)
 	protected String methodIdentification(Method method, Class<?> targetClass) {
 		Method specificMethod = ClassUtils.getMostSpecificMethod(method, targetClass);
 		return ClassUtils.getQualifiedMethodName(specificMethod);
