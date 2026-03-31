@@ -80,7 +80,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  * @author Rossen Stoyanchev
  * @author Brian Clozel
  */
-@SuppressWarnings("JUnitMalformedDeclaration")
+@SuppressWarnings({"JUnitMalformedDeclaration", "removal"})
 class RestClientAdapterTests {
 
 	private final MockWebServer anotherServer = new MockWebServer();

@@ -152,7 +152,10 @@ public final class MockRestServiceServer {
 	 * Return a builder for a {@code MockRestServiceServer} that should be used
 	 * to reply to the given {@code RestTemplate}.
 	 * @since 4.3
+	 * @deprecated as of 7.1 in favor of {@link #bindTo(RestClient.Builder)}.
 	 */
+	@Deprecated(since = "7.1", forRemoval = true)
+	@SuppressWarnings("removal")
 	public static MockRestServiceServerBuilder bindTo(RestTemplate restTemplate) {
 		return new RestTemplateMockRestServiceServerBuilder(restTemplate);
 	}
@@ -161,7 +164,10 @@ public final class MockRestServiceServer {
 	 * Return a builder for a {@code MockRestServiceServer} that should be used
 	 * to reply to the {@code RestTemplate} for the given {@code RestGatewaySupport}.
 	 * @since 4.3
+	 * @deprecated as of 7.1 in favor of {@link #bindTo(RestClient.Builder)}.
 	 */
+	@Deprecated(since = "7.1", forRemoval = true)
+	@SuppressWarnings("removal")
 	public static MockRestServiceServerBuilder bindTo(RestGatewaySupport restGatewaySupport) {
 		Assert.notNull(restGatewaySupport, "'restGatewaySupport' must not be null");
 		return new RestTemplateMockRestServiceServerBuilder(restGatewaySupport.getRestTemplate());
@@ -182,7 +188,10 @@ public final class MockRestServiceServer {
 	 * A shortcut for {@code bindTo(restTemplate).build()}.
 	 * @param restTemplate the RestTemplate to set up for mock testing
 	 * @return the mock server
+	 * @deprecated as of 7.1 in favor of {@link #bindTo(RestClient.Builder)}.
 	 */
+	@Deprecated(since = "7.1", forRemoval = true)
+	@SuppressWarnings("removal")
 	public static MockRestServiceServer createServer(RestTemplate restTemplate) {
 		return bindTo(restTemplate).build();
 	}
@@ -191,7 +200,10 @@ public final class MockRestServiceServer {
 	 * A shortcut for {@code bindTo(restGateway).build()}.
 	 * @param restGateway the REST gateway to set up for mock testing
 	 * @return the mock server
+	 * @deprecated as of 7.1 in favor of {@link #bindTo(RestClient.Builder)}.
 	 */
+	@Deprecated(since = "7.1", forRemoval = true)
+	@SuppressWarnings("removal")
 	public static MockRestServiceServer createServer(RestGatewaySupport restGateway) {
 		return bindTo(restGateway).build();
 	}
@@ -300,7 +312,7 @@ public final class MockRestServiceServer {
 		}
 	}
 
-
+	@SuppressWarnings("removal")
 	private static class RestTemplateMockRestServiceServerBuilder extends AbstractMockRestServiceServerBuilder {
 
 		private final RestTemplate restTemplate;
