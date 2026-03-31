@@ -17,6 +17,7 @@
 package org.springframework.test.web.servlet.client;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,6 +27,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.multipart.FilePart;
 import org.springframework.http.converter.multipart.FormFieldPart;
 import org.springframework.http.converter.multipart.Part;
@@ -35,6 +37,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -106,6 +110,25 @@ class MockMvcRestTestClientTests {
 				});
 	}
 
+	@Test
+	void writeMultipart() {
+		MultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
+		parts.add("text1", "value1");
+		parts.add("file1", new ByteArrayResource("filecontent1".getBytes()) {
+			@Override
+			public String getFilename() {
+				return "spring.txt";
+			}
+		});
+
+		client.post()
+				.uri("/multipart")
+				.contentType(MediaType.MULTIPART_FORM_DATA)
+				.body(parts)
+				.exchange()
+				.expectStatus().isOk();
+	}
+
 	@RestController
 	static class TestController {
 
@@ -126,8 +149,8 @@ class MockMvcRestTestClientTests {
 			response.getWriter().write("some really bad request");
 		}
 
-		@GetMapping(value = "/multipart", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
-		MultiValueMap<String, Object> multipart() {
+		@GetMapping(path = "/multipart", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+		MultiValueMap<String, Object> writeMultipart() {
 			MultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
 			parts.add("text1", "a");
 			parts.add("text2", "b");
@@ -139,6 +162,19 @@ class MockMvcRestTestClientTests {
 			};
 			parts.add("file1", resource);
 			return parts;
+		}
+
+		@PostMapping(path = "/multipart", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+		ResponseEntity<Void> readMultipart(@RequestParam MultiValueMap<String, jakarta.servlet.http.Part> parts) throws Exception {
+			assertThat(parts.keySet()).containsOnly("text1", "file1");
+			jakarta.servlet.http.Part text1 = parts.get("text1").get(0);
+			assertThat(text1.getName()).isEqualTo("text1");
+			assertThat(text1.getInputStream()).asString(StandardCharsets.UTF_8).isEqualTo("value1");
+			jakarta.servlet.http.Part file1 = parts.get("file1").get(0);
+			assertThat(file1.getName()).isEqualTo("file1");
+			assertThat(file1.getSubmittedFileName()).isEqualTo("spring.txt");
+			assertThat(file1.getInputStream()).asString(StandardCharsets.UTF_8).isEqualTo("filecontent1");
+			return ResponseEntity.ok().build();
 		}
 	}
 
