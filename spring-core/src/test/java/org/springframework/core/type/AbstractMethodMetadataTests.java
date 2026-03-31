@@ -103,6 +103,11 @@ public abstract class AbstractMethodMetadataTests {
 	}
 
 	@Test
+	void getReturnTypeReturnsVoidForVoidReturnType() {
+		assertThat(getTagged(WithVoidMethod.class).getReturnTypeName()).isEqualTo("void");
+	}
+
+	@Test
 	void isAbstractWhenAbstractReturnsTrue() {
 		assertThat(getTagged(WithAbstractMethod.class).isAbstract()).isTrue();
 	}
@@ -214,6 +219,13 @@ public abstract class AbstractMethodMetadataTests {
 		public String test() {
 			return "";
 		}
+
+	}
+
+	public static class WithVoidMethod {
+
+		@Tag
+		public void test() {}
 
 	}
 

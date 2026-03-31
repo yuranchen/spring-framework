@@ -143,7 +143,7 @@ final class ClassFileMethodMetadata implements MethodMetadata {
 		AccessFlags flags = methodModel.flags();
 		String declaringClassName = methodModel.parent().map(parent -> ClassUtils.convertResourcePathToClassName(parent.thisClass().name().stringValue())).orElse(null);
 		ClassDesc returnType = methodModel.methodTypeSymbol().returnType();
-		String returnTypeName = returnType.packageName() + "." + returnType.displayName();
+		String returnTypeName = resolveTypeName(returnType);
 		Source source = new Source(declaringClassName, flags, methodName, methodModel.methodTypeSymbol());
 		MergedAnnotations annotations = methodModel.elementStream()
 				.filter(element -> element instanceof RuntimeVisibleAnnotationsAttribute)
@@ -151,6 +151,18 @@ final class ClassFileMethodMetadata implements MethodMetadata {
 				.map(element -> ClassFileAnnotationDelegate.createMergedAnnotations(methodName, (RuntimeVisibleAnnotationsAttribute) element, classLoader))
 				.orElse(MergedAnnotations.of(Collections.emptyList()));
 		return new ClassFileMethodMetadata(methodName, flags, declaringClassName, returnTypeName, source, annotations);
+	}
+
+
+	private static String resolveTypeName(ClassDesc type) {
+		if (type.isPrimitive()) {
+			return type.displayName();
+		}
+		if (type.isArray()) {
+			return resolveTypeName(type.componentType()) + "[]";
+		}
+		String packageName = type.packageName();
+    	return (packageName.isEmpty() ? type.displayName() : packageName + "." + type.displayName());
 	}
 
 
