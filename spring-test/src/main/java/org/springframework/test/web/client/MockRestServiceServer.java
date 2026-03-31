@@ -33,9 +33,9 @@ import org.springframework.web.client.support.RestGatewaySupport;
 
 /**
  * <strong>Main entry point for client-side REST testing</strong>. Used for tests
- * that involve direct or indirect use of the {@link RestTemplate}. Provides a
+ * that involve direct or indirect use of the {@link RestClient}. Provides a
  * way to set up expected requests that will be performed through the
- * {@code RestTemplate} as well as mock responses to send back thus removing the
+ * {@code RestClient} as well as mock responses to send back thus removing the
  * need for an actual server.
  *
  * <p>Below is an example that assumes static imports from
@@ -43,13 +43,14 @@ import org.springframework.web.client.support.RestGatewaySupport;
  * and {@code ExpectedCount}:
  *
  * <pre class="code">
- * RestTemplate restTemplate = new RestTemplate()
- * MockRestServiceServer server = MockRestServiceServer.bindTo(restTemplate).build();
+ * RestClient.Builder clientBuilder = RestClient.builder();
+ * MockRestServiceServer server = MockRestServiceServer.bindTo(clientBuilder).build();
+ * RestClient restClient = clientBuilder.build();
  *
  * server.expect(manyTimes(), requestTo("/hotels/42")).andExpect(method(HttpMethod.GET))
  *     .andRespond(withSuccess("{ \"id\" : \"42\", \"name\" : \"Holiday Inn\"}", MediaType.APPLICATION_JSON));
  *
- * Hotel hotel = restTemplate.getForObject("/hotels/{id}", Hotel.class, 42);
+ * Hotel hotel = restClient.get().uri("/hotels/{id}", 42).retrieve().body(Hotel.class);
  * &#47;&#47; Use the hotel instance...
  *
  * // Verify all expectations met
@@ -166,6 +167,16 @@ public final class MockRestServiceServer {
 		return new RestTemplateMockRestServiceServerBuilder(restGatewaySupport.getRestTemplate());
 	}
 
+
+	/**
+	 * A shortcut for {@code bindTo(clientBuilder).build()}.
+	 * @param clientBuilder the RestClient builder to set up for mock testing
+	 * @return the mock server
+	 * @since 7.0.7
+	 */
+	public static MockRestServiceServer createServer(RestClient.Builder clientBuilder) {
+		return bindTo(clientBuilder).build();
+	}
 
 	/**
 	 * A shortcut for {@code bindTo(restTemplate).build()}.
