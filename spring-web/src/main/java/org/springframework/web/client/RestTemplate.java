@@ -100,7 +100,7 @@ import org.springframework.web.util.UriTemplateHandler;
  * @see RequestCallback
  * @see ResponseExtractor
  * @see ResponseErrorHandler
- * @deprecated as of 7.1, in favor of {@link RestClient}.
+ * @deprecated as of 7.1, in favor of {@link RestClient}. For removal in 8.0.
  */
 @Deprecated(since = "7.1", forRemoval = true)
 @SuppressWarnings("removal")
