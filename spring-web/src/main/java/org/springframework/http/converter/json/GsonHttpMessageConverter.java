@@ -111,4 +111,5 @@ public class GsonHttpMessageConverter extends AbstractJsonHttpMessageConverter {
 	protected boolean supportsRepeatableWrites(Object o) {
 		return true;
 	}
+
 }

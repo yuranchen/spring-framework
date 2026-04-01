@@ -106,7 +106,6 @@ public class AnnotationBeanNameGenerator implements BeanNameGenerator {
 	private final Map<String, Set<String>> metaAnnotationTypesCache = new ConcurrentHashMap<>();
 
 
-
 	@Override
 	public String generateBeanName(BeanDefinition definition, BeanDefinitionRegistry registry) {
 		if (definition instanceof AnnotatedBeanDefinition annotatedBeanDefinition) {
@@ -214,8 +213,7 @@ public class AnnotationBeanNameGenerator implements BeanNameGenerator {
 			return names.get(0);
 		}
 		if (names.size() > 1) {
-			throw new IllegalStateException(
-					"Stereotype annotations suggest inconsistent component names: " + names);
+			throw new IllegalStateException("Stereotype annotations suggest inconsistent component names: " + names);
 		}
 		return null;
 	}
@@ -236,7 +234,6 @@ public class AnnotationBeanNameGenerator implements BeanNameGenerator {
 				annotationType.equals("javax.annotation.ManagedBean") ||
 				annotationType.equals("jakarta.inject.Named") ||
 				annotationType.equals("javax.inject.Named");
-
 		return (isStereotype && attributes.containsKey(MergedAnnotation.VALUE));
 	}
 
