@@ -105,7 +105,6 @@ public class GsonHttpMessageConverter extends AbstractJsonHttpMessageConverter {
 		else {
 			getGson().toJson(object, writer);
 		}
-		writer.flush();
 	}
 
 	@Override
