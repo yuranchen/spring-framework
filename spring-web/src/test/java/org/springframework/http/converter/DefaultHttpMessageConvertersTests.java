@@ -186,10 +186,13 @@ class DefaultHttpMessageConvertersTests {
 		}
 
 		@Test
-		void shouldNotConfigureOverridesWhenDefaultOff() {
+		void shouldConfigureOverridesWhenDefaultOff() {
 			var stringConverter = new StringHttpMessageConverter();
 			var converters = HttpMessageConverters.forClient().withStringConverter(stringConverter).build();
-			assertThat(converters).isEmpty();
+			assertThat(converters).hasExactlyElementsOfTypes(
+					StringHttpMessageConverter.class, MultipartHttpMessageConverter.class);
+			var configured = findMessageConverter(StringHttpMessageConverter.class, converters);
+			assertThat(configured).isEqualTo(stringConverter);
 		}
 
 		@Test
@@ -320,12 +323,14 @@ class DefaultHttpMessageConvertersTests {
 			assertThat(multipartConverter.getPartConverters()).hasAtLeastOneElementOfType(CustomHttpMessageConverter.class);
 		}
 
-
 		@Test
-		void shouldNotConfigureOverridesWhenDefaultOff() {
+		void shouldConfigureOverridesWhenDefaultOff() {
 			var stringConverter = new StringHttpMessageConverter();
 			var converters = HttpMessageConverters.forServer().withStringConverter(stringConverter).build();
-			assertThat(converters).isEmpty();
+			assertThat(converters).hasExactlyElementsOfTypes(
+					StringHttpMessageConverter.class, MultipartHttpMessageConverter.class);
+			var configured = findMessageConverter(StringHttpMessageConverter.class, converters);
+			assertThat(configured).isEqualTo(stringConverter);
 		}
 
 		@Test

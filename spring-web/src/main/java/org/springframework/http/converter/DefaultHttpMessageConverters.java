@@ -505,11 +505,11 @@ class DefaultHttpMessageConverters implements HttpMessageConverters {
 			}
 			List<HttpMessageConverter<?>> partConverters = new ArrayList<>(this.getCustomConverters());
 			List<HttpMessageConverter<?>> allConverters = new ArrayList<>(this.getCustomConverters());
-			if (this.registerDefaults) {
-				allConverters.addAll(this.getBaseConverters());
-				if (this.resourceConverter != null) {
-					allConverters.add(this.resourceConverter);
-				}
+			allConverters.addAll(this.getBaseConverters());
+			if (this.resourceConverter != null) {
+				allConverters.add(this.resourceConverter);
+			}
+			if (!this.getCoreConverters().isEmpty()) {
 				// use separate instances of base converters for multipart
 				partConverters.addAll(List.of(new ByteArrayHttpMessageConverter(),
 						new StringHttpMessageConverter(), new ResourceHttpMessageConverter()));
@@ -518,9 +518,7 @@ class DefaultHttpMessageConverters implements HttpMessageConverters {
 			if (!partConverters.isEmpty() || !allConverters.isEmpty()) {
 				allConverters.add(new MultipartHttpMessageConverter(partConverters));
 			}
-			if (this.registerDefaults) {
-				allConverters.addAll(this.getCoreConverters());
-			}
+			allConverters.addAll(this.getCoreConverters());
 			if (this.convertersListConfigurer != null) {
 				this.convertersListConfigurer.accept(allConverters);
 			}
@@ -641,14 +639,14 @@ class DefaultHttpMessageConverters implements HttpMessageConverters {
 			}
 			List<HttpMessageConverter<?>> partConverters = new ArrayList<>(this.getCustomConverters());
 			List<HttpMessageConverter<?>> allConverters = new ArrayList<>(this.getCustomConverters());
-			if (this.registerDefaults) {
-				allConverters.addAll(this.getBaseConverters());
-				if (this.resourceConverter != null) {
-					allConverters.add(this.resourceConverter);
-				}
-				if (this.resourceRegionConverter != null) {
-					allConverters.add(this.resourceRegionConverter);
-				}
+			allConverters.addAll(this.getBaseConverters());
+			if (this.resourceConverter != null) {
+				allConverters.add(this.resourceConverter);
+			}
+			if (this.resourceRegionConverter != null) {
+				allConverters.add(this.resourceRegionConverter);
+			}
+			if (!this.getCoreConverters().isEmpty()) {
 				// use separate instances of base converters for multipart
 				partConverters.addAll(List.of(new ByteArrayHttpMessageConverter(),
 						new StringHttpMessageConverter(), new ResourceHttpMessageConverter()));
@@ -657,9 +655,7 @@ class DefaultHttpMessageConverters implements HttpMessageConverters {
 			if (!partConverters.isEmpty() || !allConverters.isEmpty()) {
 				allConverters.add(new MultipartHttpMessageConverter(partConverters));
 			}
-			if (this.registerDefaults) {
-				allConverters.addAll(this.getCoreConverters());
-			}
+			allConverters.addAll(this.getCoreConverters());
 			if (this.convertersListConfigurer != null) {
 				this.convertersListConfigurer.accept(allConverters);
 			}
