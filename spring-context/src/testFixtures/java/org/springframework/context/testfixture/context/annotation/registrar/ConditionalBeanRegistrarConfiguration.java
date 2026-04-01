@@ -18,9 +18,9 @@ package org.springframework.context.testfixture.context.annotation.registrar;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.testfixture.beans.factory.MyDeferredBeanRegistrar;
+import org.springframework.context.testfixture.beans.factory.ConditionalBeanRegistrar;
 
 @Configuration
-@Import(MyDeferredBeanRegistrar.class)
-public class MyDeferredBeanRegistrarConfiguration {
+@Import(ConditionalBeanRegistrar.class)
+public class ConditionalBeanRegistrarConfiguration {
 }

@@ -23,7 +23,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.springframework.beans.factory.BeanRegistrar;
-import org.springframework.context.DeferredBeanRegistrar;
 
 /**
  * Indicates one or more <em>component classes</em> to import &mdash; typically
@@ -32,9 +31,9 @@ import org.springframework.context.DeferredBeanRegistrar;
  * <p>Provides functionality equivalent to the {@code <import/>} element in Spring XML.
  *
  * <p>Allows for importing {@code @Configuration} classes, {@link ImportSelector},
- * {@link ImportBeanDefinitionRegistrar}, and {@link BeanRegistrar}/{@link DeferredBeanRegistrar}
- * implementations, as well as regular component classes
- * (analogous to {@link AnnotationConfigApplicationContext#register}).
+ * {@link ImportBeanDefinitionRegistrar}, and {@link BeanRegistrar} implementations,
+ * as well as regular component classes (analogous to
+ * {@link AnnotationConfigApplicationContext#register}).
  *
  * <p>{@code @Bean} definitions declared in imported {@code @Configuration} classes should be
  * accessed by using {@link org.springframework.beans.factory.annotation.Autowired @Autowired}
@@ -72,8 +71,7 @@ public @interface Import {
 
 	/**
 	 * {@link Configuration @Configuration}, {@link ImportSelector},
-	 * {@link ImportBeanDefinitionRegistrar},
-	 * {@link BeanRegistrar}/{@link DeferredBeanRegistrar},
+	 * {@link ImportBeanDefinitionRegistrar}, {@link BeanRegistrar},
 	 * or regular component classes to import.
 	 */
 	Class<?>[] value();

@@ -22,7 +22,7 @@ import org.springframework.beans.testfixture.beans.TestBean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 
-public class MyRegularBeanRegistrar implements BeanRegistrar {
+public class ConditionalBeanRegistrar implements BeanRegistrar {
 
 	@Override
 	public void register(BeanRegistry registry, Environment env) {

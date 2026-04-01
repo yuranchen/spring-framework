@@ -25,6 +25,7 @@ import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.testfixture.beans.TestBean;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.testfixture.beans.factory.BarRegistrar;
+import org.springframework.context.testfixture.beans.factory.ConditionalBeanRegistrar;
 import org.springframework.context.testfixture.beans.factory.FooRegistrar;
 import org.springframework.context.testfixture.beans.factory.GenericBeanRegistrar;
 import org.springframework.context.testfixture.beans.factory.ImportAwareBeanRegistrar;
@@ -33,11 +34,10 @@ import org.springframework.context.testfixture.beans.factory.SampleBeanRegistrar
 import org.springframework.context.testfixture.beans.factory.SampleBeanRegistrar.Foo;
 import org.springframework.context.testfixture.beans.factory.SampleBeanRegistrar.Init;
 import org.springframework.context.testfixture.context.annotation.registrar.BeanRegistrarConfiguration;
+import org.springframework.context.testfixture.context.annotation.registrar.ConditionalBeanRegistrarConfiguration;
 import org.springframework.context.testfixture.context.annotation.registrar.GenericBeanRegistrarConfiguration;
 import org.springframework.context.testfixture.context.annotation.registrar.ImportAwareBeanRegistrarConfiguration;
 import org.springframework.context.testfixture.context.annotation.registrar.MultipleBeanRegistrarsConfiguration;
-import org.springframework.context.testfixture.context.annotation.registrar.MyDeferredBeanRegistrarConfiguration;
-import org.springframework.context.testfixture.context.annotation.registrar.MyRegularBeanRegistrarConfiguration;
 import org.springframework.context.testfixture.context.annotation.registrar.TestBeanConfiguration;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -110,40 +110,41 @@ class BeanRegistrarConfigurationTests {
 	}
 
 	@Test
-	void regularBeanRegistrarWithConditionMet() {
+	void programmaticBeanRegistrarWithConditionNotMet() {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-		context.register(TestBeanConfiguration.class);
-		context.register(MyRegularBeanRegistrarConfiguration.class);
-		context.refresh();
-		assertThat(context.containsBean("myTestBean")).isTrue();
-		assertThat(context.getBean("myTestBean")).isInstanceOf(TestBean.class);
-	}
-
-	@Test
-	void regularBeanRegistrarWithConditionNotMet() {
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-		context.register(MyRegularBeanRegistrarConfiguration.class);
+		context.register(new ConditionalBeanRegistrar());
 		context.register(TestBeanConfiguration.class);
 		context.refresh();
 		assertThat(context.containsBean("myTestBean")).isFalse();
 	}
 
 	@Test
-	void deferredBeanRegistrarWithConditionMet() {
+	void programmaticBeanRegistrarWithConditionMet() {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-		context.register(MyDeferredBeanRegistrarConfiguration.class);
-		context.register(TestBeanConfiguration.class);
+		context.register(new ConditionalBeanRegistrar());
+		context.registerBean("testBean", TestBean.class);
 		context.refresh();
 		assertThat(context.containsBean("myTestBean")).isTrue();
 		assertThat(context.getBean("myTestBean")).isInstanceOf(TestBean.class);
 	}
 
 	@Test
-	void deferredBeanRegistrarWithConditionNotMet() {
+	void importedBeanRegistrarWithConditionNotMet() {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-		context.register(MyDeferredBeanRegistrarConfiguration.class);
+		context.register(ConditionalBeanRegistrarConfiguration.class);
+		context.register(TestBeanConfiguration.class);
 		context.refresh();
 		assertThat(context.containsBean("myTestBean")).isFalse();
+	}
+
+	@Test
+	void importedBeanRegistrarWithConditionMet() {
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+		context.register(TestBeanConfiguration.class);
+		context.register(ConditionalBeanRegistrarConfiguration.class);
+		context.refresh();
+		assertThat(context.containsBean("myTestBean")).isTrue();
+		assertThat(context.getBean("myTestBean")).isInstanceOf(TestBean.class);
 	}
 
 }
