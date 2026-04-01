@@ -469,19 +469,15 @@ class DefaultHttpMessageConverters implements HttpMessageConverters {
 			}
 			List<HttpMessageConverter<?>> partConverters = new ArrayList<>(this.getCustomConverters());
 			List<HttpMessageConverter<?>> allConverters = new ArrayList<>(this.getCustomConverters());
-			if (this.registerDefaults) {
-				partConverters.addAll(this.getCoreConverters());
-				allConverters.addAll(this.getBaseConverters());
-				if (this.resourceConverter != null) {
-					allConverters.add(this.resourceConverter);
-				}
+			partConverters.addAll(this.getCoreConverters());
+			allConverters.addAll(this.getBaseConverters());
+			if (this.resourceConverter != null) {
+				allConverters.add(this.resourceConverter);
 			}
 			if (!partConverters.isEmpty() || !allConverters.isEmpty()) {
 				allConverters.add(new AllEncompassingFormHttpMessageConverter(partConverters));
 			}
-			if (this.registerDefaults) {
-				allConverters.addAll(this.getCoreConverters());
-			}
+			allConverters.addAll(this.getCoreConverters());
 			if (this.convertersListConfigurer != null) {
 				this.convertersListConfigurer.accept(allConverters);
 			}
@@ -582,22 +578,18 @@ class DefaultHttpMessageConverters implements HttpMessageConverters {
 			}
 			List<HttpMessageConverter<?>> partConverters = new ArrayList<>(this.getCustomConverters());
 			List<HttpMessageConverter<?>> allConverters = new ArrayList<>(this.getCustomConverters());
-			if (this.registerDefaults) {
-				partConverters.addAll(this.getCoreConverters());
-				allConverters.addAll(this.getBaseConverters());
-				if (this.resourceConverter != null) {
-					allConverters.add(this.resourceConverter);
-				}
-				if (this.resourceRegionConverter != null) {
-					allConverters.add(this.resourceRegionConverter);
-				}
+			partConverters.addAll(this.getCoreConverters());
+			allConverters.addAll(this.getBaseConverters());
+			if (this.resourceConverter != null) {
+				allConverters.add(this.resourceConverter);
+			}
+			if (this.resourceRegionConverter != null) {
+				allConverters.add(this.resourceRegionConverter);
 			}
 			if (!partConverters.isEmpty() || !allConverters.isEmpty()) {
 				allConverters.add(new AllEncompassingFormHttpMessageConverter(partConverters));
 			}
-			if (this.registerDefaults) {
-				allConverters.addAll(this.getCoreConverters());
-			}
+			allConverters.addAll(this.getCoreConverters());
 			if (this.convertersListConfigurer != null) {
 				this.convertersListConfigurer.accept(allConverters);
 			}
