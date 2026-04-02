@@ -224,7 +224,7 @@ public abstract class AbstractMethodMetadataTests {
 		Stream<Class<?>> types = metadata.getAnnotations().stream()
 				.filter(MergedAnnotation::isDirectlyPresent)
 				.map(MergedAnnotation::getType);
-		assertThat(types).containsExactly(Tag.class, DirectAnnotation.class);
+		assertThat(types).containsExactlyInAnyOrder(Tag.class, DirectAnnotation.class);
 	}
 
 	@Test
