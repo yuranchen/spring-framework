@@ -28,6 +28,7 @@ import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * Base class for {@link MethodMetadata} tests.
@@ -76,13 +77,19 @@ public abstract class AbstractMethodMetadataTests {
 	@Test
 	void verifyToString() {
 		assertThat(getTagged(WithMethod.class).toString())
-			.endsWith(WithMethod.class.getName() + ".test()");
+			.isEqualTo("public java.lang.String " + WithMethod.class.getName() + ".test()");
 
 		assertThat(getTagged(WithMethodWithOneArgument.class).toString())
-			.endsWith(WithMethodWithOneArgument.class.getName() + ".test(java.lang.String)");
+			.isEqualTo("public java.lang.String " + WithMethodWithOneArgument.class.getName() + ".test(java.lang.String)");
 
 		assertThat(getTagged(WithMethodWithTwoArguments.class).toString())
-			.endsWith(WithMethodWithTwoArguments.class.getName() + ".test(java.lang.String,java.lang.Integer)");
+			.isEqualTo("public java.lang.String " + WithMethodWithTwoArguments.class.getName() + ".test(java.lang.String,java.lang.Integer)");
+
+		assertThat(getTagged(WithPrimitiveArrayMethod.class).toString())
+				.isEqualTo("public int[] " + WithPrimitiveArrayMethod.class.getName() + ".test()");
+
+		assertThat(getTagged(WithStringArrayMethod.class).toString())
+				.isEqualTo("public java.lang.String[] " + WithStringArrayMethod.class.getName() + ".test()");
 	}
 
 	@Test
@@ -105,6 +112,34 @@ public abstract class AbstractMethodMetadataTests {
 	@Test
 	void getReturnTypeReturnsVoidForVoidReturnType() {
 		assertThat(getTagged(WithVoidMethod.class).getReturnTypeName()).isEqualTo("void");
+	}
+
+	@Test
+	void getReturnTypeReturnsPrimitiveArrayForPrimitiveArrayReturnTypeForStandardReflection() {
+		MethodMetadata methodMetadata = getTagged(WithPrimitiveArrayMethod.class);
+		assumeTrue(methodMetadata instanceof StandardMethodMetadata, "skipped for ASM and ClassFile");
+		assertThat(methodMetadata.getReturnTypeName()).isEqualTo("[I");
+	}
+
+	@Test
+	void getReturnTypeReturnsPrimitiveArrayForPrimitiveArrayReturnType() {
+		MethodMetadata methodMetadata = getTagged(WithPrimitiveArrayMethod.class);
+		assumeTrue(!(methodMetadata instanceof StandardMethodMetadata), "skipped for standard reflection");
+		assertThat(methodMetadata.getReturnTypeName()).isEqualTo("int[]");
+	}
+
+	@Test
+	void getReturnTypeReturnsStringArrayForStringArrayReturnTypeForStandardReflection() {
+		MethodMetadata methodMetadata = getTagged(WithStringArrayMethod.class);
+		assumeTrue(methodMetadata instanceof StandardMethodMetadata, "skipped for ASM and ClassFile");
+		assertThat(methodMetadata.getReturnTypeName()).isEqualTo("[Ljava.lang.String;");
+	}
+
+	@Test
+	void getReturnTypeReturnsStringArrayForStringArrayReturnType() {
+		MethodMetadata methodMetadata = getTagged(WithStringArrayMethod.class);
+		assumeTrue(!(methodMetadata instanceof StandardMethodMetadata), "skipped for standard reflection");
+		assertThat(methodMetadata.getReturnTypeName()).isEqualTo("java.lang.String[]");
 	}
 
 	@Test
@@ -226,6 +261,20 @@ public abstract class AbstractMethodMetadataTests {
 
 		@Tag
 		public void test() {}
+
+	}
+
+	public static class WithPrimitiveArrayMethod {
+
+		@Tag
+		public int[] test() { return new int[0];}
+
+	}
+
+	public static class WithStringArrayMethod {
+
+		@Tag
+		public String[] test() { return new String[0];}
 
 	}
 

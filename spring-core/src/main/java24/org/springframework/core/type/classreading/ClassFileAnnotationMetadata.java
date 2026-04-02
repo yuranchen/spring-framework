@@ -26,6 +26,7 @@ import java.lang.classfile.attribute.InnerClassesAttribute;
 import java.lang.classfile.attribute.NestHostAttribute;
 import java.lang.classfile.attribute.RuntimeVisibleAnnotationsAttribute;
 import java.lang.classfile.constantpool.ClassEntry;
+import java.lang.constant.ClassDesc;
 import java.lang.reflect.AccessFlag;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -219,6 +220,17 @@ final class ClassFileAnnotationMetadata implements AnnotationMetadata {
 			}
 		});
 		return builder.build();
+	}
+
+	static String resolveTypeName(ClassDesc type) {
+		if (type.isPrimitive()) {
+			return type.displayName();
+		}
+		if (type.isArray()) {
+			return resolveTypeName(type.componentType()) + "[]";
+		}
+		String packageName = type.packageName();
+		return (packageName.isEmpty() ? type.displayName() : packageName + "." + type.displayName());
 	}
 
 
