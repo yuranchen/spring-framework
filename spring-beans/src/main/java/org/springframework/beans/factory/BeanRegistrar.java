@@ -82,9 +82,9 @@ import org.springframework.core.env.Environment;
  * <p>This mode is primarily intended for fully programmatic application context setups.
  * Registrars applied this way are invoked before any {@code @Configuration} class is
  * processed. They can therefore observe beans registered programmatically (e.g., via
- * {@link org.springframework.context.support.GenericApplicationContext#registerBean(String, Class, Object...)}),
- * but will <strong>not</strong> see any beans defined in {@code @Configuration} classes
- * also registered with the context.
+ * one of the {@code GenericApplicationContext#registerBean} methods), but will
+ * <strong>not</strong> see any beans defined in {@code @Configuration} classes also
+ * registered with the context.
  *
  * <p>A {@code BeanRegistrar} implementing {@link org.springframework.context.annotation.ImportAware}
  * can optionally introspect import metadata when used in an import scenario; otherwise
