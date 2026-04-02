@@ -92,7 +92,7 @@ class CookieIntegrationTests extends AbstractHttpHandlerIntegrationTests {
 	public void cookiesWithSameNameTest(HttpServer httpServer) throws Exception {
 		startServer(httpServer);
 
-		ResponseEntity<Void> response = getRestClient().get()
+		getRestClient().get()
 				.header("Cookie", "SID=31d4d96e407aad42; lang=en-US; lang=zh-CN")
 				.retrieve().toBodilessEntity();
 
