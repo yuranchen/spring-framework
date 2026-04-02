@@ -242,8 +242,8 @@ class RestTemplateIntegrationTests extends AbstractMockWebServerTests {
 		setUpClient(clientHttpRequestFactory);
 
 		String url = baseUrl + "/status/notfound";
-		assertThatExceptionOfType(HttpClientErrorException.class).isThrownBy(() ->
-				template.execute(url, HttpMethod.GET, null, null))
+		assertThatExceptionOfType(HttpClientErrorException.class)
+			.isThrownBy(() -> template.execute(url, HttpMethod.GET, null, null))
 			.satisfies(ex -> {
 				assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 				assertThat(ex.getStatusText()).isNotNull();
@@ -260,8 +260,8 @@ class RestTemplateIntegrationTests extends AbstractMockWebServerTests {
 		setUpClient(clientHttpRequestFactory);
 
 		String url = baseUrl + "/status/badrequest";
-		assertThatExceptionOfType(HttpClientErrorException.class).isThrownBy(() ->
-				template.execute(url, HttpMethod.GET, null, null))
+		assertThatExceptionOfType(HttpClientErrorException.class)
+			.isThrownBy(() -> template.execute(url, HttpMethod.GET, null, null))
 			.satisfies(ex -> {
 				assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 				assertThat(ex.getMessage()).containsSubsequence("400", "on GET request for \""+url+ "\": [no body]");
@@ -276,8 +276,8 @@ class RestTemplateIntegrationTests extends AbstractMockWebServerTests {
 		setUpClient(clientHttpRequestFactory);
 
 		String url = baseUrl + "/status/server";
-		assertThatExceptionOfType(HttpServerErrorException.class).isThrownBy(() ->
-				template.execute(url, HttpMethod.GET, null, null))
+		assertThatExceptionOfType(HttpServerErrorException.class)
+			.isThrownBy(() -> template.execute(url, HttpMethod.GET, null, null))
 			.satisfies(ex -> {
 				assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
 				assertThat(ex.getStatusText()).isNotNull();
