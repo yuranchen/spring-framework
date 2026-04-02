@@ -28,7 +28,7 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.assertj.core.api.Assumptions.assumeThat;
 
 /**
  * @author Juergen Hoeller
@@ -38,7 +38,7 @@ class ServiceLoaderTests {
 
 	@BeforeAll
 	static void assumeDocumentBuilderFactoryCanBeLoaded() {
-		assumeTrue(ServiceLoader.load(DocumentBuilderFactory.class).iterator().hasNext());
+		assumeThat(ServiceLoader.load(DocumentBuilderFactory.class).iterator()).hasNext();
 	}
 
 	@Test

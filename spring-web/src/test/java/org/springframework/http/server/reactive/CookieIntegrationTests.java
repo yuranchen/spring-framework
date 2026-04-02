@@ -33,7 +33,7 @@ import org.springframework.web.testfixture.http.server.reactive.bootstrap.HttpSe
 import org.springframework.web.testfixture.http.server.reactive.bootstrap.UndertowHttpServer;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assumptions.assumeFalse;
+import static org.assertj.core.api.Assumptions.assumeThat;
 
 /**
  * @author Rossen Stoyanchev
@@ -79,7 +79,9 @@ class CookieIntegrationTests extends AbstractHttpHandlerIntegrationTests {
 
 	@ParameterizedHttpServerTest
 	public void partitionedAttributeTest(HttpServer httpServer) throws Exception {
-		assumeFalse(httpServer instanceof UndertowHttpServer, "Undertow does not support Partitioned cookies");
+		assumeThat(httpServer).as("Undertow does not support Partitioned cookies")
+				.isNotInstanceOf(UndertowHttpServer.class);
+
 		startServer(httpServer);
 
 		URI url = URI.create("http://localhost:" + port);
@@ -98,7 +100,8 @@ class CookieIntegrationTests extends AbstractHttpHandlerIntegrationTests {
 
 	@ParameterizedHttpServerTest
 	public void cookiesWithSameNameTest(HttpServer httpServer) throws Exception {
-		assumeFalse(httpServer instanceof UndertowHttpServer, "Bug in Undertow in Cookies with same name handling");
+		assumeThat(httpServer).as("Bug in Undertow in Cookies with same name handling")
+				.isNotInstanceOf(UndertowHttpServer.class);
 
 		startServer(httpServer);
 

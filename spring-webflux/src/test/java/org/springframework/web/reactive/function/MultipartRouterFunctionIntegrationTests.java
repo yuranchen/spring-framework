@@ -53,7 +53,7 @@ import org.springframework.web.testfixture.http.server.reactive.bootstrap.Undert
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
-import static org.junit.jupiter.api.Assumptions.assumeFalse;
+import static org.assertj.core.api.Assumptions.assumeThat;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 /**
@@ -105,7 +105,8 @@ class MultipartRouterFunctionIntegrationTests extends AbstractRouterFunctionInte
 	@ParameterizedHttpServerTest
 	void transferTo(HttpServer httpServer) throws Exception {
 		// TODO Determine why Undertow fails: https://github.com/spring-projects/spring-framework/issues/25310
-		assumeFalse(httpServer instanceof UndertowHttpServer, "Undertow currently fails with transferTo");
+		assumeThat(httpServer).as("Undertow currently fails with transferTo")
+				.isNotInstanceOf(UndertowHttpServer.class);
 		verifyTransferTo(httpServer);
 	}
 
@@ -162,7 +163,8 @@ class MultipartRouterFunctionIntegrationTests extends AbstractRouterFunctionInte
 
 	@ParameterizedHttpServerTest
 	void proxy(HttpServer httpServer) throws Exception {
-		assumeFalse(httpServer instanceof UndertowHttpServer, "Undertow currently fails proxying requests");
+		assumeThat(httpServer).as("Undertow currently fails proxying requests")
+				.isNotInstanceOf(UndertowHttpServer.class);
 		startServer(httpServer);
 
 		Mono<ResponseEntity<Void>> result = webClient

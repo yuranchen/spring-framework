@@ -35,7 +35,7 @@ import org.springframework.web.testfixture.http.server.reactive.bootstrap.Reacto
 import org.springframework.web.testfixture.http.server.reactive.bootstrap.UndertowHttpServer;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.assertj.core.api.Assumptions.assumeThat;
 
 /**
  * @author Arjen Poutsma
@@ -55,8 +55,8 @@ class ZeroCopyIntegrationTests extends AbstractHttpHandlerIntegrationTests {
 
 	@ParameterizedHttpServerTest
 	void zeroCopy(HttpServer httpServer) throws Exception {
-		assumeTrue(httpServer instanceof ReactorHttpServer || httpServer instanceof UndertowHttpServer ||
-				httpServer instanceof JettyCoreHttpServer, "Zero-copy does not support Servlet");
+		assumeThat(httpServer).as("Zero-copy does not support Servlet")
+				.isInstanceOfAny(ReactorHttpServer.class, UndertowHttpServer.class, JettyCoreHttpServer.class);
 
 		startServer(httpServer);
 

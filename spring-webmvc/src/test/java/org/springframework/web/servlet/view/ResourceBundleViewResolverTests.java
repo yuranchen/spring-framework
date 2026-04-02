@@ -34,7 +34,7 @@ import org.springframework.web.testfixture.servlet.MockServletContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.assertj.core.api.Assumptions.assumeThat;
 
 /**
  * @author Rod Johnson
@@ -124,7 +124,7 @@ class ResourceBundleViewResolverTests {
 
 	@Test
 	void sameBundleOnlyCachedOnce() throws Exception {
-		assumeTrue(rb.isCache());
+		assumeThat(rb.isCache()).isTrue();
 
 		View v1 = rb.resolveViewName("debugView", Locale.ENGLISH);
 		View v2 = rb.resolveViewName("debugView", Locale.UK);

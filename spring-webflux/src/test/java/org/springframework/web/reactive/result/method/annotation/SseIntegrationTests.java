@@ -60,7 +60,7 @@ import org.springframework.web.testfixture.http.server.reactive.bootstrap.Tomcat
 import org.springframework.web.testfixture.http.server.reactive.bootstrap.UndertowHttpServer;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.assertj.core.api.Assumptions.assumeThat;
 import static org.junit.jupiter.api.Named.named;
 import static org.springframework.http.MediaType.TEXT_EVENT_STREAM;
 
@@ -128,7 +128,7 @@ class SseIntegrationTests extends AbstractHttpHandlerIntegrationTests {
 
 	@ParameterizedSseTest
 	void sseAsEvent(HttpServer httpServer, ClientHttpConnector connector) throws Exception {
-		assumeTrue(httpServer instanceof JettyHttpServer || httpServer instanceof JettyCoreHttpServer);
+		assumeThat(httpServer).isInstanceOfAny(JettyHttpServer.class, JettyCoreHttpServer.class);
 
 		startServer(httpServer, connector);
 
@@ -177,7 +177,7 @@ class SseIntegrationTests extends AbstractHttpHandlerIntegrationTests {
 	@ParameterizedSseTest // SPR-16494
 	@Disabled // https://github.com/reactor/reactor-netty/issues/283
 	void serverDetectsClientDisconnect(HttpServer httpServer, ClientHttpConnector connector) throws Exception {
-		assumeTrue(httpServer instanceof ReactorHttpServer);
+		assumeThat(httpServer).isInstanceOf(ReactorHttpServer.class);
 
 		startServer(httpServer, connector);
 

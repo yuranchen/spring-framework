@@ -31,7 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatException;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.junit.jupiter.api.Assumptions.assumeFalse;
+import static org.assertj.core.api.Assumptions.assumeThat;
 
 /**
  * @author Arjen Poutsma
@@ -459,8 +459,8 @@ class DataBufferTests extends AbstractDataBufferAllocatingTests {
 	@ParameterizedDataBufferAllocatingTest
 	@SuppressWarnings("deprecation")
 	void decreaseCapacityLowReadPosition(DataBufferFactory bufferFactory) {
-		assumeFalse(bufferFactory instanceof Netty5DataBufferFactory,
-				"Netty 5 does not support decreasing the capacity");
+		assumeThat(bufferFactory).as("Netty 5 does not support decreasing the capacity")
+				.isNotInstanceOf(Netty5DataBufferFactory.class);
 
 		super.bufferFactory = bufferFactory;
 
@@ -475,8 +475,8 @@ class DataBufferTests extends AbstractDataBufferAllocatingTests {
 	@ParameterizedDataBufferAllocatingTest
 	@SuppressWarnings("deprecation")
 	void decreaseCapacityHighReadPosition(DataBufferFactory bufferFactory) {
-		assumeFalse(bufferFactory instanceof Netty5DataBufferFactory,
-				"Netty 5 does not support decreasing the capacity");
+		assumeThat(bufferFactory).as("Netty 5 does not support decreasing the capacity")
+				.isNotInstanceOf(Netty5DataBufferFactory.class);
 
 		super.bufferFactory = bufferFactory;
 
@@ -588,10 +588,10 @@ class DataBufferTests extends AbstractDataBufferAllocatingTests {
 		ByteBuffer result = buffer.asByteBuffer(1, 2);
 		assertThat(result.capacity()).isEqualTo(2);
 
-		assumeFalse(bufferFactory instanceof Netty5DataBufferFactory, () -> {
-			DataBufferUtils.release(buffer);
-			return "Netty 5 does share the internal buffer";
-		});
+		assumeThat(bufferFactory).as(() -> {
+				DataBufferUtils.release(buffer);
+				return "Netty 5 does share the internal buffer";
+			}).isNotInstanceOf(Netty5DataBufferFactory.class);
 
 		buffer.write((byte) 'c');
 		assertThat(result.remaining()).isEqualTo(2);
@@ -606,8 +606,8 @@ class DataBufferTests extends AbstractDataBufferAllocatingTests {
 	@ParameterizedDataBufferAllocatingTest
 	@SuppressWarnings("deprecation")
 	void byteBufferContainsDataBufferChanges(DataBufferFactory bufferFactory) {
-		assumeFalse(bufferFactory instanceof Netty5DataBufferFactory,
-				"Netty 5 does not support sharing data between buffers");
+		assumeThat(bufferFactory).as("Netty 5 does not support sharing data between buffers")
+				.isNotInstanceOf(Netty5DataBufferFactory.class);
 
 		super.bufferFactory = bufferFactory;
 
@@ -626,8 +626,8 @@ class DataBufferTests extends AbstractDataBufferAllocatingTests {
 	@ParameterizedDataBufferAllocatingTest
 	@SuppressWarnings("deprecation")
 	void dataBufferContainsByteBufferChanges(DataBufferFactory bufferFactory) {
-		assumeFalse(bufferFactory instanceof Netty5DataBufferFactory,
-				"Netty 5 does not support sharing data between buffers");
+		assumeThat(bufferFactory).as("Netty 5 does not support sharing data between buffers")
+				.isNotInstanceOf(Netty5DataBufferFactory.class);
 
 		super.bufferFactory = bufferFactory;
 
@@ -887,8 +887,8 @@ class DataBufferTests extends AbstractDataBufferAllocatingTests {
 	@ParameterizedDataBufferAllocatingTest
 	@SuppressWarnings("deprecation")
 	void retainedSlice(DataBufferFactory bufferFactory) {
-		assumeFalse(bufferFactory instanceof Netty5DataBufferFactory,
-				"Netty 5 does not support retainedSlice");
+		assumeThat(bufferFactory).as("Netty 5 does not support retainedSlice")
+				.isNotInstanceOf(Netty5DataBufferFactory.class);
 
 		super.bufferFactory = bufferFactory;
 
