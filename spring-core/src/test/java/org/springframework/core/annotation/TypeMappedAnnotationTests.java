@@ -103,10 +103,10 @@ class TypeMappedAnnotationTests {
 
 	@Test
 	void adaptFromNestedMergedAnnotation() {
-		MergedAnnotation<Nested> nested = MergedAnnotation.of(Nested.class);
+		MergedAnnotation<NestedAnnotation> nested = MergedAnnotation.of(NestedAnnotation.class);
 		MergedAnnotation<?> annotation = TypeMappedAnnotation.of(null, null,
 				NestedContainer.class, Collections.singletonMap("value", nested));
-		assertThat(annotation.getAnnotation("value", Nested.class)).isSameAs(nested);
+		assertThat(annotation.getAnnotation("value", NestedAnnotation.class)).isSameAs(nested);
 	}
 
 	@Test
@@ -151,6 +151,7 @@ class TypeMappedAnnotationTests {
 		throw new IllegalStateException(
 				"No mapping from " + annotation + " to " + mappedAnnotationType);
 	}
+
 
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface ExplicitMirror {
@@ -247,11 +248,11 @@ class TypeMappedAnnotationTests {
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface NestedContainer {
 
-		Nested value();
+		NestedAnnotation value();
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface Nested {
+	@interface NestedAnnotation {
 
 		String value() default "";
 	}

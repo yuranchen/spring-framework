@@ -96,7 +96,7 @@ class AnnotationBeanNameGeneratorTests {
 						"myComponent", "myService");
 	}
 
-	@Test  // gh-gh-36524
+	@Test  // gh-36524
 	void generateBeanNameForConventionBasedComponentWithMissingAnnotationAttributeTypeViaAsm() throws Exception {
 		FilteringClassLoader classLoader = new FilteringClassLoader(getClass().getClassLoader());
 		MetadataReaderFactory readerFactory = new SimpleMetadataReaderFactory(classLoader);
