@@ -60,7 +60,7 @@ import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.jupiter.api.Assumptions.assumeFalse;
+import static org.assertj.core.api.Assumptions.assumeThat;
 import static org.junit.jupiter.params.provider.Arguments.argumentSet;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.MediaType.MULTIPART_MIXED;
@@ -227,8 +227,8 @@ class RestTemplateIntegrationTests extends AbstractMockWebServerTests {
 
 	@ParameterizedRestTemplateTest
 	void patchForObject(ClientHttpRequestFactory clientHttpRequestFactory) {
-		assumeFalse(clientHttpRequestFactory instanceof SimpleClientHttpRequestFactory,
-				"HttpURLConnection does not support the PATCH method");
+		assumeThat(clientHttpRequestFactory).as("HttpURLConnection does not support the PATCH method")
+				.isNotInstanceOf(SimpleClientHttpRequestFactory.class);
 
 		setUpClient(clientHttpRequestFactory);
 
@@ -265,7 +265,8 @@ class RestTemplateIntegrationTests extends AbstractMockWebServerTests {
 			.satisfies(ex -> {
 				assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 				assertThat(ex.getMessage()).containsSubsequence("400", "on GET request for \""+url+ "\": [no body]");
-				assumeFalse(clientHttpRequestFactory instanceof JdkClientHttpRequestFactory, "JDK HttpClient does not expose status text");
+				assumeThat(clientHttpRequestFactory).as("JDK HttpClient does not expose status text")
+						.isNotInstanceOf(JdkClientHttpRequestFactory.class);
 				assertThat(ex.getMessage()).isEqualTo("400 Client Error on GET request for \""+url+ "\": [no body]");
 			});
 	}
@@ -282,7 +283,8 @@ class RestTemplateIntegrationTests extends AbstractMockWebServerTests {
 				assertThat(ex.getStatusText()).isNotNull();
 				assertThat(ex.getResponseBodyAsString()).isNotNull();
 				assertThat(ex.getMessage()).containsSubsequence("500", "on GET request for \"" + url + "\": [no body]");
-				assumeFalse(clientHttpRequestFactory instanceof JdkClientHttpRequestFactory, "JDK HttpClient does not expose status text");
+				assumeThat(clientHttpRequestFactory).as("JDK HttpClient does not expose status text")
+						.isNotInstanceOf(JdkClientHttpRequestFactory.class);
 				assertThat(ex.getMessage()).isEqualTo("500 Server Error on GET request for \"" + url + "\": [no body]");
 			});
 	}

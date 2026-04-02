@@ -65,7 +65,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static org.junit.jupiter.api.Assumptions.assumeFalse;
+import static org.assertj.core.api.Assumptions.assumeThat;
 import static org.junit.jupiter.params.provider.Arguments.argumentSet;
 
 /**
@@ -478,7 +478,9 @@ class RestClientIntegrationTests {
 
 		}
 		catch (HttpServerErrorException ex) {
-			assumeFalse(requestFactory instanceof JdkClientHttpRequestFactory, "JDK HttpClient does not expose status text");
+			assumeThat(requestFactory).as("JDK HttpClient does not expose status text")
+					.isNotInstanceOf(JdkClientHttpRequestFactory.class);
+
 			assertThat(ex.getMessage()).isEqualTo("555 Server Error: \"Something went wrong\"");
 			assertThat(ex.getStatusText()).isEqualTo("Server Error");
 			assertThat(ex.getResponseHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
