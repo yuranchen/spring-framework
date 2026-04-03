@@ -31,6 +31,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.core.annotation.MergedAnnotation.Adapt;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.InstanceOfAssertFactories.throwable;
 
@@ -143,16 +144,16 @@ class TypeMappedAnnotationTests {
 					Map.of(attributeName, "com.example.DoesNotExist"));
 
 			// 0) Sanity check MergedAnnotation.getClass() behavior.
-			assertThatIllegalArgumentException()
+			assertThatExceptionOfType(TypeNotPresentException.class)
 					.isThrownBy(() -> mergedAnnotation.getClass(attributeName))
-					.withMessage("Could not find class [com.example.DoesNotExist]")
-					.withCauseInstanceOf(ClassNotFoundException.class);
+					.withMessageContaining("com.example.DoesNotExist")
+					.withCauseExactlyInstanceOf(ClassNotFoundException.class);
 
 			var map = mergedAnnotation.asMap(Adapt.values(false, true));
 
 			// 1) Attribute should be present, even though its value is an exception.
 			assertThat(map).containsKey(attributeName);
-			assertThat(map.get(attributeName)).asInstanceOf(throwable(IllegalArgumentException.class))
+			assertThat(map.get(attributeName)).asInstanceOf(throwable(TypeNotPresentException.class))
 					.hasMessageContaining("com.example.DoesNotExist");
 		}
 
@@ -163,16 +164,16 @@ class TypeMappedAnnotationTests {
 					Map.of(attributeName, new String[] { "com.example.DoesNotExist" }));
 
 			// 0) Sanity check MergedAnnotation.getClassArray() behavior.
-			assertThatIllegalArgumentException()
+			assertThatExceptionOfType(TypeNotPresentException.class)
 					.isThrownBy(() -> mergedAnnotation.getClassArray(attributeName))
-					.withMessage("Could not find class [com.example.DoesNotExist]")
+					.withMessageContaining("com.example.DoesNotExist")
 					.withCauseExactlyInstanceOf(ClassNotFoundException.class);
 
 			var map = mergedAnnotation.asMap(Adapt.values(false, true));
 
 			// 1) Attribute should be present, even though its value is an exception.
 			assertThat(map).containsKey(attributeName);
-			assertThat(map.get(attributeName)).asInstanceOf(throwable(IllegalArgumentException.class))
+			assertThat(map.get(attributeName)).asInstanceOf(throwable(TypeNotPresentException.class))
 					.hasMessageContaining("com.example.DoesNotExist");
 		}
 	}
@@ -188,16 +189,16 @@ class TypeMappedAnnotationTests {
 					Map.of(attributeName, "com.example.DoesNotExist"));
 
 			// 0) Sanity check MergedAnnotation.getClass() behavior.
-			assertThatIllegalArgumentException()
+			assertThatExceptionOfType(TypeNotPresentException.class)
 					.isThrownBy(() -> mergedAnnotation.getClass(attributeName))
-					.withMessage("Could not find class [com.example.DoesNotExist]")
-					.withCauseInstanceOf(ClassNotFoundException.class);
+					.withMessageContaining("com.example.DoesNotExist")
+					.withCauseExactlyInstanceOf(ClassNotFoundException.class);
 
 			var attributes = mergedAnnotation.asAnnotationAttributes(Adapt.values(false, true));
 
 			// 1) Attribute should be present, even though its value is an exception.
 			assertThat(attributes).containsKey(attributeName);
-			assertThat(attributes.get(attributeName)).asInstanceOf(throwable(IllegalArgumentException.class))
+			assertThat(attributes.get(attributeName)).asInstanceOf(throwable(TypeNotPresentException.class))
 					.hasMessageContaining("com.example.DoesNotExist");
 
 			// 2) Accessing the attribute via AnnotationAttributes.getClassArray() should throw an
@@ -213,16 +214,16 @@ class TypeMappedAnnotationTests {
 					Map.of(attributeName, new String[] { "com.example.DoesNotExist" }));
 
 			// 0) Sanity check MergedAnnotation.getClassArray() behavior.
-			assertThatIllegalArgumentException()
+			assertThatExceptionOfType(TypeNotPresentException.class)
 					.isThrownBy(() -> mergedAnnotation.getClassArray(attributeName))
-					.withMessage("Could not find class [com.example.DoesNotExist]")
-					.withCauseInstanceOf(ClassNotFoundException.class);
+					.withMessageContaining("com.example.DoesNotExist")
+					.withCauseExactlyInstanceOf(ClassNotFoundException.class);
 
 			var attributes = mergedAnnotation.asAnnotationAttributes(Adapt.values(false, true));
 
 			// 1) Attribute should be present, even though its value is an exception.
 			assertThat(attributes).containsKey(attributeName);
-			assertThat(attributes.get(attributeName)).asInstanceOf(throwable(IllegalArgumentException.class))
+			assertThat(attributes.get(attributeName)).asInstanceOf(throwable(TypeNotPresentException.class))
 					.hasMessageContaining("com.example.DoesNotExist");
 
 			// 2) Accessing the attribute via AnnotationAttributes.getClassArray() should throw an
@@ -236,9 +237,9 @@ class TypeMappedAnnotationTests {
 					.isThrownBy(throwingCallable)
 					.withMessageMatching("""
 							Attribute '%s' for annotation \\[.+?\\] was not resolvable \
-							due to exception \\[.+?IllegalArgumentException.+?\\]""".formatted(attributeName))
+							due to exception \\[.+?TypeNotPresentException.+?\\]""".formatted(attributeName))
 					.havingCause()
-							.isExactlyInstanceOf(IllegalArgumentException.class)
+							.isExactlyInstanceOf(TypeNotPresentException.class)
 							.withMessageContaining("com.example.DoesNotExist")
 							.havingCause()
 									.isExactlyInstanceOf(ClassNotFoundException.class)

@@ -139,7 +139,12 @@ abstract class ClassFileAnnotationDelegate {
 
 	private static Class<?> loadEnumClass(AnnotationValue.OfEnum enumValue, @Nullable ClassLoader classLoader) {
 		String className = ClassFileAnnotationMetadata.resolveTypeName(enumValue.classSymbol());
-		return ClassUtils.resolveClassName(className, classLoader);
+		try {
+			return ClassUtils.forName(className, classLoader);
+		}
+		catch (ClassNotFoundException | LinkageError ex) {
+			throw new TypeNotPresentException(className, ex);
+		}
 	}
 
 	private static Class<?> resolveArrayElementType(List<AnnotationValue> values, @Nullable ClassLoader classLoader) {

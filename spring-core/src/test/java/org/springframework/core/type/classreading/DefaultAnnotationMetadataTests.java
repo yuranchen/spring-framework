@@ -27,7 +27,7 @@ import org.springframework.core.type.AbstractAnnotationMetadataTests;
 import org.springframework.core.type.AnnotationMetadata;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 /**
  * Tests for {@link SimpleAnnotationMetadata} and
@@ -59,7 +59,9 @@ class DefaultAnnotationMetadataTests extends AbstractAnnotationMetadataTests {
 				.getAnnotations()
 				.get(ClassAttributes.class);
 		assertThat(mergedAnnotation.getStringArray("types")).contains("javax.annotation.meta.When");
-		assertThatIllegalArgumentException().isThrownBy(() -> mergedAnnotation.getClassArray("types"));
+		assertThatExceptionOfType(TypeNotPresentException.class)
+				.isThrownBy(() -> mergedAnnotation.getClassArray("types"))
+				.withMessageContaining("javax.annotation.meta.When");
 	}
 
 

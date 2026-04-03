@@ -450,7 +450,12 @@ final class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnn
 			value = clazz.getName();
 		}
 		else if (value instanceof String str && type == Class.class) {
-			value = ClassUtils.resolveClassName(str, getClassLoader());
+			try {
+				value = ClassUtils.forName(str, getClassLoader());
+			}
+			catch (ClassNotFoundException | LinkageError ex) {
+				throw new TypeNotPresentException(str, ex);
+			}
 		}
 		else if (value instanceof Class<?>[] classes && type == String[].class) {
 			String[] names = new String[classes.length];
@@ -461,8 +466,14 @@ final class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnn
 		}
 		else if (value instanceof String[] names && type == Class[].class) {
 			Class<?>[] classes = new Class<?>[names.length];
+			ClassLoader classLoader = getClassLoader();
 			for (int i = 0; i < names.length; i++) {
-				classes[i] = ClassUtils.resolveClassName(names[i], getClassLoader());
+				try {
+					classes[i] = ClassUtils.forName(names[i], classLoader);
+				}
+				catch (ClassNotFoundException | LinkageError ex) {
+					throw new TypeNotPresentException(names[i], ex);
+				}
 			}
 			value = classes;
 		}
