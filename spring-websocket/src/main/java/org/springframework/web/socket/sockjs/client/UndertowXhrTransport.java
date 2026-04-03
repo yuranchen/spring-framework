@@ -88,7 +88,9 @@ import org.springframework.web.socket.sockjs.frame.SockJsFrame;
  * @author Rossen Stoyanchev
  * @since 4.1.2
  * @see org.xnio.Options
+ * @deprecated as of 6.2.18 with no replacement
  */
+@Deprecated(since = "6.2.18", forRemoval = true)
 public class UndertowXhrTransport extends AbstractXhrTransport {
 
 	private static final AttachmentKey<String> RESPONSE_BODY = AttachmentKey.create(String.class);

@@ -106,6 +106,7 @@ class WebClientIntegrationTests {
 	@interface ParameterizedWebClientTest {
 	}
 
+	@SuppressWarnings("removal")
 	static Stream<Arguments> arguments() {
 		return Stream.of(
 				argumentSet("Reactor Netty", new ReactorClientHttpConnector()),
@@ -194,6 +195,7 @@ class WebClientIntegrationTests {
 	}
 
 	@ParameterizedWebClientTest
+	@SuppressWarnings("removal")
 	void applyAttributesToNativeRequest(ClientHttpConnector connector) {
 		startServer(connector);
 		prepareResponse(response -> {});
@@ -948,6 +950,7 @@ class WebClientIntegrationTests {
 	}
 
 	@ParameterizedWebClientTest
+	@SuppressWarnings("removal")
 	void statusHandlerSuppressedErrorSignalWithFlux(ClientHttpConnector connector) {
 
 		// Temporarily disabled, leads to io.netty5.buffer.BufferClosedException

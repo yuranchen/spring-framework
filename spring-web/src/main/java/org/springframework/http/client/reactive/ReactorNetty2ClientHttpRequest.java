@@ -45,6 +45,7 @@ import org.springframework.http.support.Netty5HeadersAdapter;
  * @since 6.0
  * @see reactor.netty5.http.client.HttpClient
  */
+@SuppressWarnings("removal")
 class ReactorNetty2ClientHttpRequest extends AbstractClientHttpRequest implements ZeroCopyHttpOutputMessage {
 
 	private final HttpMethod httpMethod;

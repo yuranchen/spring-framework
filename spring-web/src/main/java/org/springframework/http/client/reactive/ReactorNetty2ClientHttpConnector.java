@@ -40,7 +40,10 @@ import org.springframework.util.Assert;
  * @author Violeta Georgieva
  * @since 6.0
  * @see HttpClient
+ * @deprecated as of 6.2.18 with no replacement
  */
+@Deprecated(since = "6.2.18", forRemoval = true)
+@SuppressWarnings("removal")
 public class ReactorNetty2ClientHttpConnector implements ClientHttpConnector {
 
 	/**

@@ -48,7 +48,10 @@ import org.springframework.web.server.ServerWebExchange;
  * @author Rossen Stoyanchev
  * @author Brian Clozel
  * @since 5.0
+ * @deprecated as of 6.2.18 with no replacement
  */
+@Deprecated(since = "6.2.18", forRemoval = true)
+@SuppressWarnings("removal")
 public class UndertowRequestUpgradeStrategy implements RequestUpgradeStrategy {
 
 	@Override

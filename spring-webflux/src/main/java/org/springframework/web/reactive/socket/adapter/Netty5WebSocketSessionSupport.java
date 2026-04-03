@@ -44,7 +44,10 @@ import org.springframework.web.reactive.socket.WebSocketSession;
  * @author Violeta Georgieva
  * @since 6.0
  * @param <T> the native delegate type
+ * @deprecated as of 6.2.18 with no replacement
  */
+@Deprecated(since = "6.2.18", forRemoval = true)
+@SuppressWarnings("removal")
 public abstract class Netty5WebSocketSessionSupport<T> extends AbstractWebSocketSession<T> {
 
 	/**

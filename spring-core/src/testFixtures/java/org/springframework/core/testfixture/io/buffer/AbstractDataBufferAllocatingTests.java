@@ -201,6 +201,7 @@ public abstract class AbstractDataBufferAllocatingTests {
 	public @interface ParameterizedDataBufferAllocatingTest {
 	}
 
+	@SuppressWarnings("removal")
 	static Stream<Arguments> dataBufferFactories() {
 		return Stream.of(
 			// Netty 4

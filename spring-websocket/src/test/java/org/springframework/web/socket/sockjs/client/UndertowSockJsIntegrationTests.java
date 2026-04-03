@@ -29,6 +29,7 @@ import org.springframework.web.socket.server.standard.UndertowRequestUpgradeStra
 /**
  * @author Brian Clozel
  */
+@SuppressWarnings("removal")
 class UndertowSockJsIntegrationTests extends AbstractSockJsIntegrationTests {
 
 	@Override

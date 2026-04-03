@@ -36,7 +36,9 @@ import org.springframework.messaging.tcp.TcpConnection;
  * @author Rossen Stoyanchev
  * @since 6.0
  * @param <P> the type of payload for outbound messages
+ * @deprecated as of 6.2.18 with no replacement
  */
+@Deprecated(since = "6.2.18", forRemoval = true)
 public class ReactorNetty2TcpConnection<P> implements TcpConnection<P> {
 
 	private final NettyInbound inbound;

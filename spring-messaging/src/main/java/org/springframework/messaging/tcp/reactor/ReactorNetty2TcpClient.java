@@ -60,7 +60,10 @@ import org.springframework.util.Assert;
  * @author Rossen Stoyanchev
  * @since 6.0
  * @param <P> the type of payload for in and outbound messages
+ * @deprecated as of 6.2.18 with no replacement
  */
+@Deprecated(since = "6.2.18", forRemoval = true)
+@SuppressWarnings("removal")
 public class ReactorNetty2TcpClient<P> implements TcpOperations<P> {
 
 	private static final int PUBLISH_ON_BUFFER_SIZE = 16;

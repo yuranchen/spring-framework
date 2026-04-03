@@ -44,7 +44,6 @@ class MonoToListenableFutureAdapterTests {
 	}
 
 	@Test
-	@SuppressWarnings("deprecation")
 	void failure() {
 		Throwable expected = new IllegalStateException("oops");
 		AtomicReference<Object> actual = new AtomicReference<>();

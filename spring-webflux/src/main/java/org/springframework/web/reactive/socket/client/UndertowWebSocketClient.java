@@ -52,7 +52,10 @@ import org.springframework.web.reactive.socket.adapter.UndertowWebSocketSession;
  * @author Violeta Georgieva
  * @author Rossen Stoyanchev
  * @since 5.0
+ * @deprecated as of 6.2.18 with no replacement
  */
+@Deprecated(since = "6.2.18", forRemoval = true)
+@SuppressWarnings("removal")
 public class UndertowWebSocketClient implements WebSocketClient {
 
 	private static final Log logger = LogFactory.getLog(UndertowWebSocketClient.class);

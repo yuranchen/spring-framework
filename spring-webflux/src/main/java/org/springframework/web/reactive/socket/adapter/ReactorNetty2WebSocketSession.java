@@ -43,7 +43,10 @@ import org.springframework.web.reactive.socket.WebSocketSession;
  *
  * @author Violeta Georgieva
  * @since 6.0
+ * @deprecated as of 6.2.18 with no replacement
  */
+@Deprecated(since = "6.2.18", forRemoval = true)
+@SuppressWarnings("removal")
 public class ReactorNetty2WebSocketSession
 		extends Netty5WebSocketSessionSupport<ReactorNetty2WebSocketSession.WebSocketConnection> {
 
@@ -133,7 +136,10 @@ public class ReactorNetty2WebSocketSession
 
 	/**
 	 * Simple container for {@link NettyInbound} and {@link NettyOutbound}.
+	 * @deprecated as of 6.2.18 with no replacement
 	 */
+	@Deprecated(since = "6.2.18", forRemoval = true)
+	@SuppressWarnings("removal")
 	public static class WebSocketConnection {
 
 		private final WebsocketInbound inbound;

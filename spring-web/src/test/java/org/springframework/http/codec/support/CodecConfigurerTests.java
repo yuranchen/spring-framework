@@ -91,6 +91,7 @@ class CodecConfigurerTests {
 
 
 	@Test
+	@SuppressWarnings("removal")
 	void defaultReaders() {
 		List<HttpMessageReader<?>> readers = this.configurer.getReaders();
 		assertThat(readers).hasSize(19);
@@ -116,6 +117,7 @@ class CodecConfigurerTests {
 	}
 
 	@Test
+	@SuppressWarnings("removal")
 	void defaultWriters() {
 		List<HttpMessageWriter<?>> writers = this.configurer.getWriters();
 		assertThat(writers).hasSize(18);
@@ -140,6 +142,7 @@ class CodecConfigurerTests {
 	}
 
 	@Test
+	@SuppressWarnings("removal")
 	void defaultAndCustomReaders() {
 		Decoder<?> customDecoder1 = mock();
 		Decoder<?> customDecoder2 = mock();
@@ -188,6 +191,7 @@ class CodecConfigurerTests {
 	}
 
 	@Test
+	@SuppressWarnings("removal")
 	void defaultAndCustomWriters() {
 		Encoder<?> customEncoder1 = mock();
 		Encoder<?> customEncoder2 = mock();

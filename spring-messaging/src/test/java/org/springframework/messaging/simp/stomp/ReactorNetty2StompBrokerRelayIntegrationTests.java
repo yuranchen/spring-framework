@@ -28,6 +28,7 @@ import org.springframework.messaging.tcp.reactor.ReactorNetty2TcpClient;
  * @author Rossen Stoyanchev
  */
 @Disabled("gh-29287 :: Disabled because they fail too frequently")
+@SuppressWarnings("removal")
 public class ReactorNetty2StompBrokerRelayIntegrationTests extends AbstractStompBrokerRelayIntegrationTests {
 
 	@Override

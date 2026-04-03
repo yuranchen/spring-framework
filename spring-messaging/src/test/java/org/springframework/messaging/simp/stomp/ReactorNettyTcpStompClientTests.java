@@ -62,6 +62,7 @@ class ReactorNettyTcpStompClientTests {
 
 
 	@BeforeEach
+	@SuppressWarnings("removal")
 	void setup(TestInfo testInfo) throws Exception {
 		logger.debug("Setting up before '" + testInfo.getTestMethod().get().getName() + "'");
 

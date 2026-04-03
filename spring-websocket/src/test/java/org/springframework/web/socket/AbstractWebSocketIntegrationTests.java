@@ -198,6 +198,7 @@ public abstract class AbstractWebSocketIntegrationTests {
 
 
 	@Configuration(proxyBeanMethods = false)
+	@SuppressWarnings("removal")
 	static class UndertowUpgradeStrategyConfig extends AbstractRequestUpgradeStrategyConfig {
 
 		@Override

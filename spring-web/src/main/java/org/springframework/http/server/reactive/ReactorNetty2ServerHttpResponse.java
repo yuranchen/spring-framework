@@ -49,6 +49,7 @@ import org.springframework.util.Assert;
  * @author Violeta Georgieva
  * @since 6.0
  */
+@SuppressWarnings("removal")
 class ReactorNetty2ServerHttpResponse extends AbstractServerHttpResponse implements ZeroCopyHttpOutputMessage {
 
 	private static final Log logger = LogFactory.getLog(ReactorNetty2ServerHttpResponse.class);

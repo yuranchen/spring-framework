@@ -457,7 +457,7 @@ class DataBufferTests extends AbstractDataBufferAllocatingTests {
 	}
 
 	@ParameterizedDataBufferAllocatingTest
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings({"deprecation", "removal"})
 	void decreaseCapacityLowReadPosition(DataBufferFactory bufferFactory) {
 		assumeThat(bufferFactory).as("Netty 5 does not support decreasing the capacity")
 				.isNotInstanceOf(Netty5DataBufferFactory.class);
@@ -473,7 +473,7 @@ class DataBufferTests extends AbstractDataBufferAllocatingTests {
 	}
 
 	@ParameterizedDataBufferAllocatingTest
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings({"deprecation", "removal"})
 	void decreaseCapacityHighReadPosition(DataBufferFactory bufferFactory) {
 		assumeThat(bufferFactory).as("Netty 5 does not support decreasing the capacity")
 				.isNotInstanceOf(Netty5DataBufferFactory.class);
@@ -578,6 +578,7 @@ class DataBufferTests extends AbstractDataBufferAllocatingTests {
 	}
 
 	@ParameterizedDataBufferAllocatingTest
+	@SuppressWarnings("removal")
 	void asByteBufferIndexLength(DataBufferFactory bufferFactory) {
 		super.bufferFactory = bufferFactory;
 
@@ -604,7 +605,7 @@ class DataBufferTests extends AbstractDataBufferAllocatingTests {
 	}
 
 	@ParameterizedDataBufferAllocatingTest
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings({"deprecation", "removal"})
 	void byteBufferContainsDataBufferChanges(DataBufferFactory bufferFactory) {
 		assumeThat(bufferFactory).as("Netty 5 does not support sharing data between buffers")
 				.isNotInstanceOf(Netty5DataBufferFactory.class);
@@ -624,7 +625,7 @@ class DataBufferTests extends AbstractDataBufferAllocatingTests {
 	}
 
 	@ParameterizedDataBufferAllocatingTest
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings({"deprecation", "removal"})
 	void dataBufferContainsByteBufferChanges(DataBufferFactory bufferFactory) {
 		assumeThat(bufferFactory).as("Netty 5 does not support sharing data between buffers")
 				.isNotInstanceOf(Netty5DataBufferFactory.class);
@@ -857,7 +858,7 @@ class DataBufferTests extends AbstractDataBufferAllocatingTests {
 	}
 
 	@ParameterizedDataBufferAllocatingTest
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings({"deprecation", "removal"})
 	void slice(DataBufferFactory bufferFactory) {
 		super.bufferFactory = bufferFactory;
 
@@ -885,7 +886,7 @@ class DataBufferTests extends AbstractDataBufferAllocatingTests {
 	}
 
 	@ParameterizedDataBufferAllocatingTest
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings({"deprecation", "removal"})
 	void retainedSlice(DataBufferFactory bufferFactory) {
 		assumeThat(bufferFactory).as("Netty 5 does not support retainedSlice")
 				.isNotInstanceOf(Netty5DataBufferFactory.class);
@@ -915,7 +916,7 @@ class DataBufferTests extends AbstractDataBufferAllocatingTests {
 	}
 
 	@ParameterizedDataBufferAllocatingTest
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings({"deprecation", "removal"})
 	void spr16351(DataBufferFactory bufferFactory) {
 		super.bufferFactory = bufferFactory;
 

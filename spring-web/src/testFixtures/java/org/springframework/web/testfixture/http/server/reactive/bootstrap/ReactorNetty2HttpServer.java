@@ -29,6 +29,7 @@ import org.springframework.http.server.reactive.ReactorNetty2HttpHandlerAdapter;
  * @author Violeta Georgieva
  * @since 6.0
  */
+@SuppressWarnings("removal")
 public class ReactorNetty2HttpServer extends AbstractHttpServer {
 
 	private ReactorNetty2HttpHandlerAdapter reactorHandler;

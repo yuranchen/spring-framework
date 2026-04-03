@@ -25,6 +25,7 @@ import org.springframework.http.server.reactive.UndertowHttpHandlerAdapter;
 /**
  * @author Marek Hawrylczak
  */
+@SuppressWarnings("removal")
 public class UndertowHttpServer extends AbstractHttpServer {
 
 	private Undertow server;

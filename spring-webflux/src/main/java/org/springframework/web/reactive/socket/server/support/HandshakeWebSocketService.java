@@ -282,6 +282,7 @@ public class HandshakeWebSocketService implements WebSocketService, Lifecycle {
 	}
 
 
+	@SuppressWarnings("removal")
 	static RequestUpgradeStrategy initUpgradeStrategy() {
 		if (tomcatWsPresent) {
 			return new TomcatRequestUpgradeStrategy();
@@ -319,6 +320,7 @@ public class HandshakeWebSocketService implements WebSocketService, Lifecycle {
 			return new ReactorNettyRequestUpgradeStrategy();
 		}
 
+		@SuppressWarnings("removal")
 		public static RequestUpgradeStrategy forReactorNetty2() {
 			return new ReactorNetty2RequestUpgradeStrategy();
 		}

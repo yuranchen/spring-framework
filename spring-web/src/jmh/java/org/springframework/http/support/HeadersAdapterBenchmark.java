@@ -77,6 +77,7 @@ public class HeadersAdapterBenchmark {
 		// Uncomment the following line and comment the similar line for setupImplementationBaseline below
 		// to benchmark current implementations
 		@Setup(Level.Trial)
+		@SuppressWarnings("removal")
 		public void initImplementationNew() {
 			this.entriesProvider = map -> new HttpHeaders(map).headerSet();
 

@@ -52,6 +52,7 @@ import org.springframework.util.ObjectUtils;
  * @since 6.0
  * @see reactor.netty5.http.client.HttpClient
  */
+@SuppressWarnings("removal")
 class ReactorNetty2ClientHttpResponse implements ClientHttpResponse {
 
 	private static final Log logger = LogFactory.getLog(ReactorNetty2ClientHttpResponse.class);

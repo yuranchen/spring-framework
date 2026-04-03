@@ -74,6 +74,7 @@ public class ReactorNettyTcpStompClient extends StompClientSupport {
 		this.tcpClient = tcpClient;
 	}
 
+	@SuppressWarnings("removal")
 	private static TcpOperations<byte[]> initTcpClient(String host, int port) {
 		if (reactorNettyClientPresent) {
 			ReactorNettyTcpClient<byte[]> client = new ReactorNettyTcpClient<>(host, port, new StompReactorNettyCodec());

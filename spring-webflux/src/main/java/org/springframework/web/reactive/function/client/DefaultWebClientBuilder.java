@@ -332,6 +332,7 @@ final class DefaultWebClientBuilder implements WebClient.Builder {
 				new DefaultWebClientBuilder(this));
 	}
 
+	@SuppressWarnings("removal")
 	private ClientHttpConnector initConnector() {
 		if (reactorNettyClientPresent) {
 			return new ReactorClientHttpConnector();

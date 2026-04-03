@@ -314,6 +314,7 @@ class DefaultWebTestClientBuilder implements WebTestClient.Builder {
 				this.entityResultConsumer, this.responseTimeout, new DefaultWebTestClientBuilder(this));
 	}
 
+	@SuppressWarnings("removal")
 	private static ClientHttpConnector initConnector() {
 		if (reactorNettyClientPresent) {
 			return new ReactorClientHttpConnector();

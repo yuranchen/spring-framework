@@ -94,6 +94,7 @@ class ClientCodecConfigurerTests {
 
 
 	@Test
+	@SuppressWarnings("removal")
 	void defaultReaders() {
 		List<HttpMessageReader<?>> readers = this.configurer.getReaders();
 		assertThat(readers).hasSize(20);
@@ -121,6 +122,7 @@ class ClientCodecConfigurerTests {
 	}
 
 	@Test
+	@SuppressWarnings("removal")
 	void defaultWriters() {
 		List<HttpMessageWriter<?>> writers = this.configurer.getWriters();
 		assertThat(writers).hasSize(18);
@@ -188,6 +190,7 @@ class ClientCodecConfigurerTests {
 	}
 
 	@Test
+	@SuppressWarnings("removal")
 	void maxInMemorySize() {
 		int size = 99;
 		this.configurer.defaultCodecs().maxInMemorySize(size);

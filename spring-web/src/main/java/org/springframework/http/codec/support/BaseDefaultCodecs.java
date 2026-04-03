@@ -33,8 +33,6 @@ import org.springframework.core.codec.DataBufferDecoder;
 import org.springframework.core.codec.DataBufferEncoder;
 import org.springframework.core.codec.Decoder;
 import org.springframework.core.codec.Encoder;
-import org.springframework.core.codec.Netty5BufferDecoder;
-import org.springframework.core.codec.Netty5BufferEncoder;
 import org.springframework.core.codec.NettyByteBufDecoder;
 import org.springframework.core.codec.NettyByteBufEncoder;
 import org.springframework.core.codec.ResourceDecoder;
@@ -417,6 +415,7 @@ class BaseDefaultCodecs implements CodecConfigurer.DefaultCodecs, CodecConfigure
 	 * Reset and initialize typed readers.
 	 * @since 5.3.3
 	 */
+	@SuppressWarnings("removal")
 	protected void initTypedReaders() {
 		this.typedReaders.clear();
 		if (!this.registerDefaults) {
@@ -429,7 +428,7 @@ class BaseDefaultCodecs implements CodecConfigurer.DefaultCodecs, CodecConfigure
 			addCodec(this.typedReaders, new DecoderHttpMessageReader<>(new NettyByteBufDecoder()));
 		}
 		if (netty5BufferPresent) {
-			addCodec(this.typedReaders, new DecoderHttpMessageReader<>(new Netty5BufferDecoder()));
+			addCodec(this.typedReaders, new DecoderHttpMessageReader<>(new org.springframework.core.codec.Netty5BufferDecoder()));
 		}
 		addCodec(this.typedReaders, new ResourceHttpMessageReader(new ResourceDecoder()));
 		addCodec(this.typedReaders, new DecoderHttpMessageReader<>(StringDecoder.textPlainOnly()));
@@ -667,6 +666,7 @@ class BaseDefaultCodecs implements CodecConfigurer.DefaultCodecs, CodecConfigure
 	/**
 	 * Return "base" typed writers only, i.e. common to client and server.
 	 */
+	@SuppressWarnings("removal")
 	final List<HttpMessageWriter<?>> getBaseTypedWriters() {
 		if (!this.registerDefaults) {
 			return Collections.emptyList();
@@ -679,7 +679,7 @@ class BaseDefaultCodecs implements CodecConfigurer.DefaultCodecs, CodecConfigure
 			addCodec(writers, new EncoderHttpMessageWriter<>(new NettyByteBufEncoder()));
 		}
 		if (netty5BufferPresent) {
-			addCodec(writers, new EncoderHttpMessageWriter<>(new Netty5BufferEncoder()));
+			addCodec(writers, new EncoderHttpMessageWriter<>(new org.springframework.core.codec.Netty5BufferEncoder()));
 		}
 		addCodec(writers, new ResourceHttpMessageWriter());
 		addCodec(writers, new EncoderHttpMessageWriter<>(CharSequenceEncoder.textPlainOnly()));

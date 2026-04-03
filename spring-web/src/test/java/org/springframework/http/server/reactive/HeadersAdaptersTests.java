@@ -279,6 +279,7 @@ class HeadersAdaptersTests {
 	@interface ParameterizedHeadersTest {
 	}
 
+	@SuppressWarnings("removal")
 	static Stream<Arguments> headers() {
 		return Stream.of(
 				argumentSet("Map", CollectionUtils.toMultiValueMap(new LinkedCaseInsensitiveMap<>(8, Locale.ENGLISH))),
@@ -298,6 +299,7 @@ class HeadersAdaptersTests {
 	@interface ParameterizedPopulatedHeadersTest {
 	}
 
+	@SuppressWarnings("removal")
 	static Stream<Arguments> nativeHeadersWithCasedEntries() {
 		return Stream.of(
 				argumentSet("Netty", new Netty4HeadersAdapter(withHeaders(new DefaultHttpHeaders(), h -> h::add))),

@@ -37,7 +37,10 @@ import org.springframework.util.Assert;
  *
  * @author Violeta Georgieva
  * @since 6.0
+ * @deprecated as of 6.2.18 with no replacement
  */
+@Deprecated(since = "6.2.18", forRemoval = true)
+@SuppressWarnings("removal")
 public class ReactorNetty2HttpHandlerAdapter implements BiFunction<HttpServerRequest, HttpServerResponse, Mono<Void>> {
 
 	private static final Log logger = HttpLogging.forLogName(ReactorNetty2HttpHandlerAdapter.class);

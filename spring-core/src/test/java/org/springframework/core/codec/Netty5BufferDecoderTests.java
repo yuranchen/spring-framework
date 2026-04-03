@@ -34,6 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Arjen Poutsma
  */
+@SuppressWarnings("removal")
 class Netty5BufferDecoderTests extends AbstractDecoderTests<Netty5BufferDecoder> {
 
 	private final byte[] fooBytes = "foo".getBytes(StandardCharsets.UTF_8);

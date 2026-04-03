@@ -403,6 +403,7 @@ public abstract class AbstractHandshakeHandler implements HandshakeHandler, Life
 	}
 
 
+	@SuppressWarnings("removal")
 	private static RequestUpgradeStrategy initRequestUpgradeStrategy() {
 		if (tomcatWsPresent) {
 			return new TomcatRequestUpgradeStrategy();

@@ -43,7 +43,9 @@ import org.springframework.web.reactive.socket.adapter.ReactorNetty2WebSocketSes
  *
  * @author Violeta Georgieva
  * @since 6.0
+ * @deprecated as of 6.2.18 with no replacement
  */
+@Deprecated(since = "6.2.18", forRemoval = true)
 public class ReactorNetty2WebSocketClient implements WebSocketClient {
 
 	private static final Log logger = LogFactory.getLog(ReactorNetty2WebSocketClient.class);
@@ -119,6 +121,7 @@ public class ReactorNetty2WebSocketClient implements WebSocketClient {
 	}
 
 	@Override
+	@SuppressWarnings("removal")
 	public Mono<Void> execute(URI url, HttpHeaders requestHeaders, WebSocketHandler handler) {
 		String protocols = StringUtils.collectionToCommaDelimitedString(handler.getSubProtocols());
 		WebsocketClientSpec clientSpec = buildSpec(protocols);

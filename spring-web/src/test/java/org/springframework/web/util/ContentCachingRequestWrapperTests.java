@@ -34,6 +34,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
  * @author Brian Clozel
  * @author Stephane Nicoll
  */
+@SuppressWarnings("removal")
 class ContentCachingRequestWrapperTests {
 
 	protected static final String FORM_CONTENT_TYPE = MediaType.APPLICATION_FORM_URLENCODED_VALUE;

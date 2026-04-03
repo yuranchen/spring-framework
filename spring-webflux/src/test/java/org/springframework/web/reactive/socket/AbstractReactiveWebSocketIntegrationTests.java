@@ -93,6 +93,7 @@ abstract class AbstractReactiveWebSocketIntegrationTests {
 	@interface ParameterizedWebSocketTest {
 	}
 
+	@SuppressWarnings("removal")
 	static Stream<Object[]> arguments() throws IOException {
 
 		List<Named<WebSocketClient>> clients = List.of(
@@ -214,6 +215,7 @@ abstract class AbstractReactiveWebSocketIntegrationTests {
 	}
 
 	@Configuration
+	@SuppressWarnings("removal")
 	static class ReactorNetty2Config extends AbstractHandlerAdapterConfig {
 
 		@Override
@@ -233,6 +235,7 @@ abstract class AbstractReactiveWebSocketIntegrationTests {
 
 
 	@Configuration
+	@SuppressWarnings("removal")
 	static class UndertowConfig extends AbstractHandlerAdapterConfig {
 
 		@Override

@@ -34,7 +34,9 @@ import jakarta.websocket.server.ServerEndpointConfig;
  * @author Juergen Hoeller
  * @since 4.0.1
  * @see io.undertow.websockets.jsr.ServerWebSocketContainer#doUpgrade
+ * @deprecated as of 6.2.18 with no replacement
  */
+@Deprecated(since = "6.2.18", forRemoval = true)
 public class UndertowRequestUpgradeStrategy extends StandardWebSocketUpgradeStrategy {
 
 	private static final String[] SUPPORTED_VERSIONS = new String[] {"13", "8", "7"};

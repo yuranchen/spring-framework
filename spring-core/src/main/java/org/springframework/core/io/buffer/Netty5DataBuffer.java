@@ -36,7 +36,10 @@ import org.springframework.util.ObjectUtils;
  * @author Violeta Georgieva
  * @author Arjen Poutsma
  * @since 6.0
+ * @deprecated as of 6.2.18 with no replacement
  */
+@Deprecated(since = "6.2.18", forRemoval = true)
+@SuppressWarnings("removal")
 public final class Netty5DataBuffer implements CloseableDataBuffer, TouchableDataBuffer {
 
 	private final Buffer buffer;

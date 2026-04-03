@@ -42,7 +42,10 @@ import org.springframework.web.reactive.socket.WebSocketMessage.Type;
  * @author Violeta Georgieva
  * @author Rossen Stoyanchev
  * @since 5.0
+ * @deprecated as of 6.2.18 with no replacement
  */
+@Deprecated(since = "6.2.18", forRemoval = true)
+@SuppressWarnings("removal")
 public class UndertowWebSocketHandlerAdapter extends AbstractReceiveListener {
 
 	private final UndertowWebSocketSession session;

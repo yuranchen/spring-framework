@@ -33,7 +33,10 @@ import org.springframework.util.Assert;
  * @author Violeta Georgieva
  * @author Arjen Poutsma
  * @since 6.0
+ * @deprecated as of 6.2.18 with no replacement
  */
+@Deprecated(since = "6.2.18", forRemoval = true)
+@SuppressWarnings("removal")
 public class Netty5DataBufferFactory implements DataBufferFactory {
 
 	private final BufferAllocator bufferAllocator;

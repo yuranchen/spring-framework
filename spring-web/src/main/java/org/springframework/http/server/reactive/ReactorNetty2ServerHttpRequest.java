@@ -53,6 +53,7 @@ import org.springframework.util.MultiValueMap;
  * @author Sebastien Deleuze
  * @since 6.0
  */
+@SuppressWarnings("removal")
 class ReactorNetty2ServerHttpRequest extends AbstractServerHttpRequest {
 
 	private static final Log logger = HttpLogging.forLogName(ReactorNetty2ServerHttpRequest.class);

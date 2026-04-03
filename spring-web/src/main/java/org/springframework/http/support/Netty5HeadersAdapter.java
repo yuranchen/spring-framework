@@ -40,7 +40,10 @@ import org.springframework.util.MultiValueMap;
  * @author Violeta Georgieva
  * @author Simon Baslé
  * @since 6.1
+ * deprecated as of 6.2.18 with no replacement
  */
+@Deprecated(since = "6.2.18", forRemoval = true)
+@SuppressWarnings("removal")
 public final class Netty5HeadersAdapter implements MultiValueMap<String, String> {
 
 	private final HttpHeaders headers;

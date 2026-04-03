@@ -196,6 +196,7 @@ public class WebSocketMessage {
 	}
 
 
+	@SuppressWarnings("removal")
 	private static class ReactorNetty2Helper {
 
 		static WebSocketMessage retain(WebSocketMessage message) {

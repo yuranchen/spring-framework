@@ -41,7 +41,10 @@ import org.springframework.web.server.ServerWebExchange;
  *
  * @author Violeta Georgieva
  * @since 6.0
+ * @deprecated as of 6.2.18 with no replacement
  */
+@Deprecated(since = "6.2.18", forRemoval = true)
+@SuppressWarnings("removal")
 public class ReactorNetty2RequestUpgradeStrategy implements RequestUpgradeStrategy {
 
 	private final Supplier<WebsocketServerSpec.Builder> specBuilderSupplier;

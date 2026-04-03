@@ -32,6 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Arjen Poutsma
  */
+@SuppressWarnings("removal")
 class Netty5BufferEncoderTests extends AbstractEncoderTests<Netty5BufferEncoder> {
 
 	private final byte[] fooBytes = "foo".getBytes(StandardCharsets.UTF_8);

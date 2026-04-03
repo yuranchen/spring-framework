@@ -98,6 +98,7 @@ class DefaultServerHttpRequestBuilderTests {
 		return argumentSet(description, headerMap, true);
 	}
 
+	@SuppressWarnings("removal")
 	static Stream<Arguments> headers() {
 		return Stream.of(
 				initHeader("Map", CollectionUtils.toMultiValueMap(new LinkedCaseInsensitiveMap<>(8, Locale.ENGLISH))),
