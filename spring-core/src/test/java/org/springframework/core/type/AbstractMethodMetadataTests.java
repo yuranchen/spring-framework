@@ -224,7 +224,9 @@ public abstract class AbstractMethodMetadataTests {
 		Stream<Class<?>> types = metadata.getAnnotations().stream()
 				.filter(MergedAnnotation::isDirectlyPresent)
 				.map(MergedAnnotation::getType);
-		assertThat(types).containsExactlyInAnyOrder(Tag.class, DirectAnnotation.class);
+		// We do not use containsExactlyInAnyOrder(), because annotations
+		// must be returned in source declaration order.
+		assertThat(types).containsExactly(Tag.class, DirectAnnotation.class);
 	}
 
 	@Test
@@ -254,8 +256,10 @@ public abstract class AbstractMethodMetadataTests {
 		MultiValueMap<String, Object> attributes = getTagged(WithMetaAnnotationAttributes.class)
 				.getAllAnnotationAttributes(AnnotationAttributes.class.getName());
 		assertThat(attributes).containsOnlyKeys("name", "size");
-		assertThat(attributes.get("name")).containsExactlyInAnyOrder("m1", "m2");
-		assertThat(attributes.get("size")).containsExactlyInAnyOrder(1, 2);
+		// We do not use containsExactlyInAnyOrder(), because annotations
+		// must be returned in source declaration order.
+		assertThat(attributes.get("name")).containsExactly("m1", "m2");
+		assertThat(attributes.get("size")).containsExactly(1, 2);
 	}
 
 	@Test // gh-24375

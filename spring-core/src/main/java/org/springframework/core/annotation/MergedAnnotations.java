@@ -446,15 +446,17 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	}
 
 	/**
-	 * Create a new {@link MergedAnnotations} instance from the specified
-	 * collection of directly present annotations. This method allows a
-	 * {@code MergedAnnotations} instance to be created from annotations that
-	 * are not necessarily loaded using reflection. The provided annotations
-	 * must all be {@link MergedAnnotation#isDirectlyPresent() directly present}
-	 * and must have an {@link MergedAnnotation#getAggregateIndex() aggregate
-	 * index} of {@code 0}.
+	 * Create a new {@link MergedAnnotations} instance from the provided
+	 * collection of annotations.
+	 * <p>This method allows a {@code MergedAnnotations} instance to be created
+	 * from annotations that are not necessarily loaded using reflection.
+	 * <p>The provided annotations must all be
+	 * {@link MergedAnnotation#isDirectlyPresent() directly present} and must have
+	 * an {@link MergedAnnotation#getAggregateIndex() aggregate index} of {@code 0}.
+	 * In addition, the provided collection must retain the source declaration order
+	 * of the annotations &mdash; for example, a {@link java.util.List}.
 	 * <p>The resulting {@code MergedAnnotations} instance will contain both the
-	 * specified annotations and any meta-annotations that can be read using
+	 * provided annotations and any meta-annotations that can be read using
 	 * reflection.
 	 * @param annotations the annotations to include
 	 * @return a {@code MergedAnnotations} instance containing the annotations

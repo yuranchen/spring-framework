@@ -405,7 +405,9 @@ class AnnotationMetadataTests {
 		assertThat(metadata.hasAnnotation(SpecialAttr.class.getName())).isTrue();
 
 		assertThat(metadata.hasAnnotation(NamedComposedAnnotation.class.getName())).isTrue();
-		assertThat(metadata.getAnnotationTypes()).containsExactlyInAnyOrder(
+		// We do not use containsExactlyInAnyOrder(), because annotations
+		// must be returned in source declaration order.
+		assertThat(metadata.getAnnotationTypes()).containsExactly(
 				Component.class.getName(), Scope.class.getName(),
 				SpecialAttr.class.getName(), DirectAnnotation.class.getName(),
 				MetaMetaAnnotation.class.getName(), EnumSubclasses.class.getName(),

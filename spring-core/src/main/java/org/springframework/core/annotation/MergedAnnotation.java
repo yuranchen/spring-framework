@@ -623,7 +623,7 @@ public interface MergedAnnotation<A extends Annotation> {
 	 * @param annotationType the annotation type
 	 * @param attributes the annotation attributes or {@code null} if just default
 	 * values should be used
-	 * @return a {@link MergedAnnotation} instance for the annotation and attributes
+	 * @return a {@link MergedAnnotation} instance for the annotation type and attributes
 	 */
 	static <A extends Annotation> MergedAnnotation<A> of(
 			@Nullable ClassLoader classLoader, @Nullable Object source,
