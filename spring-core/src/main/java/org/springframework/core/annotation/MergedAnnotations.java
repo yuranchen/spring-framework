@@ -453,6 +453,8 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	 * <p>The provided annotations must all be
 	 * {@link MergedAnnotation#isDirectlyPresent() directly present} and must have
 	 * an {@link MergedAnnotation#getAggregateIndex() aggregate index} of {@code 0}.
+	 * In addition, the provided collection must retain the source declaration order
+	 * of the annotations &mdash; for example, a {@link java.util.List}.
 	 * <p>The resulting {@code MergedAnnotations} instance will contain both the
 	 * provided annotations and any meta-annotations that can be read using
 	 * reflection.

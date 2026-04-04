@@ -26,7 +26,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -43,6 +42,7 @@ import org.springframework.util.ClassUtils;
  *
  * @author Brian Clozel
  * @author Juergen Hoeller
+ * @author Sam Brannen
  * @since 7.0
  */
 abstract class ClassFileAnnotationDelegate {
@@ -50,11 +50,11 @@ abstract class ClassFileAnnotationDelegate {
 	static MergedAnnotations createMergedAnnotations(
 			String className, RuntimeVisibleAnnotationsAttribute annotationAttribute, @Nullable ClassLoader classLoader) {
 
-		Set<MergedAnnotation<?>> annotations = annotationAttribute.annotations()
+		List<MergedAnnotation<?>> annotations = annotationAttribute.annotations()
 				.stream()
 				.map(ann -> createMergedAnnotation(className, ann, classLoader))
 				.filter(Objects::nonNull)
-				.collect(Collectors.toSet());
+				.collect(Collectors.toList());
 		return MergedAnnotations.of(annotations);
 	}
 
