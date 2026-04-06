@@ -74,7 +74,12 @@ class BridgeMethodResolverTests {
 		assertThat(bridgedMethod.isBridge()).isFalse();
 		assertThat(bridgedMethod.getName()).isEqualTo("add");
 		assertThat(bridgedMethod.getParameterCount()).isEqualTo(1);
-		assertThat(bridgedMethod.getParameterTypes()[0]).isEqualTo(Date.class);
+		if (IdeUtils.runningInEclipse()) {
+			assertThat(bridgedMethod.getParameterTypes()).containsOnly(Serializable.class);
+		}
+		else {
+			assertThat(bridgedMethod.getParameterTypes()).containsOnly(Date.class);
+		}
 	}
 
 	@Test
@@ -491,10 +496,12 @@ class BridgeMethodResolverTests {
 
 	interface DefaultMethods extends InterfaceMethods<Integer> {
 
+		@Override
 		default Integer getValue() {
 			return 0;
 		}
 
+		@Override
 		default Integer[] getValues() {
 			return new Integer[0];
 		}
