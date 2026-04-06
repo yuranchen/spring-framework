@@ -37,6 +37,7 @@ import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.assertj.core.api.InstanceOfAssertFactories;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.core.MethodParameter;
@@ -83,6 +84,12 @@ import static org.assertj.core.api.InstanceOfAssertFactories.list;
 class SpelReproTests extends AbstractExpressionTests {
 
 	private static final ParserContext DOLLARSQUARE_TEMPLATE_PARSER_CONTEXT = new TemplateParserContext("$[", "]");
+
+
+	@BeforeEach
+	void resetGoo() {
+		Goo.reset();
+	}
 
 
 	@Test
@@ -1880,7 +1887,11 @@ class SpelReproTests extends AbstractExpressionTests {
 
 	static class Goo {
 
-		public static Goo instance = new Goo();
+		public static Goo instance;
+
+		static void reset() {
+			instance = new Goo();
+		}
 
 		public String bar = "key";
 
