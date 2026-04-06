@@ -490,7 +490,7 @@ final class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnn
 		}
 		if (!type.isInstance(value)) {
 			throw new IllegalArgumentException("Unable to adapt value of type " +
-					value.getClass().getName() + " to " + type.getName());
+					ClassUtils.getCanonicalName(value.getClass()) + " to " + ClassUtils.getCanonicalName(type));
 		}
 		return (T) value;
 	}
@@ -525,8 +525,8 @@ final class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnn
 		}
 		if (!attributeType.isInstance(value)) {
 			throw new IllegalStateException("Attribute '" + attribute.getName() +
-					"' in annotation " + getType().getName() + " should be compatible with " +
-					attributeType.getName() + " but a " + value.getClass().getName() +
+					"' in annotation " + ClassUtils.getCanonicalName(getType()) + " should be compatible with " +
+					ClassUtils.getCanonicalName(attributeType) + " but a " + ClassUtils.getCanonicalName(value.getClass()) +
 					" value was returned");
 		}
 		return value;
@@ -583,7 +583,7 @@ final class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnn
 		int attributeIndex = (isFiltered(attributeName) ? -1 : this.mapping.getAttributes().indexOf(attributeName));
 		if (attributeIndex == -1 && required) {
 			throw new NoSuchElementException("No attribute named '" + attributeName +
-					"' present in merged annotation " + getType().getName());
+					"' present in merged annotation " + ClassUtils.getCanonicalName(getType()));
 		}
 		return attributeIndex;
 	}
@@ -660,9 +660,10 @@ final class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnn
 		catch (Exception ex) {
 			AnnotationUtils.rethrowAnnotationConfigurationException(ex);
 			if (logger.isEnabled()) {
-				String type = mapping.getAnnotationType().getName();
+				String type = ClassUtils.getCanonicalName(mapping.getAnnotationType());
 				String item = (mapping.getDistance() == 0 ? "annotation " + type :
-						"meta-annotation " + type + " from " + mapping.getRoot().getAnnotationType().getName());
+						"meta-annotation " + type + " from " +
+							ClassUtils.getCanonicalName(mapping.getRoot().getAnnotationType()));
 				logger.log("Failed to introspect " + item, source, ex);
 			}
 			return null;
