@@ -2967,6 +2967,7 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 		assertThat((Boolean) expression.getValue(tvar)).isFalse();
 
 		TestClass7 tc7 = new TestClass7();
+		TestClass7.reset();
 		expression = parse("property == 'UK'");
 		assertThat((Boolean) expression.getValue(tc7)).isTrue();
 		TestClass7.property = null;
