@@ -2,6 +2,7 @@
 = Literal Expressions
 
 SpEL supports the following types of literal expressions.
+The `\s`, `\t`, `\r` and `\n` characters are all valid separators between tokens.
 
 String ::
   Strings can be delimited by single quotation marks (`'`) or double quotation marks
