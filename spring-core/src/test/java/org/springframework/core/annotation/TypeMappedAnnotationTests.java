@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +29,7 @@ import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import org.springframework.core.OverridingClassLoader;
 import org.springframework.core.annotation.MergedAnnotation.Adapt;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -122,6 +124,23 @@ class TypeMappedAnnotationTests {
 				Collections.singletonMap("classValue", InputStream.class.getName()));
 		assertThat(annotation.getString("classValue")).isEqualTo(InputStream.class.getName());
 		assertThat(annotation.getClass("classValue")).isEqualTo(InputStream.class);
+	}
+
+	@Test  // gh-36606
+	void adaptFromStringToClassWithMemberSourceUsesMemberClassLoader() throws Exception {
+		OverridingClassLoader classLoader = new OverridingClassLoader(getClass().getClassLoader()) {
+			@Override
+			protected boolean isEligibleForOverriding(String className) {
+				return ClassAttributes.class.getName().equals(className);
+			}
+		};
+		Class<?> sourceClass = classLoader.loadClass(ClassAttributes.class.getName());
+		Method sourceMethod = sourceClass.getDeclaredMethod("classValue");
+
+		MergedAnnotation<?> annotation = TypeMappedAnnotation.of(null, sourceMethod,
+				ClassAttributes.class, Map.of("classValue", sourceClass.getName()));
+
+		assertThat(annotation.getClass("classValue").getClassLoader()).isSameAs(classLoader);
 	}
 
 	@Test
