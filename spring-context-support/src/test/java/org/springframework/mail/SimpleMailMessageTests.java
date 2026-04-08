@@ -98,6 +98,60 @@ class SimpleMailMessageTests {
 		assertThat(copy.getBcc()[0]).isEqualTo("us@mail.org");
 	}
 
+	@Test
+	void setSentDateStoresACopy() {
+		SimpleMailMessage message = new SimpleMailMessage();
+		Date sentDate = new Date(1234L);
+
+		message.setSentDate(sentDate);
+		sentDate.setTime(0L);
+
+		assertThat(message.getSentDate()).isEqualTo(new Date(1234L));
+	}
+
+	@Test
+	void getSentDateReturnsACopy() {
+		SimpleMailMessage message = new SimpleMailMessage();
+		Date sentDate = new Date(1234L);
+		message.setSentDate(sentDate);
+
+		Date exportedDate = message.getSentDate();
+		exportedDate.setTime(0L);
+
+		assertThat(message.getSentDate()).isEqualTo(new Date(1234L));
+	}
+
+	@Test
+	void copyConstructorCopiesSentDate() {
+		Date sentDate = new Date(1234L);
+		SimpleMailMessage original = new SimpleMailMessage();
+		original.setSentDate(sentDate);
+
+		SimpleMailMessage copy = new SimpleMailMessage(original);
+		sentDate.setTime(0L);
+
+		Date copiedDate = copy.getSentDate();
+		assertThat(copiedDate).isNotNull();
+		copiedDate.setTime(1L);
+
+		assertThat(original.getSentDate()).isEqualTo(new Date(1234L));
+		assertThat(copy.getSentDate()).isEqualTo(new Date(1234L));
+	}
+
+	@Test
+	void copyToCopiesSentDate() {
+		SimpleMailMessage source = new SimpleMailMessage();
+		source.setSentDate(new Date(1234L));
+
+		TestMailMessage target = new TestMailMessage();
+		source.copyTo(target);
+
+		assertThat(target.getSentDate()).isNotNull();
+		target.getSentDate().setTime(0L);
+
+		assertThat(source.getSentDate()).isEqualTo(new Date(1234L));
+	}
+
 	/**
 	 * Tests that two equal SimpleMailMessages have equal hash codes.
 	 */
@@ -164,6 +218,60 @@ class SimpleMailMessageTests {
 	@Test
 	void copyToChokesOnNullTargetMessage() {
 		assertThatIllegalArgumentException().isThrownBy(() -> new SimpleMailMessage().copyTo(null));
+	}
+
+	private static class TestMailMessage implements MailMessage {
+
+		private Date sentDate;
+
+		Date getSentDate() {
+			return this.sentDate;
+		}
+
+		@Override
+		public void setFrom(String from) {
+		}
+
+		@Override
+		public void setReplyTo(String replyTo) {
+		}
+
+		@Override
+		public void setTo(String to) {
+		}
+
+		@Override
+		public void setTo(String... to) {
+		}
+
+		@Override
+		public void setCc(String cc) {
+		}
+
+		@Override
+		public void setCc(String... cc) {
+		}
+
+		@Override
+		public void setBcc(String bcc) {
+		}
+
+		@Override
+		public void setBcc(String... bcc) {
+		}
+
+		@Override
+		public void setSentDate(Date sentDate) {
+			this.sentDate = sentDate;
+		}
+
+		@Override
+		public void setSubject(String subject) {
+		}
+
+		@Override
+		public void setText(String text) {
+		}
 	}
 
 }
