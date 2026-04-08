@@ -409,19 +409,18 @@ public class HandlerMethod extends AnnotatedMethod {
 	// Support methods for use in subclass variants
 
 	/**
-	 * Assert that the target bean class is an instance of the class where the given
-	 * method is declared. In some cases the actual controller instance at request-processing
-	 * time may be a JDK dynamic proxy (lazy initialization, prototype
-	 * beans, and others). {@code @Controller}'s that require proxying should prefer
-	 * class-based proxy mechanisms.
+	 * Assert that the target bean class is an instance of the class where the given method
+	 * is declared. In some cases the actual controller instance at request-processing time
+	 * may be a JDK dynamic proxy (lazy initialization, prototype beans, and others).
+	 * {@code @Controller}'s that require proxying should prefer class-based proxy mechanisms.
 	 */
 	protected void assertTargetBean(Method method, Object targetBean, @Nullable Object[] args) {
 		Class<?> methodDeclaringClass = method.getDeclaringClass();
 		Class<?> targetBeanClass = targetBean.getClass();
 		if (!methodDeclaringClass.isAssignableFrom(targetBeanClass)) {
 			String text = "The mapped handler method class '" + methodDeclaringClass.getName() +
-					"' is not an instance of the actual controller bean class '" +
-					targetBeanClass.getName() + "'. If the controller requires proxying " +
+					"' is not an instance of the actual target bean class '" +
+					targetBeanClass.getName() + "'. If the target bean requires proxying " +
 					"(for example, due to @Transactional), please use class-based proxying.";
 			throw new IllegalStateException(formatInvokeError(text, args));
 		}
@@ -432,12 +431,12 @@ public class HandlerMethod extends AnnotatedMethod {
 				.mapToObj(i -> {
 					Object arg = args[i];
 					return (arg != null ?
-							"[" + i + "] [type=" +arg.getClass().getName() + "] [value=" + arg + "]" :
+							"[" + i + "] [type=" + arg.getClass().getName() + "] [value=" + arg + "]" :
 							"[" + i + "] [null]");
 				})
-				.collect(Collectors.joining(",\n", " ", " "));
+				.collect(Collectors.joining(",\n"));
 		return text + "\n" +
-				"Controller [" + getBeanType().getName() + "]\n" +
+				"Handler [" + getBeanType().getName() + "]\n" +
 				"Method [" + getBridgedMethod().toGenericString() + "] " +
 				"with argument values:\n" + formattedArgs;
 	}
