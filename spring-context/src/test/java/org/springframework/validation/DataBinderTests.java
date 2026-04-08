@@ -1854,8 +1854,12 @@ class DataBinderTests {
 
 		FieldError ageError = errors.getFieldError("age");
 		assertThat(ageError.getCode()).isEqualTo("typeMismatch");
+		assertThat(ageError.isBindingFailure()).isTrue();
+		assertThat(ageError.shouldRenderDefaultMessage()).isFalse();
 		FieldError nameError = errors.getFieldError("name");
 		assertThat(nameError.getCode()).isEqualTo("badName");
+		assertThat(nameError.isBindingFailure()).isFalse();
+		assertThat(nameError.shouldRenderDefaultMessage()).isTrue();
 	}
 
 	@Test
