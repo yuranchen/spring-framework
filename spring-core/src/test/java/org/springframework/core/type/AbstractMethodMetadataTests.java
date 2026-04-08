@@ -187,12 +187,12 @@ public abstract class AbstractMethodMetadataTests {
 	}
 
 	@Test
-	void isStatusWhenStaticReturnsTrue() {
+	void isStaticWhenStaticReturnsTrue() {
 		assertThat(getTagged(WithStaticMethod.class).isStatic()).isTrue();
 	}
 
 	@Test
-	void isStaticWhenNotStaticReturnsFalse() {
+	void isStaticWhenNonStaticReturnsFalse() {
 		assertThat(getTagged(WithMethod.class).isStatic()).isFalse();
 	}
 
@@ -248,7 +248,9 @@ public abstract class AbstractMethodMetadataTests {
 	void getAnnotationAttributesReturnsAttributes() {
 		Map<String, Object> attributes = getTagged(WithAnnotationAttributes.class)
 				.getAnnotationAttributes(AnnotationAttributes.class.getName());
-		assertThat(attributes).containsOnly(entry("name", "test"), entry("size", 1));
+		// We do not use containsExactlyInAnyOrder(), because annotations
+		// must be returned in source declaration order.
+		assertThat(attributes).containsExactly(entry("name", "test"), entry("size", 1));
 	}
 
 	@Test
