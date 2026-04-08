@@ -32,7 +32,6 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.messaging.support.MessageHeaderAccessor;
-import org.springframework.util.ClassUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.MimeType;
 import org.springframework.util.MimeTypeUtils;
@@ -464,7 +463,7 @@ public class StompHeaderAccessor extends SimpMessageHeaderAccessor {
 	private String appendPayload(Object payload) {
 		if (payload.getClass() != byte[].class) {
 			throw new IllegalStateException(
-					"Expected byte array payload but got: " + ClassUtils.getQualifiedName(payload.getClass()));
+					"Expected byte array payload but got: " + payload.getClass().getTypeName());
 		}
 		byte[] bytes = (byte[]) payload;
 		MimeType mimeType = getContentType();

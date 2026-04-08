@@ -20,7 +20,6 @@ import java.lang.reflect.Type;
 
 import org.springframework.beans.BeansException;
 import org.springframework.core.ResolvableType;
-import org.springframework.util.ClassUtils;
 
 /**
  * Thrown when a bean doesn't match the expected type.
@@ -63,7 +62,7 @@ public class BeanNotOfRequiredTypeException extends BeansException {
 	 */
 	public BeanNotOfRequiredTypeException(String beanName, Type requiredType, Class<?> actualType) {
 		super("Bean named '" + beanName + "' is expected to be of type '" + requiredType.getTypeName() +
-				"' but was actually of type '" + ClassUtils.getQualifiedName(actualType) + "'");
+				"' but was actually of type '" + actualType.getTypeName() + "'");
 		this.beanName = beanName;
 		this.genericRequiredType = requiredType;
 		this.actualType = actualType;
