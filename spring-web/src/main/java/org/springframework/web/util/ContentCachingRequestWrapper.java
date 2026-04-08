@@ -85,7 +85,9 @@ public class ContentCachingRequestWrapper extends HttpServletRequestWrapper {
 	/**
 	 * Create a new ContentCachingRequestWrapper for the given servlet request.
 	 * @param request the original servlet request
-	 * @param contentCacheLimit the maximum number of bytes to cache per request
+	 * @param contentCacheLimit the maximum number of bytes to cache per request;
+	 * no limit is set if the value is 0 or less. It is recommended to set a
+	 * concrete limit in order to avoid using too much memory.
 	 * @since 4.3.6
 	 * @see #handleContentOverflow(int)
 	 */
@@ -93,12 +95,12 @@ public class ContentCachingRequestWrapper extends HttpServletRequestWrapper {
 		super(request);
 		int contentLength = request.getContentLength();
 		if (contentLength > 0) {
-			this.cachedContent = new FastByteArrayOutputStream(Math.min(contentLength, contentCacheLimit));
+			this.cachedContent = new FastByteArrayOutputStream((contentCacheLimit > 0 ? Math.min(contentLength, contentCacheLimit) : contentLength));
 		}
 		else {
 			this.cachedContent = new FastByteArrayOutputStream();
 		}
-		this.contentCacheLimit = contentCacheLimit;
+		this.contentCacheLimit = (contentCacheLimit > 0 ? contentCacheLimit : null);
 	}
 
 

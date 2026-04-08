@@ -75,6 +75,14 @@ class ContentCachingRequestWrapperTests {
 	}
 
 	@Test
+	void cachedContentToByteArrayWithoutLimit() throws Exception {
+		ContentCachingRequestWrapper wrapper = new ContentCachingRequestWrapper(createGetRequest("Hello World"), 0);
+		byte[] response = wrapper.getInputStream().readAllBytes();
+		assertThat(response).isEqualTo("Hello World".getBytes(CHARSET));
+		assertThat(wrapper.getContentAsByteArray()).isEqualTo("Hello World".getBytes(CHARSET));
+	}
+
+	@Test
 	void cachedContentToByteArrayWithLimit() throws Exception {
 		ContentCachingRequestWrapper wrapper = new ContentCachingRequestWrapper(createGetRequest("Hello World"), CONTENT_CACHE_LIMIT);
 		byte[] response = wrapper.getInputStream().readAllBytes();
