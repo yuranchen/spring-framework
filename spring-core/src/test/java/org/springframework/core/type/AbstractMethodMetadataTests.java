@@ -30,7 +30,6 @@ import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
-import static org.assertj.core.api.Assumptions.assumeThat;
 
 /**
  * Base class for {@link MethodMetadata} tests.
@@ -81,6 +80,10 @@ public abstract class AbstractMethodMetadataTests {
 		assertThat(getTagged(WithMethod.class).toString())
 				.isEqualTo("public java.lang.String " + WithMethod.class.getName() + ".test()");
 
+		assertThat(getTagged(WithMethodWithLocalType.class).toString())
+				.isEqualTo("public org.springframework.core.type.AbstractMethodMetadataTests$LocalType " +
+						WithMethodWithLocalType.class.getName() + ".test()");
+
 		assertThat(getTagged(WithMethodWithOneArgument.class).toString())
 				.isEqualTo("public java.lang.String " + WithMethodWithOneArgument.class.getName() + ".test(java.lang.String)");
 
@@ -111,8 +114,13 @@ public abstract class AbstractMethodMetadataTests {
 	}
 
 	@Test
-	void getReturnTypeReturnsReturnType() {
-		assertThat(getTagged(WithMethod.class).getReturnTypeName()).isEqualTo(String.class.getName());
+	void getReturnTypeReturnsTypeName() {
+		assertThat(getTagged(WithMethod.class).getReturnTypeName()).isEqualTo(String.class.getTypeName());
+	}
+
+	@Test
+	void getReturnTypeReturnsTypeNameForLocalType() {
+		assertThat(getTagged(WithMethodWithLocalType.class).getReturnTypeName()).isEqualTo(LocalType.class.getTypeName());
 	}
 
 	@Test
@@ -121,58 +129,26 @@ public abstract class AbstractMethodMetadataTests {
 	}
 
 	@Test
-	void getReturnTypeReturnsPrimitiveArrayForPrimitiveArrayReturnTypeForStandardReflection() {
-		MethodMetadata methodMetadata = getTagged(WithPrimitiveArrayMethod.class);
-		assumeThat(methodMetadata).as("skipped for ASM and ClassFile").isInstanceOf(StandardMethodMetadata.class);
-		assertThat(methodMetadata.getReturnTypeName()).isEqualTo("[I");
-	}
-
-	@Test
 	void getReturnTypeReturnsPrimitiveArrayForPrimitiveArrayReturnType() {
 		MethodMetadata methodMetadata = getTagged(WithPrimitiveArrayMethod.class);
-		assumeThat(methodMetadata).as("skipped for standard reflection").isNotInstanceOf(StandardMethodMetadata.class);
 		assertThat(methodMetadata.getReturnTypeName()).isEqualTo("int[]");
-	}
-
-	@Test
-	void getReturnTypeReturnsStringArrayForStringArrayReturnTypeForStandardReflection() {
-		MethodMetadata methodMetadata = getTagged(WithStringArrayMethod.class);
-		assumeThat(methodMetadata).as("skipped for ASM and ClassFile").isInstanceOf(StandardMethodMetadata.class);
-		assertThat(methodMetadata.getReturnTypeName()).isEqualTo("[Ljava.lang.String;");
 	}
 
 	@Test
 	void getReturnTypeReturnsStringArrayForStringArrayReturnType() {
 		MethodMetadata methodMetadata = getTagged(WithStringArrayMethod.class);
-		assumeThat(methodMetadata).as("skipped for standard reflection").isNotInstanceOf(StandardMethodMetadata.class);
 		assertThat(methodMetadata.getReturnTypeName()).isEqualTo("java.lang.String[]");
-	}
-
-	@Test
-	void getReturnTypeReturnsTwoDimensionalPrimitiveArrayForTwoDimensionalPrimitiveArrayReturnTypeForStandardReflection() {
-		MethodMetadata methodMetadata = getTagged(WithTwoDimensionalPrimitiveArrayMethod.class);
-		assumeThat(methodMetadata).as("skipped for ASM and ClassFile").isInstanceOf(StandardMethodMetadata.class);
-		assertThat(methodMetadata.getReturnTypeName()).isEqualTo("[[I");
 	}
 
 	@Test
 	void getReturnTypeReturnsTwoDimensionalPrimitiveArrayForTwoDimensionalPrimitiveArrayReturnType() {
 		MethodMetadata methodMetadata = getTagged(WithTwoDimensionalPrimitiveArrayMethod.class);
-		assumeThat(methodMetadata).as("skipped for standard reflection").isNotInstanceOf(StandardMethodMetadata.class);
 		assertThat(methodMetadata.getReturnTypeName()).isEqualTo("int[][]");
-	}
-
-	@Test
-	void getReturnTypeReturnsTwoDimensionalStringArrayForTwoDimensionalStringArrayReturnTypeForStandardReflection() {
-		MethodMetadata methodMetadata = getTagged(WithTwoDimensionalStringArrayMethod.class);
-		assumeThat(methodMetadata).as("skipped for ASM and ClassFile").isInstanceOf(StandardMethodMetadata.class);
-		assertThat(methodMetadata.getReturnTypeName()).isEqualTo("[[Ljava.lang.String;");
 	}
 
 	@Test
 	void getReturnTypeReturnsTwoDimensionalStringArrayForTwoDimensionalStringArrayReturnType() {
 		MethodMetadata methodMetadata = getTagged(WithTwoDimensionalStringArrayMethod.class);
-		assumeThat(methodMetadata).as("skipped for standard reflection").isNotInstanceOf(StandardMethodMetadata.class);
 		assertThat(methodMetadata.getReturnTypeName()).isEqualTo("java.lang.String[][]");
 	}
 
@@ -291,6 +267,17 @@ public abstract class AbstractMethodMetadataTests {
 			return "";
 		}
 
+	}
+
+	public static class LocalType {
+	}
+
+	public static class WithMethodWithLocalType {
+
+		@Tag
+		public LocalType test() {
+			return new LocalType();
+		}
 	}
 
 	public static class WithVoidMethod {
