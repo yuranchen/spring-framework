@@ -21,11 +21,16 @@ import java.util.Date;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 /**
+ * Tests for {@link SimpleMailMessage}.
+ *
  * @author Dmitriy Kopylenko
  * @author Juergen Hoeller
  * @author Rick Evans
@@ -98,7 +103,7 @@ class SimpleMailMessageTests {
 		assertThat(copy.getBcc()[0]).isEqualTo("us@mail.org");
 	}
 
-	@Test
+	@Test  // gh-36626
 	void setSentDateStoresACopy() {
 		SimpleMailMessage message = new SimpleMailMessage();
 		Date sentDate = new Date(1234L);
@@ -109,7 +114,7 @@ class SimpleMailMessageTests {
 		assertThat(message.getSentDate()).isEqualTo(new Date(1234L));
 	}
 
-	@Test
+	@Test  // gh-36626
 	void getSentDateReturnsACopy() {
 		SimpleMailMessage message = new SimpleMailMessage();
 		Date sentDate = new Date(1234L);
@@ -121,7 +126,7 @@ class SimpleMailMessageTests {
 		assertThat(message.getSentDate()).isEqualTo(new Date(1234L));
 	}
 
-	@Test
+	@Test  // gh-36626
 	void copyConstructorCopiesSentDate() {
 		Date sentDate = new Date(1234L);
 		SimpleMailMessage original = new SimpleMailMessage();
@@ -138,16 +143,20 @@ class SimpleMailMessageTests {
 		assertThat(copy.getSentDate()).isEqualTo(new Date(1234L));
 	}
 
-	@Test
+	@Test  // gh-36626
 	void copyToCopiesSentDate() {
 		SimpleMailMessage source = new SimpleMailMessage();
 		source.setSentDate(new Date(1234L));
 
-		TestMailMessage target = new TestMailMessage();
+		MailMessage target = mock();
 		source.copyTo(target);
 
-		assertThat(target.getSentDate()).isNotNull();
-		target.getSentDate().setTime(0L);
+		ArgumentCaptor<Date> dateCaptor = ArgumentCaptor.forClass(Date.class);
+		verify(target).setSentDate(dateCaptor.capture());
+
+		Date copiedDate = dateCaptor.getValue();
+		assertThat(copiedDate).isNotNull();
+		copiedDate.setTime(0L);
 
 		assertThat(source.getSentDate()).isEqualTo(new Date(1234L));
 	}
@@ -218,60 +227,6 @@ class SimpleMailMessageTests {
 	@Test
 	void copyToChokesOnNullTargetMessage() {
 		assertThatIllegalArgumentException().isThrownBy(() -> new SimpleMailMessage().copyTo(null));
-	}
-
-	private static class TestMailMessage implements MailMessage {
-
-		private Date sentDate;
-
-		Date getSentDate() {
-			return this.sentDate;
-		}
-
-		@Override
-		public void setFrom(String from) {
-		}
-
-		@Override
-		public void setReplyTo(String replyTo) {
-		}
-
-		@Override
-		public void setTo(String to) {
-		}
-
-		@Override
-		public void setTo(String... to) {
-		}
-
-		@Override
-		public void setCc(String cc) {
-		}
-
-		@Override
-		public void setCc(String... cc) {
-		}
-
-		@Override
-		public void setBcc(String bcc) {
-		}
-
-		@Override
-		public void setBcc(String... bcc) {
-		}
-
-		@Override
-		public void setSentDate(Date sentDate) {
-			this.sentDate = sentDate;
-		}
-
-		@Override
-		public void setSubject(String subject) {
-		}
-
-		@Override
-		public void setText(String text) {
-		}
 	}
 
 }

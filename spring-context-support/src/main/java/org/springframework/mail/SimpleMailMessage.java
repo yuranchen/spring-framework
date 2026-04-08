@@ -195,8 +195,7 @@ public class SimpleMailMessage implements MailMessage, Serializable {
 			target.setBcc(copy(getBcc()));
 		}
 		if (this.sentDate != null) {
-			Date sentDate = this.sentDate;
-			target.setSentDate((Date) sentDate.clone());
+			target.setSentDate((Date) this.sentDate.clone());
 		}
 		if (getSubject() != null) {
 			target.setSubject(getSubject());
