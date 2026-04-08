@@ -12,15 +12,15 @@ dependencies {
 	api(platform("io.netty:netty-bom:4.2.12.Final"))
 	api(platform("io.projectreactor:reactor-bom:2025.0.4"))
 	api(platform("io.rsocket:rsocket-bom:1.1.5"))
-	api(platform("org.apache.groovy:groovy-bom:5.0.4"))
-	api(platform("org.apache.logging.log4j:log4j-bom:2.25.3"))
+	api(platform("org.apache.groovy:groovy-bom:5.0.5"))
+	api(platform("org.apache.logging.log4j:log4j-bom:2.25.4"))
 	api(platform("org.assertj:assertj-bom:3.27.7"))
 	api(platform("org.eclipse.jetty:jetty-bom:12.1.7"))
 	api(platform("org.eclipse.jetty.ee11:jetty-ee11-bom:12.1.7"))
 	api(platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.10.2"))
 	api(platform("org.jetbrains.kotlinx:kotlinx-serialization-bom:1.9.0"))
 	api(platform("org.junit:junit-bom:6.0.3"))
-	api(platform("org.mockito:mockito-bom:5.22.0"))
+	api(platform("org.mockito:mockito-bom:5.23.0"))
 	api(platform("tools.jackson:jackson-bom:3.1.1"))
 
 	constraints {

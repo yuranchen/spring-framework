@@ -32,9 +32,11 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * Simple LRU (Least Recently Used) cache, bounded by a specified cache capacity.
+ *
  * <p>This is a simplified, opinionated implementation of an LRU cache for internal
  * use in Spring Framework. It is inspired from
  * <a href="https://github.com/ben-manes/concurrentlinkedhashmap">ConcurrentLinkedHashMap</a>.
+ *
  * <p>Read and write operations are internally recorded in dedicated buffers,
  * then drained at chosen times to avoid contention.
  *
@@ -70,6 +72,7 @@ public final class ConcurrentLruCache<K, V> {
 
 	private final AtomicReference<DrainStatus> drainStatus = new AtomicReference<>(DrainStatus.IDLE);
 
+
 	/**
 	 * Create a new cache instance with the given capacity and generator function.
 	 * @param capacity the maximum number of entries in the cache
@@ -88,6 +91,7 @@ public final class ConcurrentLruCache<K, V> {
 		this.readOperations = new ReadOperations<>(this.evictionQueue);
 		this.writeOperations = new WriteOperations();
 	}
+
 
 	/**
 	 * Retrieve an entry from the cache, potentially triggering generation of the value.
@@ -344,9 +348,12 @@ public final class ConcurrentLruCache<K, V> {
 		abstract boolean shouldDrainBuffers(boolean delayable);
 	}
 
+
 	private enum CacheEntryState {
+
 		ACTIVE, PENDING_REMOVAL, REMOVED
 	}
+
 
 	private record CacheEntry<V>(V value, CacheEntryState state) {
 
@@ -354,6 +361,7 @@ public final class ConcurrentLruCache<K, V> {
 			return this.state == CacheEntryState.ACTIVE;
 		}
 	}
+
 
 	private static final class ReadOperations<K, V> {
 
@@ -452,6 +460,7 @@ public final class ConcurrentLruCache<K, V> {
 		}
 	}
 
+
 	private static final class WriteOperations {
 
 		private static final int DRAIN_THRESHOLD = 16;
@@ -478,11 +487,12 @@ public final class ConcurrentLruCache<K, V> {
 				task.run();
 			}
 		}
-
 	}
+
 
 	@SuppressWarnings("serial")
 	private static final class Node<K, V> extends AtomicReference<CacheEntry<V>> {
+
 		final K key;
 
 		@Nullable Node<K, V> prev;
@@ -521,7 +531,6 @@ public final class ConcurrentLruCache<K, V> {
 		@Nullable Node<K, V> first;
 
 		@Nullable Node<K, V> last;
-
 
 		@Nullable Node<K, V> poll() {
 			if (this.first == null) {
@@ -596,7 +605,6 @@ public final class ConcurrentLruCache<K, V> {
 				unlink(e);
 			}
 		}
-
 	}
 
 }
