@@ -255,7 +255,7 @@ final class ClassFileAnnotationMetadata implements AnnotationMetadata {
 
 		private Set<MethodMetadata> declaredMethods = new LinkedHashSet<>(4);
 
-		private MergedAnnotations mergedAnnotations = MergedAnnotations.of(Collections.emptySet());
+		private MergedAnnotations mergedAnnotations = MergedAnnotations.of(Collections.emptyList());
 
 		public Builder(ClassLoader classLoader) {
 			this.classLoader = classLoader;
