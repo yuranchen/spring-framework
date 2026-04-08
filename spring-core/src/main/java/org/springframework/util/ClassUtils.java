@@ -1127,16 +1127,16 @@ public abstract class ClassUtils {
 
 	/**
 	 * Return the {@linkplain Class#getCanonicalName() canonical name} of the given
-	 * class, or the {@linkplain Class#getName() binary name} of the class if the
+	 * class, or the {@linkplain Class#getTypeName() type name} of the class if the
 	 * canonical name does not exist.
 	 * @param clazz the class
-	 * @return the canonical name of the class, or the binary name as a fallback
+	 * @return the canonical name of the class, or the type name as a fallback
 	 * @since 7.1
 	 */
 	public static String getCanonicalName(Class<?> clazz) {
 		Assert.notNull(clazz, "Class must not be null");
 		String canonicalName = clazz.getCanonicalName();
-		return (canonicalName != null ? canonicalName : clazz.getName());
+		return (canonicalName != null ? canonicalName : clazz.getTypeName());
 	}
 
 	/**
@@ -1144,6 +1144,7 @@ public abstract class ClassUtils {
 	 * the class name, but component type class name + "[]" for arrays.
 	 * @param clazz the class
 	 * @return the qualified name of the class
+	 * @see Class#getTypeName()
 	 */
 	public static String getQualifiedName(Class<?> clazz) {
 		Assert.notNull(clazz, "Class must not be null");
