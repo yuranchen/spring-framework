@@ -18,10 +18,9 @@ package org.springframework.validation;
 
 import java.io.Serializable;
 
-import org.jspecify.annotations.Nullable;
-
 import org.springframework.beans.PropertyAccessException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
