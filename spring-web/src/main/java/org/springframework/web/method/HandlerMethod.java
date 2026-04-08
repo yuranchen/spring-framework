@@ -96,7 +96,7 @@ public class HandlerMethod extends AnnotatedMethod {
 
 	private @Nullable HandlerMethod resolvedFromHandlerMethod;
 
-	private @Nullable HandlerMethod resolvedBeanHandlerMethod;
+	private volatile @Nullable HandlerMethod resolvedBeanHandlerMethod;
 
 	private final String description;
 
@@ -233,7 +233,10 @@ public class HandlerMethod extends AnnotatedMethod {
 			this.responseStatus = annotation.code();
 			this.responseStatusReason = resolvedReason;
 			if (StringUtils.hasText(this.responseStatusReason) && getMethod().getReturnType() != void.class) {
-				logger.warn("Return value of [" + getMethod() + "] will be ignored since @ResponseStatus 'reason' attribute is set.");
+				if (logger.isWarnEnabled()) {
+					logger.warn("Return value of [" + getMethod() +
+							"] will be ignored since @ResponseStatus 'reason' attribute is set.");
+				}
 			}
 		}
 	}
@@ -352,23 +355,22 @@ public class HandlerMethod extends AnnotatedMethod {
 	 * <p>If the {@link #getBean() handler} is not String, return the same instance.
 	 */
 	public HandlerMethod createWithResolvedBean() {
-		if (this.resolvedBeanHandlerMethod != null) {
-			return this.resolvedBeanHandlerMethod;
+		HandlerMethod resolvedBeanHandlerMethod = this.resolvedBeanHandlerMethod;
+		if (resolvedBeanHandlerMethod != null) {
+			return resolvedBeanHandlerMethod;
 		}
 
+		// We need to resolve a bean name reference.
 		if (!(this.bean instanceof String beanName)) {
 			return this;
 		}
-
 		Assert.state(this.beanFactory != null, "Cannot resolve bean name without BeanFactory");
 		Object handler = this.beanFactory.getBean(beanName);
-		Assert.notNull(handler, "No handler instance");
 
 		HandlerMethod handlerMethod = new HandlerMethod(this, handler, false);
 		if (this.beanFactory.isSingleton(beanName)) {
 			this.resolvedBeanHandlerMethod = handlerMethod;
 		}
-
 		return handlerMethod;
 	}
 
