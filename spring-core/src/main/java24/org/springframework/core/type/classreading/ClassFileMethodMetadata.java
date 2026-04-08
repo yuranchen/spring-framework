@@ -55,18 +55,18 @@ final class ClassFileMethodMetadata implements MethodMetadata {
 	// The source implements equals(), hashCode(), and toString() for the underlying method.
 	private final Object source;
 
-	private final MergedAnnotations annotations;
+	private final MergedAnnotations mergedAnnotations;
 
 
 	ClassFileMethodMetadata(String methodName, AccessFlags accessFlags, @Nullable String declaringClassName,
-			String returnTypeName, Object source, MergedAnnotations annotations) {
+			String returnTypeName, Object source, MergedAnnotations mergedAnnotations) {
 
 		this.methodName = methodName;
 		this.accessFlags = accessFlags;
 		this.declaringClassName = declaringClassName;
 		this.returnTypeName = returnTypeName;
 		this.source = source;
-		this.annotations = annotations;
+		this.mergedAnnotations = mergedAnnotations;
 	}
 
 
@@ -119,7 +119,7 @@ final class ClassFileMethodMetadata implements MethodMetadata {
 
 	@Override
 	public MergedAnnotations getAnnotations() {
-		return this.annotations;
+		return this.mergedAnnotations;
 	}
 
 
@@ -142,16 +142,19 @@ final class ClassFileMethodMetadata implements MethodMetadata {
 	static ClassFileMethodMetadata of(MethodModel methodModel, ClassLoader classLoader) {
 		String methodName = methodModel.methodName().stringValue();
 		AccessFlags flags = methodModel.flags();
-		String declaringClassName = methodModel.parent().map(parent -> ClassUtils.convertResourcePathToClassName(parent.thisClass().name().stringValue())).orElse(null);
+		String declaringClassName = methodModel.parent()
+				.map(parent -> ClassUtils.convertResourcePathToClassName(parent.thisClass().name().stringValue()))
+				.orElse(null);
 		ClassDesc returnType = methodModel.methodTypeSymbol().returnType();
 		String returnTypeName = ClassFileAnnotationMetadata.resolveTypeName(returnType);
 		Source source = new Source(declaringClassName, flags, methodName, methodModel.methodTypeSymbol());
-		MergedAnnotations annotations = methodModel.elementStream()
-				.filter(element -> element instanceof RuntimeVisibleAnnotationsAttribute)
+		MergedAnnotations mergedAnnotations = methodModel.elementStream()
+				.filter(RuntimeVisibleAnnotationsAttribute.class::isInstance)
+				.map(RuntimeVisibleAnnotationsAttribute.class::cast)
 				.findFirst()
-				.map(element -> ClassFileAnnotationDelegate.createMergedAnnotations(methodName, (RuntimeVisibleAnnotationsAttribute) element, classLoader))
-				.orElse(MergedAnnotations.of(Collections.emptyList()));
-		return new ClassFileMethodMetadata(methodName, flags, declaringClassName, returnTypeName, source, annotations);
+				.map(annotations -> ClassFileAnnotationDelegate.createMergedAnnotations(methodName, annotations, classLoader))
+				.orElseGet(() -> MergedAnnotations.of(Collections.emptyList()));
+		return new ClassFileMethodMetadata(methodName, flags, declaringClassName, returnTypeName, source, mergedAnnotations);
 	}
 
 
@@ -165,14 +168,12 @@ final class ClassFileMethodMetadata implements MethodMetadata {
 	record Source(@Nullable String declaringClassName, AccessFlags flags, String methodName, MethodTypeDesc descriptor) {
 
 		@Override
-		public boolean equals(Object o) {
-			if (!(o instanceof Source source)) {
-				return false;
-			}
-			return Objects.equals(this.flags.flagsMask(), source.flags.flagsMask()) &&
-					Objects.equals(this.methodName, source.methodName) &&
-					Objects.equals(this.declaringClassName, source.declaringClassName) &&
-					Objects.equals(this.descriptor.descriptorString(), source.descriptor.descriptorString());
+		public boolean equals(Object other) {
+			return (other instanceof Source that &&
+					Objects.equals(this.flags.flagsMask(), that.flags.flagsMask()) &&
+					Objects.equals(this.methodName, that.methodName) &&
+					Objects.equals(this.declaringClassName, that.declaringClassName) &&
+					Objects.equals(this.descriptor.descriptorString(), that.descriptor.descriptorString()));
 		}
 
 		@Override
