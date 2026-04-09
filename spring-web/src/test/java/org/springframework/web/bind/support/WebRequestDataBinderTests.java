@@ -359,6 +359,23 @@ class WebRequestDataBinderTests {
 		assertThat(Arrays.asList(original)).as("Correct values").isEqualTo(Arrays.asList(values));
 	}
 
+	@Test
+	void defaultArgumentShouldNotTriggerAutoGrowWhenDisallowed() {
+		TestBean tb = new TestBean();
+		tb.setSomeMap(null);
+
+		WebRequestDataBinder binder = new WebRequestDataBinder(tb, "person");
+		binder.setAllowedFields("name");
+
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		request.addParameter("name", "spring");
+		request.addParameter("!someMap[key1]", "test");
+		binder.bind(new ServletWebRequest(request));
+
+		assertThat(tb.getName()).isEqualTo("spring");
+		assertThat(tb.getSomeMap()).isNull();
+	}
+
 
 	public static class EnumHolder {
 
