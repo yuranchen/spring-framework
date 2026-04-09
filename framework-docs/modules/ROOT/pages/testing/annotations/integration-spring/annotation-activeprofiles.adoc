@@ -74,7 +74,7 @@ and registering it by using the `resolver` attribute of `@ActiveProfiles`.
 
 NOTE: When `@ActiveProfiles` is declared on a test class, the `spring.profiles.active`
 property (whether configured as a JVM system property or environment variable) is not
-taken into account by the Test Context Framework when determining active profiles. If
+taken into account by the TestContext Framework when determining active profiles. If
 you need to allow `spring.profiles.active` to override the profiles configured via
 `@ActiveProfiles`, you can implement a custom `ActiveProfilesResolver` as described in
 xref:testing/testcontext-framework/ctx-management/env-profiles.adoc[Context Configuration with Environment Profiles].
