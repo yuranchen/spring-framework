@@ -545,8 +545,8 @@ Kotlin::
 
 The following example demonstrates how to implement and register a custom
 `SystemPropertyOverrideActiveProfilesResolver` that allows the `spring.profiles.active`
-property (whether configured as a JVM system property or environment variable) to
-override profiles configured via `@ActiveProfiles`:
+property (when configured as a JVM system property) to override profiles configured via
+`@ActiveProfiles`:
 
 [tabs]
 ======
@@ -583,35 +583,45 @@ Kotlin::
 ======
 Java::
 +
-[source,java,indent=0,subs="verbatim,quotes",role="primary"]
+[source,java,indent=0,subs="verbatim,quotes",role="primary",fold="-imports"]
 ----
-	public class SystemPropertyOverrideActiveProfilesResolver implements ActiveProfilesResolver {
+	import org.springframework.core.env.AbstractEnvironment;
+	import org.springframework.test.context.support.DefaultActiveProfilesResolver;
+	import org.springframework.util.StringUtils;
+
+	public class SystemPropertyOverrideActiveProfilesResolver extends DefaultActiveProfilesResolver {
 
 		@Override
 		public String[] resolve(Class<?> testClass) {
-			String profiles = System.getProperty("spring.profiles.active");
-			if (profiles != null && !profiles.isBlank()) {
-				return profiles.split(",");
+			String profiles = System.getProperty(AbstractEnvironment.ACTIVE_PROFILES_PROPERTY_NAME);
+			if (StringUtils.hasText(profiles)) {
+				return StringUtils.commaDelimitedListToStringArray(
+						StringUtils.trimAllWhitespace(profiles));
 			}
-			return new DefaultActiveProfilesResolver().resolve(testClass);
+			return super.resolve(testClass);
 		}
 	}
 ----
 
 Kotlin::
 +
-[source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
+[source,kotlin,indent=0,subs="verbatim,quotes",role="secondary",fold="-imports"]
 ----
-	class SystemPropertyOverrideActiveProfilesResolver : ActiveProfilesResolver {
+	import org.springframework.core.env.AbstractEnvironment
+	import org.springframework.test.context.support.DefaultActiveProfilesResolver
+	import org.springframework.util.StringUtils
+
+	class SystemPropertyOverrideActiveProfilesResolver : DefaultActiveProfilesResolver() {
 
 		override fun resolve(testClass: Class<*>): Array<String> {
-			val profiles = System.getProperty("spring.profiles.active")
-			if (!profiles.isNullOrBlank()) {
-				return profiles.split(",").toTypedArray()
+			val profiles = System.getProperty(AbstractEnvironment.ACTIVE_PROFILES_PROPERTY_NAME)
+			if (StringUtils.hasText(profiles)) {
+				return StringUtils.commaDelimitedListToStringArray(
+					StringUtils.trimAllWhitespace(profiles)
+				)
 			}
-			return DefaultActiveProfilesResolver().resolve(testClass)
+			return super.resolve(testClass)
 		}
 	}
 ----
 ======
-

@@ -38,8 +38,9 @@ import org.springframework.core.annotation.AliasFor;
  * See {@link NestedTestConfiguration @NestedTestConfiguration} for details.
  *
  * <p>Note that when {@code @ActiveProfiles} is declared on a test class, the
- * {@code spring.profiles.active} property (whether configured as a JVM system
- * property or environment variable) is not taken into account by the Test Context
+ * {@link org.springframework.core.env.AbstractEnvironment#ACTIVE_PROFILES_PROPERTY_NAME
+ * spring.profiles.active} property (whether configured as a JVM system property
+ * or environment variable) is not taken into account by the Spring TestContext
  * Framework when determining active profiles. If you need to allow
  * {@code spring.profiles.active} to override the profiles configured via
  * {@code @ActiveProfiles}, you can implement a custom {@link ActiveProfilesResolver}
@@ -81,6 +82,9 @@ public @interface ActiveProfiles {
 	/**
 	 * The type of {@link ActiveProfilesResolver} to use for resolving the active
 	 * bean definition profiles programmatically.
+	 * <p>If not specified, the
+	 * {@link org.springframework.test.context.support.DefaultActiveProfilesResolver
+	 * DefaultActiveProfilesResolver} will be used.
 	 * @since 4.0
 	 * @see ActiveProfilesResolver
 	 */
