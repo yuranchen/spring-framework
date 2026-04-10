@@ -55,7 +55,7 @@ public abstract class KotlinSerializationStringDecoder<T extends StringFormat> e
 	implements Decoder<Object> {
 
 	// String decoding needed for now, see https://github.com/Kotlin/kotlinx.serialization/issues/204 for more details
-	private final StringDecoder stringDecoder = StringDecoder.allMimeTypes(StringDecoder.DEFAULT_DELIMITERS, false);
+	protected final StringDecoder stringDecoder = StringDecoder.allMimeTypes(StringDecoder.DEFAULT_DELIMITERS, false);
 
 
 	/**
@@ -116,21 +116,23 @@ public abstract class KotlinSerializationStringDecoder<T extends StringFormat> e
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public Flux<Object> decode(Publisher<DataBuffer> inputStream, ResolvableType elementType,
 			@Nullable MimeType mimeType, @Nullable Map<String, Object> hints) {
 		return Flux.defer(() -> {
 			KSerializer<Object> serializer = serializer(elementType);
-			KSerializer<Object> listSerializer = serializer(ResolvableType.forClassWithGenerics(List.class, elementType));
-			if (serializer == null || listSerializer == null) {
+			if (serializer == null) {
 				return Mono.error(new DecodingException("Could not find KSerializer for " + elementType));
 			}
 			return this.stringDecoder
 					.decode(inputStream, elementType, mimeType, hints)
-					.flatMapIterable(string -> string.startsWith("[") ?
-							(List<Object>) format().decodeFromString(listSerializer, string) :
-							List.of(format().decodeFromString(serializer, string)))
-					.onErrorMap(IllegalArgumentException.class, this::processException);
+					.handle((string, sink) -> {
+						try {
+							sink.next(format().decodeFromString(serializer, string));
+						}
+						catch (IllegalArgumentException ex) {
+							sink.error(processException(ex));
+						}
+					});
 		});
 	}
 
@@ -156,7 +158,7 @@ public abstract class KotlinSerializationStringDecoder<T extends StringFormat> e
 		});
 	}
 
-	private CodecException processException(IllegalArgumentException ex) {
+	protected CodecException processException(IllegalArgumentException ex) {
 		return new DecodingException("Decoding error: " + ex.getMessage(), ex);
 	}
 
