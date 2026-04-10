@@ -251,6 +251,14 @@ class InvocableHandlerMethodKotlinTests {
 	}
 
 	@Test
+	fun valueClassWithNullableAndNonNullParameter() {
+		this.resolvers.add(stubResolver(LongValueClass(1), LongValueClass::class.java))
+		val method = ValueClassController::valueClassWithNullable.javaMethod!!
+		val result = invoke(ValueClassController(), method)
+		assertHandlerResultValue(result, "1")
+	}
+
+	@Test
 	fun valueClassWithNullable() {
 		this.resolvers.add(stubResolver(null, LongValueClass::class.java))
 		val method = ValueClassController::valueClassWithNullable.javaMethod!!

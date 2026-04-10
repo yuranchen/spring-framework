@@ -149,6 +149,13 @@ class InvocableHandlerMethodKotlinTests {
 	}
 
 	@Test
+	fun valueClassWithNullableAndNonNullParameter() {
+		composite.addResolver(StubArgumentResolver(LongValueClass::class.java, LongValueClass(1)))
+		val value = getInvocable(ValueClassHandler::valueClassWithNullable.javaMethod!!).invokeForRequest(request, null)
+		Assertions.assertThat(value).isEqualTo(1L)
+	}
+
+	@Test
 	fun valueClassWithNullable() {
 		composite.addResolver(StubArgumentResolver(LongValueClass::class.java, null))
 		val value = getInvocable(ValueClassHandler::valueClassWithNullable.javaMethod!!).invokeForRequest(request, null)
