@@ -1279,6 +1279,318 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 	}
 
 	@Nested
+	class TernaryTests {
+
+		@Test
+		void ternaryWithTrueConditionAndLiteralsOfSameType() {
+			// True condition and two literals of the same type
+			expression = parser.parseExpression("true ? 'a' : 'b'");
+			assertThat(expression.getValue(String.class)).isEqualTo("a");
+			assertCanCompile(expression);
+			assertThat(expression.getValue(String.class)).isEqualTo("a");
+			assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/String");
+		}
+
+		@Test
+		void ternaryWithFalseConditionAndLiteralsOfSameType() {
+			// False condition and two literals of the same type
+			expression = parser.parseExpression("false ? 'a' : 'b'");
+			assertThat(expression.getValue(String.class)).isEqualTo("b");
+			assertCanCompile(expression);
+			assertThat(expression.getValue(String.class)).isEqualTo("b");
+			assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/String");
+		}
+
+		@Test
+		void ternaryWithFalseConditionAndLiteralsOfDifferentTypes() {
+			// False condition and two literals of different types
+			expression = parser.parseExpression("false ? 1 : 'b'");
+			// All literals, so we can compile immediately without having previously
+			// evaluated the expression.
+			assertCanCompile(expression);
+			assertIsCompiled(expression);
+			assertThat(expression.getValue()).isEqualTo("b");
+			assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/Object");
+		}
+
+		@Test
+		void ternaryWithRootVariableAccess() {
+			boolean root = true;
+			expression = parser.parseExpression("(#root and true) ? T(Integer).valueOf(1) : T(Long).valueOf(3L)");
+			assertThat(expression.getValue(root)).isEqualTo(1);
+			assertCannotCompile(expression); // Have not gone down false branch yet
+
+			root = false;
+			assertThat(expression.getValue(root)).isEqualTo(3L);
+			assertCanCompile(expression);
+			assertThat(expression.getValue(root)).isEqualTo(3L);
+			assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/Object");
+
+			root = true;
+			assertThat(expression.getValue(root)).isEqualTo(1);
+			assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/Object");
+		}
+
+		@Test
+		void ternaryWithMapAccess() {
+			SpelParserConfiguration config = new SpelParserConfiguration(SpelCompilerMode.IMMEDIATE, null);
+			SpelExpressionParser parser = new SpelExpressionParser(config);
+
+			expression = parser.parseExpression(
+					"record.get('abc') == null ? record.put('abc', expression.someLong?.longValue()) : null");
+
+			RecordHolder rh = new RecordHolder();
+			rh.expression.someLong = 6L;
+			assertThat(expression.getValue(rh)).isNull();
+			assertThat(rh.get("abc")).isEqualTo(6L);
+			assertThat(expression.getValue(rh)).isNull();
+			assertCanCompile(expression);
+
+			rh = new RecordHolder();
+			rh.expression.someLong = 6L;
+			assertThat(expression.getValue(rh)).isNull();
+			assertThat(rh.get("abc")).isEqualTo(6L);
+			assertThat(expression.getValue(rh)).isNull();
+		}
+
+		@Test  // gh-16876
+		void ternaryWithBooleanWrapperCondition() {
+			expression = parser.parseExpression("T(Boolean).TRUE ? 'abc' : 'def'");
+			assertThat(expression.getValue()).isEqualTo("abc");
+			assertCanCompile(expression);
+			assertThat(expression.getValue()).isEqualTo("abc");
+			assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/String");
+
+			expression = parser.parseExpression("T(Boolean).FALSE ? 'abc' : 'def'");
+			assertThat(expression.getValue()).isEqualTo("def");
+			assertCanCompile(expression);
+			assertThat(expression.getValue()).isEqualTo("def");
+			assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/String");
+		}
+
+		@Test  // gh-19758
+		void ternaryMiscellaneous() {
+			SpelParserConfiguration configuration = new SpelParserConfiguration(SpelCompilerMode.IMMEDIATE, null);
+			Expression exp;
+			StandardEvaluationContext context = new StandardEvaluationContext();
+			context.setVariable("map", Map.of("foo", "qux"));
+
+			exp = new SpelExpressionParser(configuration).parseExpression("bar(#map['foo'] != null ? #map['foo'] : 'qux')");
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("QUX");
+			assertCanCompile(exp);
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("QUX");
+			assertIsCompiled(exp);
+
+			exp = new SpelExpressionParser(configuration).parseExpression("3 == 3 ? 3 : 'foo'");
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("3");
+			assertCanCompile(exp);
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("3");
+			assertIsCompiled(exp);
+			exp = new SpelExpressionParser(configuration).parseExpression("3 != 3 ? 3 : 'foo'");
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("foo");
+			assertCanCompile(exp);
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("foo");
+			assertIsCompiled(exp);
+
+			// When the condition is a double slot primitive
+			exp = new SpelExpressionParser(configuration).parseExpression("3 == 3 ? 3L : 'foo'");
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("3");
+			assertCanCompile(exp);
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("3");
+			assertIsCompiled(exp);
+			exp = new SpelExpressionParser(configuration).parseExpression("3 != 3 ? 3L : 'foo'");
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("foo");
+			assertCanCompile(exp);
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("foo");
+			assertIsCompiled(exp);
+
+			// When the condition is an empty string
+			exp = new SpelExpressionParser(configuration).parseExpression("'' == '' ? 'abc' : 4L");
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("abc");
+			assertCanCompile(exp);
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("abc");
+			assertIsCompiled(exp);
+
+			// null condition
+			exp = new SpelExpressionParser(configuration).parseExpression("3 == 3 ? null : 4L");
+			assertThat(exp.getValue(context, new Foo(), String.class)).isNull();
+			assertCanCompile(exp);
+			assertThat(exp.getValue(context, new Foo(), String.class)).isNull();
+			assertIsCompiled(exp);
+
+			// variable access returning primitive
+			exp = new SpelExpressionParser(configuration).parseExpression("#x == #x ? 50 : 'foo'");
+			context.setVariable("x", 50);
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("50");
+			assertCanCompile(exp);
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("50");
+			assertIsCompiled(exp);
+
+			// variable access returning null
+			exp = new SpelExpressionParser(configuration).parseExpression("#x != #x ? 50 : 'foo'");
+			context.setVariable("x", null);
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("foo");
+			assertCanCompile(exp);
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("foo");
+			assertIsCompiled(exp);
+
+			// variable access returning array
+			exp = new SpelExpressionParser(configuration).parseExpression("#x == #x ? 99 : 'foo'");
+			context.setVariable("x", new int[] { 1, 2, 3 });
+			assertThat(exp.getValue(context, new Foo(), Integer.class)).isEqualTo(99);
+			assertCanCompile(exp);
+			assertThat(exp.getValue(context, new Foo(), Integer.class)).isEqualTo(99);
+			assertIsCompiled(exp);
+		}
+	}
+
+	@Nested
+	class ElvisTests {
+
+		@Test
+		void elvis() {
+			expression = parser.parseExpression("'a' ?: 'b'");
+			assertThat(expression.getValue(String.class)).isEqualTo("a");
+			assertCanCompile(expression);
+			assertThat(expression.getValue(String.class)).isEqualTo("a");
+			assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/String");
+
+			expression = parser.parseExpression("null ?: 'a'");
+			assertThat(expression.getValue(String.class)).isEqualTo("a");
+			assertCanCompile(expression);
+			assertThat(expression.getValue(String.class)).isEqualTo("a");
+			assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/Object");
+
+			String root = "abc";
+			expression = parser.parseExpression("#root ?: 'b'");
+			assertCannotCompile(expression);
+			assertThat(expression.getValue(root, String.class)).isEqualTo("abc");
+			assertCanCompile(expression);
+			assertThat(expression.getValue(root, String.class)).isEqualTo("abc");
+			assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/String");
+		}
+
+		@Test  // gh-19758
+		void elvisMiscellaneous() {
+			SpelParserConfiguration configuration = new SpelParserConfiguration(SpelCompilerMode.IMMEDIATE, null);
+			Expression exp;
+
+			exp = new SpelExpressionParser(configuration).parseExpression("bar()");
+			assertThat(exp.getValue(new Foo(), String.class)).isEqualTo("BAR");
+			assertCanCompile(exp);
+			assertThat(exp.getValue(new Foo(), String.class)).isEqualTo("BAR");
+			assertIsCompiled(exp);
+
+			exp = new SpelExpressionParser(configuration).parseExpression("bar('baz')");
+			assertThat(exp.getValue(new Foo(), String.class)).isEqualTo("BAZ");
+			assertCanCompile(exp);
+			assertThat(exp.getValue(new Foo(), String.class)).isEqualTo("BAZ");
+			assertIsCompiled(exp);
+
+			StandardEvaluationContext context = new StandardEvaluationContext();
+			context.setVariable("map", Collections.singletonMap("foo", "qux"));
+
+			exp = new SpelExpressionParser(configuration).parseExpression("bar(#map['foo'])");
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("QUX");
+			assertCanCompile(exp);
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("QUX");
+			assertIsCompiled(exp);
+
+			exp = new SpelExpressionParser(configuration).parseExpression("bar(#map['foo'] ?: 'qux')");
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("QUX");
+			assertCanCompile(exp);
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("QUX");
+			assertIsCompiled(exp);
+
+			// When the condition is a primitive
+			exp = new SpelExpressionParser(configuration).parseExpression("3 ?: 'foo'");
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("3");
+			assertCanCompile(exp);
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("3");
+			assertIsCompiled(exp);
+
+			// When the condition is a double slot primitive
+			exp = new SpelExpressionParser(configuration).parseExpression("3L ?: 'foo'");
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("3");
+			assertCanCompile(exp);
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("3");
+			assertIsCompiled(exp);
+
+			// When the condition is an empty string
+			exp = new SpelExpressionParser(configuration).parseExpression("'' ?: 4L");
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("4");
+			assertCanCompile(exp);
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("4");
+			assertIsCompiled(exp);
+
+			// null condition
+			exp = new SpelExpressionParser(configuration).parseExpression("null ?: 4L");
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("4");
+			assertCanCompile(exp);
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("4");
+			assertIsCompiled(exp);
+
+			// variable access returning primitive
+			exp = new SpelExpressionParser(configuration).parseExpression("#x ?: 'foo'");
+			context.setVariable("x",50);
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("50");
+			assertCanCompile(exp);
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("50");
+			assertIsCompiled(exp);
+
+			exp = new SpelExpressionParser(configuration).parseExpression("#x ?: 'foo'");
+			context.setVariable("x",null);
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("foo");
+			assertCanCompile(exp);
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("foo");
+			assertIsCompiled(exp);
+
+			// variable access returning array
+			exp = new SpelExpressionParser(configuration).parseExpression("#x ?: 'foo'");
+			context.setVariable("x",new int[]{1,2,3});
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("1,2,3");
+			assertCanCompile(exp);
+			assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("1,2,3");
+			assertIsCompiled(exp);
+		}
+
+		@Test
+		void elvis_SPR17214() {
+			SpelParserConfiguration spc = new SpelParserConfiguration(SpelCompilerMode.IMMEDIATE, null);
+			SpelExpressionParser sep = new SpelExpressionParser(spc);
+
+			RecordHolder rh = null;
+
+			expression = sep.parseExpression("record.get('abc') ?: record.put('abc', expression.someLong?.longValue())");
+			rh = new RecordHolder();
+			assertThat(expression.getValue(rh)).isNull();
+			assertThat(expression.getValue(rh)).isEqualTo(3L);
+			assertCanCompile(expression);
+			rh = new RecordHolder();
+			assertThat(expression.getValue(rh)).isNull();
+			assertThat(expression.getValue(rh)).isEqualTo(3L);
+
+			expression = sep.parseExpression("record.get('abc') ?: record.put('abc', 3L.longValue())");
+			rh = new RecordHolder();
+			assertThat(expression.getValue(rh)).isNull();
+			assertThat(expression.getValue(rh)).isEqualTo(3L);
+			assertCanCompile(expression);
+			rh = new RecordHolder();
+			assertThat(expression.getValue(rh)).isNull();
+			assertThat(expression.getValue(rh)).isEqualTo(3L);
+
+			expression = sep.parseExpression("record.get('abc') ?: record.put('abc', 3L.longValue())");
+			rh = new RecordHolder();
+			assertThat(expression.getValue(rh)).isNull();
+			assertThat(expression.getValue(rh)).isEqualTo(3L);
+			assertCanCompile(expression);
+			rh = new RecordHolder();
+			assertThat(expression.getValue(rh)).isNull();
+			assertThat(expression.getValue(rh)).isEqualTo(3L);
+		}
+	}
+
+	@Nested
 	class PropertyVisibilityTests {
 
 		@Test
@@ -2055,59 +2367,6 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 	}
 
 	@Test
-	void ternary() {
-		expression = parser.parseExpression("true?'a':'b'");
-		String resultI = expression.getValue(String.class);
-		assertCanCompile(expression);
-		String resultC = expression.getValue(String.class);
-		assertThat(resultI).isEqualTo("a");
-		assertThat(resultC).isEqualTo("a");
-		assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/String");
-
-		expression = parser.parseExpression("false?'a':'b'");
-		resultI = expression.getValue(String.class);
-		assertCanCompile(expression);
-		resultC = expression.getValue(String.class);
-		assertThat(resultI).isEqualTo("b");
-		assertThat(resultC).isEqualTo("b");
-		assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/String");
-
-		expression = parser.parseExpression("false?1:'b'");
-		// All literals so we can do this straight away
-		assertCanCompile(expression);
-		assertThat(expression.getValue()).isEqualTo("b");
-		assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/Object");
-
-		boolean root = true;
-		expression = parser.parseExpression("(#root and true)?T(Integer).valueOf(1):T(Long).valueOf(3L)");
-		assertThat(expression.getValue(root)).isEqualTo(1);
-		assertCannotCompile(expression); // Have not gone down false branch
-		root = false;
-		assertThat(expression.getValue(root)).isEqualTo(3L);
-		assertCanCompile(expression);
-		assertThat(expression.getValue(root)).isEqualTo(3L);
-		assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/Object");
-		root = true;
-		assertThat(expression.getValue(root)).isEqualTo(1);
-		assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/Object");
-	}
-
-	@Test  // gh-16876
-	void ternaryWithBooleanWrapperCondition() {
-		expression = parser.parseExpression("T(Boolean).TRUE?'abc':'def'");
-		assertThat(expression.getValue()).isEqualTo("abc");
-		assertCanCompile(expression);
-		assertThat(expression.getValue()).isEqualTo("abc");
-		assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/String");
-
-		expression = parser.parseExpression("T(Boolean).FALSE?'abc':'def'");
-		assertThat(expression.getValue()).isEqualTo("def");
-		assertCanCompile(expression);
-		assertThat(expression.getValue()).isEqualTo("def");
-		assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/String");
-	}
-
-	@Test
 	void nullsafeFieldPropertyDereferencing_SPR16489() {
 		FooObjectHolder foh = new FooObjectHolder();
 		StandardEvaluationContext context = new StandardEvaluationContext();
@@ -2293,30 +2552,6 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 		context.setVariable("var", null);
 		assertThat(expression.getValue(context)).isNull();
 	}
-
-	@Test
-	void elvis() {
-		expression = parser.parseExpression("'a' ?: 'b'");
-		assertThat(expression.getValue(String.class)).isEqualTo("a");
-		assertCanCompile(expression);
-		assertThat(expression.getValue(String.class)).isEqualTo("a");
-		assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/String");
-
-		expression = parser.parseExpression("null ?: 'a'");
-		assertThat(expression.getValue(String.class)).isEqualTo("a");
-		assertCanCompile(expression);
-		assertThat(expression.getValue(String.class)).isEqualTo("a");
-		assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/Object");
-
-		String root = "abc";
-		expression = parser.parseExpression("#root ?: 'b'");
-		assertCannotCompile(expression);
-		assertThat(expression.getValue(root, String.class)).isEqualTo("abc");
-		assertCanCompile(expression);
-		assertThat(expression.getValue(root, String.class)).isEqualTo("abc");
-		assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/String");
-	}
-
 
 	public static String concat(String a, String b) {
 		return a + b;
@@ -6066,138 +6301,6 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 	}
 
 	@Test
-	void elvisOperator_SPR15192() {
-		SpelParserConfiguration configuration = new SpelParserConfiguration(SpelCompilerMode.IMMEDIATE, null);
-		Expression exp;
-
-		exp = new SpelExpressionParser(configuration).parseExpression("bar()");
-		assertThat(exp.getValue(new Foo(), String.class)).isEqualTo("BAR");
-		assertCanCompile(exp);
-		assertThat(exp.getValue(new Foo(), String.class)).isEqualTo("BAR");
-		assertIsCompiled(exp);
-
-		exp = new SpelExpressionParser(configuration).parseExpression("bar('baz')");
-		assertThat(exp.getValue(new Foo(), String.class)).isEqualTo("BAZ");
-		assertCanCompile(exp);
-		assertThat(exp.getValue(new Foo(), String.class)).isEqualTo("BAZ");
-		assertIsCompiled(exp);
-
-		StandardEvaluationContext context = new StandardEvaluationContext();
-		context.setVariable("map", Collections.singletonMap("foo", "qux"));
-
-		exp = new SpelExpressionParser(configuration).parseExpression("bar(#map['foo'])");
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("QUX");
-		assertCanCompile(exp);
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("QUX");
-		assertIsCompiled(exp);
-
-		exp = new SpelExpressionParser(configuration).parseExpression("bar(#map['foo'] ?: 'qux')");
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("QUX");
-		assertCanCompile(exp);
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("QUX");
-		assertIsCompiled(exp);
-
-		// When the condition is a primitive
-		exp = new SpelExpressionParser(configuration).parseExpression("3?:'foo'");
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("3");
-		assertCanCompile(exp);
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("3");
-		assertIsCompiled(exp);
-
-		// When the condition is a double slot primitive
-		exp = new SpelExpressionParser(configuration).parseExpression("3L?:'foo'");
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("3");
-		assertCanCompile(exp);
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("3");
-		assertIsCompiled(exp);
-
-		// When the condition is an empty string
-		exp = new SpelExpressionParser(configuration).parseExpression("''?:4L");
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("4");
-		assertCanCompile(exp);
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("4");
-		assertIsCompiled(exp);
-
-		// null condition
-		exp = new SpelExpressionParser(configuration).parseExpression("null?:4L");
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("4");
-		assertCanCompile(exp);
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("4");
-		assertIsCompiled(exp);
-
-		// variable access returning primitive
-		exp = new SpelExpressionParser(configuration).parseExpression("#x?:'foo'");
-		context.setVariable("x",50);
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("50");
-		assertCanCompile(exp);
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("50");
-		assertIsCompiled(exp);
-
-		exp = new SpelExpressionParser(configuration).parseExpression("#x?:'foo'");
-		context.setVariable("x",null);
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("foo");
-		assertCanCompile(exp);
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("foo");
-		assertIsCompiled(exp);
-
-		// variable access returning array
-		exp = new SpelExpressionParser(configuration).parseExpression("#x?:'foo'");
-		context.setVariable("x",new int[]{1,2,3});
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("1,2,3");
-		assertCanCompile(exp);
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("1,2,3");
-		assertIsCompiled(exp);
-	}
-
-	@Test
-	void elvisOperator_SPR17214() {
-		SpelParserConfiguration spc = new SpelParserConfiguration(SpelCompilerMode.IMMEDIATE, null);
-		SpelExpressionParser sep = new SpelExpressionParser(spc);
-
-		RecordHolder rh = null;
-
-		expression = sep.parseExpression("record.get('abc')?:record.put('abc',expression.someLong?.longValue())");
-		rh = new RecordHolder();
-		assertThat(expression.getValue(rh)).isNull();
-		assertThat(expression.getValue(rh)).isEqualTo(3L);
-		assertCanCompile(expression);
-		rh = new RecordHolder();
-		assertThat(expression.getValue(rh)).isNull();
-		assertThat(expression.getValue(rh)).isEqualTo(3L);
-
-		expression = sep.parseExpression("record.get('abc')?:record.put('abc',3L.longValue())");
-		rh = new RecordHolder();
-		assertThat(expression.getValue(rh)).isNull();
-		assertThat(expression.getValue(rh)).isEqualTo(3L);
-		assertCanCompile(expression);
-		rh = new RecordHolder();
-		assertThat(expression.getValue(rh)).isNull();
-		assertThat(expression.getValue(rh)).isEqualTo(3L);
-
-		expression = sep.parseExpression("record.get('abc')?:record.put('abc',3L.longValue())");
-		rh = new RecordHolder();
-		assertThat(expression.getValue(rh)).isNull();
-		assertThat(expression.getValue(rh)).isEqualTo(3L);
-		assertCanCompile(expression);
-		rh = new RecordHolder();
-		assertThat(expression.getValue(rh)).isNull();
-		assertThat(expression.getValue(rh)).isEqualTo(3L);
-
-		expression = sep.parseExpression("record.get('abc')==null?record.put('abc',expression.someLong?.longValue()):null");
-		rh = new RecordHolder();
-		rh.expression.someLong=6L;
-		assertThat(expression.getValue(rh)).isNull();
-		assertThat(rh.get("abc")).isEqualTo(6L);
-		assertThat(expression.getValue(rh)).isNull();
-		assertCanCompile(expression);
-		rh = new RecordHolder();
-		rh.expression.someLong=6L;
-		assertThat(expression.getValue(rh)).isNull();
-		assertThat(rh.get("abc")).isEqualTo(6L);
-		assertThat(expression.getValue(rh)).isNull();
-	}
-
-	@Test
 	void nullComparison_SPR22358() {
 		SpelParserConfiguration configuration = new SpelParserConfiguration(SpelCompilerMode.OFF, null);
 		SpelExpressionParser parser = new SpelExpressionParser(configuration);
@@ -6276,80 +6379,6 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 			assertThat(fastResult).as("Differing results: expression=" + expressionText +
 					" value=" + r.getValue() + " slow=" + slowResult + " fast="+fastResult).isEqualTo(slowResult);
 		}
-	}
-
-	@Test
-	void ternaryOperator_SPR15192() {
-		SpelParserConfiguration configuration = new SpelParserConfiguration(SpelCompilerMode.IMMEDIATE, null);
-		Expression exp;
-		StandardEvaluationContext context = new StandardEvaluationContext();
-		context.setVariable("map", Collections.singletonMap("foo", "qux"));
-
-		exp = new SpelExpressionParser(configuration).parseExpression("bar(#map['foo'] != null ? #map['foo'] : 'qux')");
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("QUX");
-		assertCanCompile(exp);
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("QUX");
-		assertIsCompiled(exp);
-
-		exp = new SpelExpressionParser(configuration).parseExpression("3==3?3:'foo'");
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("3");
-		assertCanCompile(exp);
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("3");
-		assertIsCompiled(exp);
-		exp = new SpelExpressionParser(configuration).parseExpression("3!=3?3:'foo'");
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("foo");
-		assertCanCompile(exp);
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("foo");
-		assertIsCompiled(exp);
-
-		// When the condition is a double slot primitive
-		exp = new SpelExpressionParser(configuration).parseExpression("3==3?3L:'foo'");
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("3");
-		assertCanCompile(exp);
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("3");
-		assertIsCompiled(exp);
-		exp = new SpelExpressionParser(configuration).parseExpression("3!=3?3L:'foo'");
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("foo");
-		assertCanCompile(exp);
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("foo");
-		assertIsCompiled(exp);
-
-		// When the condition is an empty string
-		exp = new SpelExpressionParser(configuration).parseExpression("''==''?'abc':4L");
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("abc");
-		assertCanCompile(exp);
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("abc");
-		assertIsCompiled(exp);
-
-		// null condition
-		exp = new SpelExpressionParser(configuration).parseExpression("3==3?null:4L");
-		assertThat(exp.getValue(context, new Foo(), String.class)).isNull();
-		assertCanCompile(exp);
-		assertThat(exp.getValue(context, new Foo(), String.class)).isNull();
-		assertIsCompiled(exp);
-
-		// variable access returning primitive
-		exp = new SpelExpressionParser(configuration).parseExpression("#x==#x?50:'foo'");
-		context.setVariable("x",50);
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("50");
-		assertCanCompile(exp);
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("50");
-		assertIsCompiled(exp);
-
-		exp = new SpelExpressionParser(configuration).parseExpression("#x!=#x?50:'foo'");
-		context.setVariable("x",null);
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("foo");
-		assertCanCompile(exp);
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("foo");
-		assertIsCompiled(exp);
-
-		// variable access returning array
-		exp = new SpelExpressionParser(configuration).parseExpression("#x==#x?'1,2,3':'foo'");
-		context.setVariable("x",new int[]{1,2,3});
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("1,2,3");
-		assertCanCompile(exp);
-		assertThat(exp.getValue(context, new Foo(), String.class)).isEqualTo("1,2,3");
-		assertIsCompiled(exp);
 	}
 
 	@Test

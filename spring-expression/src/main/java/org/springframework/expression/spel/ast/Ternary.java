@@ -51,12 +51,12 @@ public class Ternary extends SpelNodeImpl {
 	 */
 	@Override
 	public TypedValue getValueInternal(ExpressionState state) throws EvaluationException {
-		Boolean value = this.children[0].getValue(state, Boolean.class);
-		if (value == null) {
+		Boolean condition = this.children[0].getValue(state, Boolean.class);
+		if (condition == null) {
 			throw new SpelEvaluationException(getChild(0).getStartPosition(),
 					SpelMessage.TYPE_CONVERSION_ERROR, "null", "boolean");
 		}
-		TypedValue result = this.children[value ? 1 : 2].getValueInternal(state);
+		TypedValue result = this.children[condition ? 1 : 2].getValueInternal(state);
 		computeExitTypeDescriptor();
 		return result;
 	}
@@ -67,10 +67,9 @@ public class Ternary extends SpelNodeImpl {
 	}
 
 	private void computeExitTypeDescriptor() {
-		if (this.exitTypeDescriptor == null && this.children[1].exitTypeDescriptor != null &&
-				this.children[2].exitTypeDescriptor != null) {
-			String leftDescriptor = this.children[1].exitTypeDescriptor;
-			String rightDescriptor = this.children[2].exitTypeDescriptor;
+		String leftDescriptor = this.children[1].exitTypeDescriptor;
+		String rightDescriptor = this.children[2].exitTypeDescriptor;
+		if (this.exitTypeDescriptor == null && leftDescriptor != null && rightDescriptor != null) {
 			if (ObjectUtils.nullSafeEquals(leftDescriptor, rightDescriptor)) {
 				this.exitTypeDescriptor = leftDescriptor;
 			}
@@ -93,7 +92,10 @@ public class Ternary extends SpelNodeImpl {
 
 	@Override
 	public void generateCode(MethodVisitor mv, CodeFlow cf) {
-		// May reach here without it computed if all elements are literals
+		// If all elements are literals and the expression was not previously
+		// evaluated in interpreted mode, we may get here without the exit descriptor
+		// having been computed, so we must ensure the exit descriptor has been
+		// computed before proceeding.
 		computeExitTypeDescriptor();
 		cf.enterCompilationScope();
 		this.children[0].generateCode(mv, cf);
