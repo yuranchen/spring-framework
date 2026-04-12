@@ -23,6 +23,7 @@ import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.StringJoiner;
 
@@ -45,7 +46,6 @@ import org.springframework.expression.spel.SpelMessage;
 import org.springframework.expression.spel.support.ReflectiveMethodExecutor;
 import org.springframework.expression.spel.support.ReflectiveMethodResolver;
 import org.springframework.util.Assert;
-import org.springframework.util.ObjectUtils;
 
 /**
  * Expression language AST node that represents a method reference (i.e., a
@@ -476,7 +476,7 @@ public class MethodReference extends SpelNodeImpl {
 
 		public boolean isSuitable(Object target, @Nullable TypeDescriptor targetType, List<TypeDescriptor> argumentTypes) {
 			return ((this.staticClass == null || this.staticClass == target) &&
-					ObjectUtils.nullSafeEquals(this.targetType, targetType) && this.argumentTypes.equals(argumentTypes));
+					Objects.equals(this.targetType, targetType) && this.argumentTypes.equals(argumentTypes));
 		}
 
 		public boolean hasProxyTarget() {
