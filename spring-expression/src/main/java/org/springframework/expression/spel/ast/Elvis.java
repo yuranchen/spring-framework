@@ -103,6 +103,12 @@ public class Elvis extends SpelNodeImpl {
 
 	@Override
 	public void generateCode(MethodVisitor mv, CodeFlow cf) {
+		// If both elements are literals and the expression was not previously
+		// evaluated in interpreted mode, we may get here without the exit descriptor
+		// having been computed, so we must ensure the exit descriptor has been
+		// computed before proceeding.
+		computeExitTypeDescriptor();
+
 		Label elseTarget = new Label();
 		Label endOfIf = new Label();
 

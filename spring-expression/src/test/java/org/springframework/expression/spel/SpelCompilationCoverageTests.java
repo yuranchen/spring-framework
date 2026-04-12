@@ -1470,6 +1470,23 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 			assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/String");
 		}
 
+		@Test
+		void elvisWithImmediateCompilation() {
+			expression = parser.parseExpression("'a' ?: 'b'");
+			// Both literals, so we can compile immediately without having previously
+			// evaluated the expression.
+			assertCanCompile(expression);
+			assertThat(expression.getValue(String.class)).isEqualTo("a");
+			assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/String");
+
+			expression = parser.parseExpression("null ?: 'a'");
+			// Both literals, so we can compile immediately without having previously
+			// evaluated the expression.
+			assertCanCompile(expression);
+			assertThat(expression.getValue(String.class)).isEqualTo("a");
+			assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/Object");
+		}
+
 		@Test  // gh-19758
 		void elvisMiscellaneous() {
 			SpelParserConfiguration configuration = new SpelParserConfiguration(SpelCompilerMode.IMMEDIATE, null);
