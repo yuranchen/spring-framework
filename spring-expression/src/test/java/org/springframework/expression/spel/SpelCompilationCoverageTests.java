@@ -2056,12 +2056,13 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 
 	@Test
 	void ternary() {
-		Expression expression = parser.parseExpression("true?'a':'b'");
+		expression = parser.parseExpression("true?'a':'b'");
 		String resultI = expression.getValue(String.class);
 		assertCanCompile(expression);
 		String resultC = expression.getValue(String.class);
 		assertThat(resultI).isEqualTo("a");
 		assertThat(resultC).isEqualTo("a");
+		assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/String");
 
 		expression = parser.parseExpression("false?'a':'b'");
 		resultI = expression.getValue(String.class);
@@ -2069,11 +2070,13 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 		resultC = expression.getValue(String.class);
 		assertThat(resultI).isEqualTo("b");
 		assertThat(resultC).isEqualTo("b");
+		assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/String");
 
 		expression = parser.parseExpression("false?1:'b'");
 		// All literals so we can do this straight away
 		assertCanCompile(expression);
 		assertThat(expression.getValue()).isEqualTo("b");
+		assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/Object");
 
 		boolean root = true;
 		expression = parser.parseExpression("(#root and true)?T(Integer).valueOf(1):T(Long).valueOf(3L)");
@@ -2083,21 +2086,25 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 		assertThat(expression.getValue(root)).isEqualTo(3L);
 		assertCanCompile(expression);
 		assertThat(expression.getValue(root)).isEqualTo(3L);
+		assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/Object");
 		root = true;
 		assertThat(expression.getValue(root)).isEqualTo(1);
+		assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/Object");
 	}
 
-	@Test
-	void ternaryWithBooleanReturn_SPR12271() {
+	@Test  // gh-16876
+	void ternaryWithBooleanWrapperCondition() {
 		expression = parser.parseExpression("T(Boolean).TRUE?'abc':'def'");
 		assertThat(expression.getValue()).isEqualTo("abc");
 		assertCanCompile(expression);
 		assertThat(expression.getValue()).isEqualTo("abc");
+		assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/String");
 
 		expression = parser.parseExpression("T(Boolean).FALSE?'abc':'def'");
 		assertThat(expression.getValue()).isEqualTo("def");
 		assertCanCompile(expression);
 		assertThat(expression.getValue()).isEqualTo("def");
+		assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/String");
 	}
 
 	@Test
@@ -2289,31 +2296,30 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 
 	@Test
 	void elvis() {
-		Expression expression = parser.parseExpression("'a'?:'b'");
-		String resultI = expression.getValue(String.class);
+		expression = parser.parseExpression("'a' ?: 'b'");
+		assertThat(expression.getValue(String.class)).isEqualTo("a");
 		assertCanCompile(expression);
-		String resultC = expression.getValue(String.class);
-		assertThat(resultI).isEqualTo("a");
-		assertThat(resultC).isEqualTo("a");
+		assertThat(expression.getValue(String.class)).isEqualTo("a");
+		assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/String");
 
-		expression = parser.parseExpression("null?:'a'");
-		resultI = expression.getValue(String.class);
+		expression = parser.parseExpression("null ?: 'a'");
+		assertThat(expression.getValue(String.class)).isEqualTo("a");
 		assertCanCompile(expression);
-		resultC = expression.getValue(String.class);
-		assertThat(resultI).isEqualTo("a");
-		assertThat(resultC).isEqualTo("a");
+		assertThat(expression.getValue(String.class)).isEqualTo("a");
+		assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/Object");
 
-		String s = "abc";
-		expression = parser.parseExpression("#root?:'b'");
+		String root = "abc";
+		expression = parser.parseExpression("#root ?: 'b'");
 		assertCannotCompile(expression);
-		resultI = expression.getValue(s, String.class);
-		assertThat(resultI).isEqualTo("abc");
+		assertThat(expression.getValue(root, String.class)).isEqualTo("abc");
 		assertCanCompile(expression);
+		assertThat(expression.getValue(root, String.class)).isEqualTo("abc");
+		assertThat(getAst().getExitDescriptor()).isEqualTo("Ljava/lang/String");
 	}
 
 
 	public static String concat(String a, String b) {
-		return a+b;
+		return a + b;
 	}
 
 	public static String concat2(Object... args) {
