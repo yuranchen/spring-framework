@@ -100,6 +100,7 @@ public class Elvis extends SpelNodeImpl {
 	public void generateCode(MethodVisitor mv, CodeFlow cf) {
 		// exit type descriptor can be null if both components are literal expressions
 		computeExitTypeDescriptor();
+
 		cf.enterCompilationScope();
 		this.children[0].generateCode(mv, cf);
 		String lastDesc = cf.lastDescriptor();
@@ -131,10 +132,9 @@ public class Elvis extends SpelNodeImpl {
 	}
 
 	private void computeExitTypeDescriptor() {
-		if (this.exitTypeDescriptor == null && this.children[0].exitTypeDescriptor != null &&
-				this.children[1].exitTypeDescriptor != null) {
-			String conditionDescriptor = this.children[0].exitTypeDescriptor;
-			String ifNullValueDescriptor = this.children[1].exitTypeDescriptor;
+		String conditionDescriptor = this.children[0].exitTypeDescriptor;
+		String ifNullValueDescriptor = this.children[1].exitTypeDescriptor;
+		if (this.exitTypeDescriptor == null && conditionDescriptor != null && ifNullValueDescriptor != null) {
 			if (ObjectUtils.nullSafeEquals(conditionDescriptor, ifNullValueDescriptor)) {
 				this.exitTypeDescriptor = conditionDescriptor;
 			}
