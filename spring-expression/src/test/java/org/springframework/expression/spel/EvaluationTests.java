@@ -151,12 +151,14 @@ class EvaluationTests extends AbstractExpressionTests {
 
 		@Test
 		void elvisOperator() {
-			evaluate("'Andy'?:'Dave'", "Andy", String.class);
-			evaluate("null?:'Dave'", "Dave", String.class);
-			evaluate("3?:1", 3, Integer.class);
-			evaluate("(2*3)?:1*10", 6, Integer.class);
-			evaluate("null?:2*10", 20, Integer.class);
-			evaluate("(null?:1)*10", 10, Integer.class);
+			evaluate("'Andy' ?: 'Dave'", "Andy", String.class);
+			evaluate("null ?: 'Dave'", "Dave", String.class);
+			evaluate("3 ?: 1", 3, Integer.class);
+			evaluate("(2 * 3) ?: 1 * 10", 6, Integer.class);
+			evaluate("null ?: 2 * 10", 20, Integer.class);
+			evaluate("(null ?: 1) * 10", 10, Integer.class);
+			evaluate("3 ?: #var = 5", 3, Integer.class);
+			evaluate("null ?: #var = 5", 5, Integer.class);
 		}
 
 		@Test
@@ -721,59 +723,41 @@ class EvaluationTests extends AbstractExpressionTests {
 	class TernaryOperatorTests {
 
 		@Test
-		void ternaryOperator01() {
-			evaluate("2>4?1:2", 2, Integer.class);
+		void ternaryExpressionWithNullConditionType() {
+			// cannot convert null to boolean
+			evaluateAndCheckError("null ? 0 : 1", SpelMessage.TYPE_CONVERSION_ERROR);
 		}
 
 		@Test
-		void ternaryOperator02() {
-			evaluate("'abc'=='abc'?1:2", 1, Integer.class);
-		}
-
-		@Test
-		void ternaryOperator03() {
+		void ternaryExpressionWithInvalidConditionType() {
 			// cannot convert String to boolean
-			evaluateAndCheckError("'hello'?1:2", SpelMessage.TYPE_CONVERSION_ERROR);
+			evaluateAndCheckError("'hello' ? 1 : 2", SpelMessage.TYPE_CONVERSION_ERROR);
 		}
 
 		@Test
-		void ternaryOperator04() {
-			Expression e = parser.parseExpression("1>2?3:4");
-			assertThat(e.isWritable(context)).isFalse();
+		void ternaryExpressionIsNotWritable() {
+			Expression exp = parser.parseExpression("1 > 2 ? 3 : 4");
+			assertThat(exp.isWritable(context)).isFalse();
 		}
 
 		@Test
-		void ternaryOperator05() {
-			evaluate("1>2?#var=4:#var=5", 5, Integer.class);
-			evaluate("3?:#var=5", 3, Integer.class);
-			evaluate("null?:#var=5", 5, Integer.class);
-			evaluate("2>4?(3>2?true:false):(5<3?true:false)", false, Boolean.class);
+		void ternaryExpressions() {
+			evaluate("2 > 4 ? 1 : 2", 2, Integer.class);
+			evaluate("'abc' == 'abc' ? 1 : 2", 1, Integer.class);
+			evaluate("1 > 2 ? #var = 4 : #var = 5", 5, Integer.class);
+			evaluate("2 > 4 ? (3 > 2 ? true : false) : (5 < 3 ? true : false)", false, Boolean.class);
 		}
 
 		@Test
-		void ternaryOperator06() {
-			evaluate("3?:#var=5", 3, Integer.class);
-			evaluate("null?:#var=5", 5, Integer.class);
-			evaluate("2>4?(3>2?true:false):(5<3?true:false)", false, Boolean.class);
-		}
-
-		@Test
-		void ternaryExpressionWithImplicitGrouping() {
+		void ternaryExpressionsWithImplicitGrouping() {
 			evaluate("4 % 2 == 0 ? 2 : 3 * 10", 2, Integer.class);
 			evaluate("4 % 2 == 1 ? 2 : 3 * 10", 30, Integer.class);
 		}
 
 		@Test
-		void ternaryExpressionWithExplicitGrouping() {
+		void ternaryExpressionsWithExplicitGrouping() {
 			evaluate("((4 % 2 == 0) ? 2 : 1) * 10", 20, Integer.class);
 		}
-
-		@Test
-		void ternaryOperatorWithNullValue() {
-			assertThatExceptionOfType(EvaluationException.class)
-				.isThrownBy(parser.parseExpression("null ? 0 : 1")::getValue);
-		}
-
 	}
 
 	@Nested
