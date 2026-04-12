@@ -98,7 +98,11 @@ public class Elvis extends SpelNodeImpl {
 
 	@Override
 	public void generateCode(MethodVisitor mv, CodeFlow cf) {
-		// exit type descriptor can be null if both components are literal expressions
+		// If both elements are literals and the expression was not previously
+		// evaluated in interpreted mode -- or if getValueInternal() did not
+		// properly invoke computeExitTypeDescriptor() -- we may get here without
+		// the exit descriptor having been computed, so we must ensure the exit
+		// descriptor has been computed before proceeding.
 		computeExitTypeDescriptor();
 
 		cf.enterCompilationScope();
