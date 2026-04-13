@@ -6426,22 +6426,22 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 		return (SpelNodeImpl)ast;
 	}
 
-	private void assertCanCompile(Expression expression) {
+	private Expression parse(String expression) {
+		return parser.parseExpression(expression);
+	}
+
+	private static void assertCanCompile(Expression expression) {
 		assertThat(SpelCompiler.compile(expression))
 				.as(() -> "Expression <%s> should be compilable"
 						.formatted(((SpelExpression) expression).toStringAST()))
 				.isTrue();
 	}
 
-	private void assertCannotCompile(Expression expression) {
+	private static void assertCannotCompile(Expression expression) {
 		assertThat(SpelCompiler.compile(expression))
 				.as(() -> "Expression <%s> should not be compilable"
 						.formatted(((SpelExpression) expression).toStringAST()))
 				.isFalse();
-	}
-
-	private Expression parse(String expression) {
-		return parser.parseExpression(expression);
 	}
 
 	private static void assertNotPublic(Class<?> clazz) {
