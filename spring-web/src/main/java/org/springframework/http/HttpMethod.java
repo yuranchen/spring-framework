@@ -114,6 +114,15 @@ public final class HttpMethod implements Comparable<HttpMethod>, Serializable {
 	 * Return an {@code HttpMethod} object for the given value.
 	 * <p>As of Spring Framework 7.1, lookups for predefined constants such as
 	 * {@link HttpMethod#GET GET} are case-insensitive.
+	 * <p>If no predefined constant matches, a new {@code HttpMethod} instance is
+	 * returned for the given value as-is.
+	 * <p>For example, {@code HttpMethod.valueOf("GET")} and
+	 * {@code HttpMethod.valueOf("get")} both resolve to {@link HttpMethod#GET}.
+	 * Whereas, {@code HttpMethod.valueOf("FOO")} and
+	 * {@code HttpMethod.valueOf("foo")} resolve to {@code new HttpMethod("FOO")}
+	 * and {@code new HttpMethod("foo")}, respectively. In the latter case, the
+	 * two resulting {@code HttpMethod} instances are not
+	 * {@linkplain #equals(Object) equal} and do not {@linkplain #matches(String) match}.
 	 * @param method the method value as a String
 	 * @return the corresponding {@code HttpMethod}
 	 */
