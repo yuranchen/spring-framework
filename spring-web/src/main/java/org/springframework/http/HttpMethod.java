@@ -112,8 +112,12 @@ public final class HttpMethod implements Comparable<HttpMethod>, Serializable {
 	 * Return an {@code HttpMethod} object for the given value.
 	 * <p>Note that this lookup is case-sensitive. For predefined constants,
 	 * the method value must be provided in uppercase (e.g., {@code "GET"},
-	 * {@code "POST"}). If no predefined constant matches, a new
-	 * {@code HttpMethod} instance is returned for the given value as-is.
+	 * {@code "POST"}). If no predefined constant matches, a new {@code HttpMethod}
+	 * instance is returned for the given value as-is. For example,
+	 * {@code HttpMethod.valueOf("GET")} resolves to {@link HttpMethod#GET}, while
+	 * {@code HttpMethod.valueOf("get")} resolves to {@code new HttpMethod("get")},
+	 * and the two resulting {@code HttpMethod} instances are not
+	 * {@linkplain #equals(Object) equal} and do not {@linkplain #matches(String) match}.
 	 * @param method the method value as a String
 	 * @return the corresponding {@code HttpMethod}
 	 */
