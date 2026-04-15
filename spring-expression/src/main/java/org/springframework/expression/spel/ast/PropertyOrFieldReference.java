@@ -70,7 +70,7 @@ public class PropertyOrFieldReference extends SpelNodeImpl {
 
 	private final String name;
 
-	private @Nullable String originalPrimitiveExitTypeDescriptor;
+	private volatile @Nullable String originalPrimitiveExitTypeDescriptor;
 
 	/**
 	 * Tracks whether an {@link Optional} was unwrapped in
@@ -78,7 +78,7 @@ public class PropertyOrFieldReference extends SpelNodeImpl {
 	 * null-safe operator and therefore needs to be unwrapped in a compiled expression.
 	 * @since 7.1
 	 */
-	private boolean unwrapOptional;
+	private volatile boolean unwrapOptional;
 
 	private volatile @Nullable PropertyAccessor cachedReadAccessor;
 

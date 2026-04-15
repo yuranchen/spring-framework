@@ -51,7 +51,7 @@ public class Elvis extends SpelNodeImpl {
 	 * null-safe operator.
 	 * @since 7.1
 	 */
-	private @Nullable String unwrappedOptionalDescriptor;
+	private volatile @Nullable String unwrappedOptionalDescriptor;
 
 
 	public Elvis(int startPos, int endPos, SpelNodeImpl... args) {

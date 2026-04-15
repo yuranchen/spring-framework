@@ -75,7 +75,7 @@ public class MethodReference extends SpelNodeImpl {
 
 	private final String name;
 
-	private @Nullable Character originalPrimitiveExitTypeDescriptor;
+	private volatile @Nullable Character originalPrimitiveExitTypeDescriptor;
 
 	/**
 	 * Tracks whether an {@link Optional} was unwrapped in
@@ -84,7 +84,7 @@ public class MethodReference extends SpelNodeImpl {
 	 * compiled expression.
 	 * @since 7.1
 	 */
-	private boolean unwrapOptional;
+	private volatile boolean unwrapOptional;
 
 	private volatile @Nullable CachedMethodExecutor cachedExecutor;
 
