@@ -345,6 +345,41 @@ class WebRequestDataBinderTests {
 		}
 
 		@Test
+		void shouldNotTriggerBindingWhenFieldIsNotAllowedWithEmptyArrayIndex() {
+			TestBean tb = new TestBean();
+
+			WebRequestDataBinder binder = new WebRequestDataBinder(tb);
+			binder.setAllowedFields("name");
+
+			MockHttpServletRequest request = new MockHttpServletRequest();
+			request.addParameter("name", "spring");
+			request.addParameter(prefix + "stringArray[]", "ONE");
+			request.addParameter(prefix + "stringArray[]", "TWO");
+			binder.bind(new ServletWebRequest(request));
+
+			assertThat(tb.getName()).isEqualTo("spring");
+			assertThat(tb.getStringArray()).isNull();
+		}
+
+		@ParameterizedTest
+		@ValueSource(strings = { "stringArray*", "stringArray[]" })
+		void shouldNotTriggerBindingWhenFieldIsDisallowedWithEmptyArrayIndex(String disallowedField) {
+			TestBean tb = new TestBean();
+
+			WebRequestDataBinder binder = new WebRequestDataBinder(tb);
+			binder.setDisallowedFields(disallowedField);
+
+			MockHttpServletRequest request = new MockHttpServletRequest();
+			request.addParameter("name", "spring");
+			request.addParameter(prefix + "stringArray[]", "ONE");
+			request.addParameter(prefix + "stringArray[]", "TWO");
+			binder.bind(new ServletWebRequest(request));
+
+			assertThat(tb.getName()).isEqualTo("spring");
+			assertThat(tb.getStringArray()).isNull();
+		}
+
+		@Test
 		void shouldNotTriggerAutoGrowWhenFieldIsNotAllowed() {
 			TestBean tb = new TestBean();
 			tb.setSomeMap(null);
@@ -361,13 +396,14 @@ class WebRequestDataBinderTests {
 			assertThat(tb.getSomeMap()).isNull();
 		}
 
-		@Test
-		void shouldNotTriggerAutoGrowWhenFieldIsDisallowed() {
+		@ParameterizedTest
+		@ValueSource(strings = { "someMap*", "someMap[*]", "someMap[key1]" })
+		void shouldNotTriggerAutoGrowWhenFieldIsDisallowed(String disallowedField) {
 			TestBean tb = new TestBean();
 			tb.setSomeMap(null);
 
 			WebRequestDataBinder binder = new WebRequestDataBinder(tb);
-			binder.setDisallowedFields("someMap[key1]");
+			binder.setDisallowedFields(disallowedField);
 
 			MockHttpServletRequest request = new MockHttpServletRequest();
 			request.addParameter("name", "spring");
