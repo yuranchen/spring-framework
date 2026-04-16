@@ -70,12 +70,12 @@ Or for 4 retry attempts and an exponential back-off strategy with a bit of jitte
 [source,java,indent=0,subs="verbatim,quotes"]
 ----
 @Retryable(
-  includes = MessageDeliveryException.class,
-  maxRetries = 4,
-  delay = 100,
-  jitter = 10,
-  multiplier = 2,
-  maxDelay = 1000)
+        includes = MessageDeliveryException.class,
+        maxRetries = 4,
+        delay = 100,
+        jitter = 10,
+        multiplier = 2,
+        maxDelay = 1000)
 public void sendNotification() {
     this.jmsClient.destination("notifications").send(...);
 }
@@ -324,7 +324,7 @@ outcome of all attempts:
 [source,java,indent=0,subs="verbatim,quotes"]
 ----
     try {
-        var result = new RetryTemplate().execute(() -> {
+        var result = retryTemplate.execute(() -> {
             jmsClient.destination("notifications").send(...);
             return "result";
         });
@@ -335,16 +335,21 @@ outcome of all attempts:
 ----
 
 A {spring-framework-api}/core/retry/RetryListener.html[`RetryListener`] can be registered
-with a `RetryTemplate` to react to events published during key retry phases (before a
-retry attempt, after a retry attempt, etc.), being able to track all invocation attempts
-and all exceptions coming out of the callback. This is particularly useful when using
-`invoke` where no retry state other than the last original exception is exposed otherwise:
+with a `RetryTemplate` to react to key retry steps (before or after a retry attempt etc.)
+or simply to every invocation attempt, being able to track all exceptions coming out of
+the callback and all retry outcomes (exhaustion, interruption, timeout). This is
+particularly useful when using `invoke` where no retry state other than the last
+original exception is exposed otherwise:
 
 [source,java,indent=0,subs="verbatim,quotes"]
 ----
     var retryTemplate = new RetryTemplate();
-    retryTemplate.setRetryPolicy(...);
-    retryTemplate.setRetryListener(...);
+    retryTemplate.setRetryListener(new RetryListener() {
+        @Override
+        public void onRetryableExecution(RetryPolicy retryPolicy, Retryable<?> retryable, RetryState retryState) {
+            ...
+        }
+    });
 
     retryTemplate.invoke(
             () -> jmsClient.destination("notifications").send(...));
