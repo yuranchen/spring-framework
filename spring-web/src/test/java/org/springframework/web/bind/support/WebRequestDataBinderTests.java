@@ -17,8 +17,6 @@
 package org.springframework.web.bind.support;
 
 import java.beans.PropertyEditorSupport;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -30,11 +28,8 @@ import org.junit.jupiter.params.ParameterizedClass;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import org.springframework.beans.PropertyValue;
-import org.springframework.beans.PropertyValues;
 import org.springframework.beans.testfixture.beans.ITestBean;
 import org.springframework.beans.testfixture.beans.TestBean;
-import org.springframework.web.bind.ServletRequestParameterPropertyValues;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.multipart.support.StringMultipartFileEditor;
 import org.springframework.web.testfixture.servlet.MockHttpServletRequest;
@@ -306,77 +301,6 @@ class WebRequestDataBinderTests {
 		assertThat(target.getStringArray()).hasSize(2);
 		assertThat(target.getStringArray()[0]).isEqualTo("Juergen");
 		assertThat(target.getStringArray()[1]).isEqualTo("Eva");
-	}
-
-	@Test
-	void noPrefix() {
-		MockHttpServletRequest request = new MockHttpServletRequest();
-		request.addParameter("forname", "Tony");
-		request.addParameter("surname", "Blair");
-		request.addParameter("age", "" + 50);
-
-		ServletRequestParameterPropertyValues pvs = new ServletRequestParameterPropertyValues(request);
-		doTestTony(pvs);
-	}
-
-	@Test
-	void prefix() {
-		MockHttpServletRequest request = new MockHttpServletRequest();
-		request.addParameter("test_forname", "Tony");
-		request.addParameter("test_surname", "Blair");
-		request.addParameter("test_age", "" + 50);
-
-		ServletRequestParameterPropertyValues pvs = new ServletRequestParameterPropertyValues(request);
-		assertThat(pvs.contains("forname")).as("Didn't find normal when given prefix").isFalse();
-		assertThat(pvs.contains("test_forname")).as("Did treat prefix as normal when not given prefix").isTrue();
-
-		pvs = new ServletRequestParameterPropertyValues(request, "test");
-		doTestTony(pvs);
-	}
-
-	/**
-	 * Must contain: forname=Tony surname=Blair age=50
-	 */
-	void doTestTony(PropertyValues pvs) {
-		assertThat(pvs.getPropertyValues().length).as("Contains 3").isEqualTo(3);
-		assertThat(pvs.contains("forname")).as("Contains forname").isTrue();
-		assertThat(pvs.contains("surname")).as("Contains surname").isTrue();
-		assertThat(pvs.contains("age")).as("Contains age").isTrue();
-		assertThat(pvs.contains("tory")).as("Doesn't contain tory").isFalse();
-
-		PropertyValue[] pvArray = pvs.getPropertyValues();
-		Map<String, String> m = new HashMap<>();
-		m.put("forname", "Tony");
-		m.put("surname", "Blair");
-		m.put("age", "50");
-		for (PropertyValue pv : pvArray) {
-			Object val = m.get(pv.getName());
-			assertThat(val).as("Can't have unexpected value").isNotNull();
-			assertThat(val).as("Val is string").isInstanceOf(String.class);
-			assertThat(val).as("val matches expected").isEqualTo(pv.getValue());
-			m.remove(pv.getName());
-		}
-		assertThat(m.size()).as("Map size is 0").isEqualTo(0);
-	}
-
-	@Test
-	void noParameters() {
-		MockHttpServletRequest request = new MockHttpServletRequest();
-		ServletRequestParameterPropertyValues pvs = new ServletRequestParameterPropertyValues(request);
-		assertThat(pvs.getPropertyValues().length).as("Found no parameters").isEqualTo(0);
-	}
-
-	@Test
-	void multipleValuesForParameter() {
-		MockHttpServletRequest request = new MockHttpServletRequest();
-		String[] original = new String[] {"Tony", "Rod"};
-		request.addParameter("forname", original);
-
-		ServletRequestParameterPropertyValues pvs = new ServletRequestParameterPropertyValues(request);
-		assertThat(pvs.getPropertyValues().length).as("Found 1 parameter").isEqualTo(1);
-		assertThat(pvs.getPropertyValue("forname").getValue()).as("Found array value").isInstanceOf(String[].class);
-		String[] values = (String[]) pvs.getPropertyValue("forname").getValue();
-		assertThat(Arrays.asList(original)).as("Correct values").isEqualTo(Arrays.asList(values));
 	}
 
 
