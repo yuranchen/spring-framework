@@ -53,7 +53,7 @@ class WebRequestDataBinderTests {
 	void bindingWithNestedObjectCreation() {
 		TestBean tb = new TestBean();
 
-		WebRequestDataBinder binder = new WebRequestDataBinder(tb, "person");
+		WebRequestDataBinder binder = new WebRequestDataBinder(tb);
 		binder.registerCustomEditor(ITestBean.class, new PropertyEditorSupport() {
 			@Override
 			public void setAsText(String text) throws IllegalArgumentException {
@@ -74,7 +74,7 @@ class WebRequestDataBinderTests {
 	void bindingWithNestedObjectCreationThroughAutoGrow() {
 		TestBean tb = new TestBeanWithConcreteSpouse();
 
-		WebRequestDataBinder binder = new WebRequestDataBinder(tb, "person");
+		WebRequestDataBinder binder = new WebRequestDataBinder(tb);
 		binder.setIgnoreUnknownFields(false);
 
 		MockHttpServletRequest request = new MockHttpServletRequest();
@@ -316,7 +316,7 @@ class WebRequestDataBinderTests {
 		void shouldNotTriggerBindingWhenFieldIsNotAllowed() {
 			TestBean tb = new TestBean();
 
-			WebRequestDataBinder binder = new WebRequestDataBinder(tb, "person");
+			WebRequestDataBinder binder = new WebRequestDataBinder(tb);
 			binder.setAllowedFields("name");
 
 			MockHttpServletRequest request = new MockHttpServletRequest();
@@ -332,7 +332,7 @@ class WebRequestDataBinderTests {
 		void shouldNotTriggerBindingWhenFieldIsDisallowed() {
 			TestBean tb = new TestBean();
 
-			WebRequestDataBinder binder = new WebRequestDataBinder(tb, "person");
+			WebRequestDataBinder binder = new WebRequestDataBinder(tb);
 			binder.setDisallowedFields("country");
 
 			MockHttpServletRequest request = new MockHttpServletRequest();
@@ -349,7 +349,7 @@ class WebRequestDataBinderTests {
 			TestBean tb = new TestBean();
 			tb.setSomeMap(null);
 
-			WebRequestDataBinder binder = new WebRequestDataBinder(tb, "person");
+			WebRequestDataBinder binder = new WebRequestDataBinder(tb);
 			binder.setAllowedFields("name");
 
 			MockHttpServletRequest request = new MockHttpServletRequest();
@@ -366,7 +366,7 @@ class WebRequestDataBinderTests {
 			TestBean tb = new TestBean();
 			tb.setSomeMap(null);
 
-			WebRequestDataBinder binder = new WebRequestDataBinder(tb, "person");
+			WebRequestDataBinder binder = new WebRequestDataBinder(tb);
 			binder.setDisallowedFields("someMap[key1]");
 
 			MockHttpServletRequest request = new MockHttpServletRequest();
