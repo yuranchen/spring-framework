@@ -54,6 +54,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @author Juergen Hoeller
  * @author Scott Andrews
  * @author Brian Clozel
+ * @author Sam Brannen
  * @since 1.2
  * @see #registerCustomEditor
  * @see #setAllowedFields
@@ -222,28 +223,28 @@ public class WebDataBinder extends DataBinder {
 	}
 
 	/**
-	 * This implementation performs a field default and marker check
-	 * before delegating to the superclass binding process.
-	 * @see #checkFieldDefaults
-	 * @see #checkFieldMarkers
+	 * This implementation checks default fields and marker fields and then adapts
+	 * empty array indices before delegating to the superclass binding process.
+	 * @see #checkFieldDefaults(MutablePropertyValues)
+	 * @see #checkFieldMarkers(MutablePropertyValues)
+	 * @see #adaptEmptyArrayIndices(MutablePropertyValues)
 	 */
 	@Override
 	protected void doBind(MutablePropertyValues mpvs) {
-		checkAllowedFields(mpvs);
 		checkFieldDefaults(mpvs);
 		checkFieldMarkers(mpvs);
 		adaptEmptyArrayIndices(mpvs);
-		checkRequiredFields(mpvs);
-		applyPropertyValues(mpvs);
+		super.doBind(mpvs);
 	}
 
 	/**
-	 * Check the given property values for field defaults,
-	 * i.e. for fields that start with the field default prefix.
-	 * <p>The existence of a field defaults indicates that the specified
-	 * value should be used if the field is otherwise not present.
+	 * Check the given property values for fields that start with the field default
+	 * prefix.
+	 * <p>The existence of a field default indicates that the specified value should
+	 * be used if the field is allowed and is otherwise not present.
 	 * @param mpvs the property values to be bound (can be modified)
-	 * @see #getFieldDefaultPrefix
+	 * @see #getFieldDefaultPrefix()
+	 * @see #isAllowed(String)
 	 */
 	protected void checkFieldDefaults(MutablePropertyValues mpvs) {
 		String fieldDefaultPrefix = getFieldDefaultPrefix();
@@ -252,7 +253,7 @@ public class WebDataBinder extends DataBinder {
 			for (PropertyValue pv : pvArray) {
 				if (pv.getName().startsWith(fieldDefaultPrefix)) {
 					String field = pv.getName().substring(fieldDefaultPrefix.length());
-					if (getPropertyAccessor().isWritableProperty(field) && !mpvs.contains(field)) {
+					if (isAllowed(field) && getPropertyAccessor().isWritableProperty(field) && !mpvs.contains(field)) {
 						mpvs.add(field, pv.getValue());
 					}
 					mpvs.removePropertyValue(pv);
@@ -262,14 +263,15 @@ public class WebDataBinder extends DataBinder {
 	}
 
 	/**
-	 * Check the given property values for field markers,
-	 * i.e. for fields that start with the field marker prefix.
-	 * <p>The existence of a field marker indicates that the specified
-	 * field existed in the form. If the property values do not contain
-	 * a corresponding field value, the field will be considered as empty
-	 * and will be reset appropriately.
+	 * Check the given property values for fields that start with the field marker
+	 * prefix.
+	 * <p>The existence of a field marker indicates that the specified field existed
+	 * in the form.
+	 * <p>If the field is allowed and the property values do not contain a corresponding
+	 * field value, the field will be considered as empty and will be reset appropriately.
 	 * @param mpvs the property values to be bound (can be modified)
-	 * @see #getFieldMarkerPrefix
+	 * @see #getFieldMarkerPrefix()
+	 * @see #isAllowed(String)
 	 * @see #getEmptyValue(String, Class)
 	 */
 	protected void checkFieldMarkers(MutablePropertyValues mpvs) {
@@ -279,7 +281,7 @@ public class WebDataBinder extends DataBinder {
 			for (PropertyValue pv : pvArray) {
 				if (pv.getName().startsWith(fieldMarkerPrefix)) {
 					String field = pv.getName().substring(fieldMarkerPrefix.length());
-					if (getPropertyAccessor().isWritableProperty(field) && !mpvs.contains(field)) {
+					if (isAllowed(field) && getPropertyAccessor().isWritableProperty(field) && !mpvs.contains(field)) {
 						Class<?> fieldType = getPropertyAccessor().getPropertyType(field);
 						mpvs.add(field, getEmptyValue(field, fieldType));
 					}
@@ -290,19 +292,22 @@ public class WebDataBinder extends DataBinder {
 	}
 
 	/**
-	 * Check for property values with names that end on {@code "[]"}. This is
-	 * used by some clients for array syntax without an explicit index value.
-	 * If such values are found, drop the brackets to adapt to the expected way
-	 * of expressing the same for data binding purposes.
+	 * Check the given property values for fields that end with empty brackets
+	 * ({@code []}).
+	 * <p>This is used by some clients for array syntax without an explicit index
+	 * value.
+	 * <p>If such a field is allowed, the brackets will be removed in order to adapt
+	 * to the expected format for expressing the same for data binding purposes.
 	 * @param mpvs the property values to be bound (can be modified)
 	 * @since 5.3
+	 * @see #isAllowed(String)
 	 */
 	protected void adaptEmptyArrayIndices(MutablePropertyValues mpvs) {
 		for (PropertyValue pv : mpvs.getPropertyValues()) {
 			String name = pv.getName();
 			if (name.endsWith("[]")) {
 				String field = name.substring(0, name.length() - 2);
-				if (getPropertyAccessor().isWritableProperty(field) && !mpvs.contains(field)) {
+				if (isAllowed(field) && getPropertyAccessor().isWritableProperty(field) && !mpvs.contains(field)) {
 					mpvs.add(field, pv.getValue());
 				}
 				mpvs.removePropertyValue(pv);
