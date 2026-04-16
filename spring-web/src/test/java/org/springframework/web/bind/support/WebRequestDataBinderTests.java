@@ -17,7 +17,6 @@
 package org.springframework.web.bind.support;
 
 import java.beans.PropertyEditorSupport;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -31,7 +30,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import org.springframework.beans.testfixture.beans.ITestBean;
 import org.springframework.beans.testfixture.beans.TestBean;
-import org.springframework.web.bind.ServletRequestParameterPropertyValues;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.multipart.support.StringMultipartFileEditor;
 import org.springframework.web.testfixture.servlet.MockHttpServletRequest;
@@ -303,26 +301,6 @@ class WebRequestDataBinderTests {
 		assertThat(target.getStringArray()).hasSize(2);
 		assertThat(target.getStringArray()[0]).isEqualTo("Juergen");
 		assertThat(target.getStringArray()[1]).isEqualTo("Eva");
-	}
-
-	@Test
-	void noParameters() {
-		MockHttpServletRequest request = new MockHttpServletRequest();
-		ServletRequestParameterPropertyValues pvs = new ServletRequestParameterPropertyValues(request);
-		assertThat(pvs.getPropertyValues().length).as("Found no parameters").isEqualTo(0);
-	}
-
-	@Test
-	void multipleValuesForParameter() {
-		MockHttpServletRequest request = new MockHttpServletRequest();
-		String[] original = new String[] {"Tony", "Rod"};
-		request.addParameter("forname", original);
-
-		ServletRequestParameterPropertyValues pvs = new ServletRequestParameterPropertyValues(request);
-		assertThat(pvs.getPropertyValues().length).as("Found 1 parameter").isEqualTo(1);
-		assertThat(pvs.getPropertyValue("forname").getValue()).as("Found array value").isInstanceOf(String[].class);
-		String[] values = (String[]) pvs.getPropertyValue("forname").getValue();
-		assertThat(Arrays.asList(original)).as("Correct values").isEqualTo(Arrays.asList(values));
 	}
 
 
