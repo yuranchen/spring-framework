@@ -170,10 +170,7 @@ public class ResourceHttpRequestHandler extends WebContentGenerator
 	public void setLocations(List<Resource> locations) {
 		Assert.notNull(locations, "Locations list must not be null");
 		this.locationResources.clear();
-		for (Resource location : locations) {
-			ResourceHandlerUtils.assertResourceLocation(location);
-			this.locationResources.add(location);
-		}
+		this.locationResources.addAll(locations);
 	}
 
 	/**
@@ -471,6 +468,10 @@ public class ResourceHttpRequestHandler extends WebContentGenerator
 		}
 
 		result.addAll(this.locationResources);
+		for (Resource location : result) {
+			ResourceHandlerUtils.assertResourceLocation(location);
+		}
+
 		if (isOptimizeLocations()) {
 			result = result.stream().filter(Resource::exists).toList();
 		}
