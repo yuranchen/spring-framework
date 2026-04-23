@@ -19,7 +19,6 @@ package org.springframework.web.reactive.resource;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Locale;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -69,17 +68,15 @@ public abstract class ResourceHandlerUtils {
 			}
 			else if (location instanceof ClassPathResource classPathResource) {
 				path = classPathResource.getPath();
-				if (path.isEmpty() || "/".equals(path)) {
-					logger.warn("Resource location '" + location + "' is considered unsafe " +
-							"and should not be used as it provides access to the entire classpath.");
-				}
+				Assert.isTrue(!path.isEmpty() && !"/".equals(path),
+						() -> "Resource location '" + location + "' is considered unsafe " +
+								"and cannot be used as it provides access to the entire classpath.");
 			}
 			else if (location instanceof ContextResource contextResource) {
 				path = contextResource.getPathWithinContext();
-				if ("/".equals(path)) {
-					logger.warn("Resource location '" + location + "' is considered unsafe " +
-							"and should not be used as it provides access to the root servlet context.");
-				}
+				Assert.isTrue(!"/".equals(path),
+						() -> "Resource location '" + location + "' is considered unsafe " +
+								"and cannot be used as it provides access to the root servlet context.");
 			}
 			else if (location instanceof UrlResource) {
 				path = location.getURL().toExternalForm();
@@ -176,7 +173,6 @@ public abstract class ResourceHandlerUtils {
 	/**
 	 * Checks for invalid resource input paths rejecting the following:
 	 * <ul>
-	 * <li>Paths that contain "WEB-INF" or "META-INF"
 	 * <li>Paths that contain "../" after a call to
 	 * {@link StringUtils#cleanPath}.
 	 * <li>Paths that represent a {@link ResourceUtils#isUrl
@@ -189,14 +185,6 @@ public abstract class ResourceHandlerUtils {
 	 * @return {@code true} if the path is invalid, {@code false} otherwise
 	 */
 	public static boolean isInvalidPath(String path) {
-		String pathLowerCase = path.toLowerCase(Locale.ROOT);
-		if (pathLowerCase.contains("web-inf") || pathLowerCase.contains("meta-inf")) {
-			if (logger.isWarnEnabled()) {
-				logger.warn(LogFormatUtils.formatValue(
-						"Path with \"WEB-INF\" or \"META-INF\": [" + path + "]", -1, true));
-			}
-			return true;
-		}
 		if (path.contains(":/")) {
 			String relativePath = (path.charAt(0) == '/' ? path.substring(1) : path);
 			if (ResourceUtils.isUrl(relativePath) || relativePath.startsWith("url:")) {

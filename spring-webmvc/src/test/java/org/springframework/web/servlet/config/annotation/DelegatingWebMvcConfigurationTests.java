@@ -239,7 +239,7 @@ class DelegatingWebMvcConfigurationTests {
 			}
 			@Override
 			public void addResourceHandlers(ResourceHandlerRegistry registry) {
-				registry.addResourceHandler("/resources/**").addResourceLocations("/");
+				registry.addResourceHandler("/resources/**").addResourceLocations("/static");
 			}
 		};
 
@@ -304,7 +304,7 @@ class DelegatingWebMvcConfigurationTests {
 			}
 			@Override
 			public void addResourceHandlers(ResourceHandlerRegistry registry) {
-				registry.addResourceHandler("/resources/**").addResourceLocations("/");
+				registry.addResourceHandler("/resources/**").addResourceLocations("/static");
 			}
 		};
 
