@@ -655,8 +655,8 @@ class GenericApplicationContextTests {
 	void beanRegistrarWithDefinitionOverride() {
 		GenericApplicationContext context = new GenericApplicationContext();
 		context.setAllowBeanDefinitionOverriding(false);
-		assertThatExceptionOfType(BeanDefinitionOverrideException.class).isThrownBy(
-				() -> context.register(new OverridingBeanRegistrar()));
+		context.register(new OverridingBeanRegistrar());
+		assertThatExceptionOfType(BeanDefinitionOverrideException.class).isThrownBy(context::refresh);
 	}
 
 	@Test
